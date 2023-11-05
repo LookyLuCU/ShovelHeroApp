@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ShovelHeroApp"
+rootProject.name = "shovelheroapp-ui"
 include(":app")
  

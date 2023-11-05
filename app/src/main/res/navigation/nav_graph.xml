@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fourthFragment">
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.shovelheroapp_ui.FirstFragment"
+        android:label="Accepted!"
+        tools:layout="@layout/fragment_first" />
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="com.example.shovelheroapp_ui.SecondFragment"
+        android:label="Confirm your cancellation"
+        tools:layout="@layout/fragment_second" />
+    <fragment
+        android:id="@+id/third_Fragment"
+        android:name="com.example.shovelheroapp_ui.Third_Fragment"
+        android:label="fragment_third"
+        tools:layout="@layout/fragment_third" />
+    <fragment
+        android:id="@+id/fourthFragment"
+        android:name="com.example.shovelheroapp_ui.FourthFragment"
+        android:label="Create Order"
+        tools:layout="@layout/fragment_fourth" />
+    <fragment
+        android:id="@+id/fifthFragment"
+        android:name="com.example.shovelheroapp_ui.FifthFragment"
+        android:label="fragment_fifth"
+        tools:layout="@layout/fragment_fifth" />
+    <fragment
+        android:id="@+id/sixthFragment"
+        android:name="com.example.shovelheroapp_ui.SixthFragment"
+        android:label="fragment_sixth"
+        tools:layout="@layout/fragment_sixth" />
+    <fragment
+        android:id="@+id/seventhFragment"
+        android:name="com.example.shovelheroapp_ui.SeventhFragment"
+        android:label="fragment_seventh"
+        tools:layout="@layout/fragment_seventh" />
+    <fragment
+        android:id="@+id/eighthFragment"
+        android:name="com.example.shovelheroapp_ui.EighthFragment"
+        android:label="fragment_eighth"
+        tools:layout="@layout/fragment_eighth" />
+    <fragment
+        android:id="@+id/ninthFragment"
+        android:name="com.example.shovelheroapp_ui.NinthFragment"
+        android:label="fragment_ninth"
+        tools:layout="@layout/fragment_ninth" />
+    <fragment
+        android:id="@+id/tenthFragment"
+        android:name="com.example.shovelheroapp_ui.TenthFragment"
+        android:label="fragment_tenth"
+        tools:layout="@layout/fragment_tenth" />
+</navigation>

@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ShovelHeroApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Shovelheroappui" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ShovelHeroApp" parent="Base.Theme.ShovelHeroApp" />
+    <style name="Theme.Shovelheroappui" parent="Base.Theme.Shovelheroappui" />
 </resources>
