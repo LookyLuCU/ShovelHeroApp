@@ -7,7 +7,7 @@ import java.util.Date;
 public class WorkOrder {
 
 
-    private long id;
+    private long workOrderId;
 
     private String orderType;
     private String status;
@@ -29,17 +29,17 @@ public class WorkOrder {
 
     }
     public WorkOrder(long id, String orderType, String status) {
-        this.id = id;
+        this.workOrderId = id;
         this.orderType = orderType;
         this.status = status;
     }
 
     public long getId() {
-        return id;
+        return workOrderId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long workOrderId) {
+        this.workOrderId = workOrderId;
     }
 
     public String getOrderType() {
