@@ -1,12 +1,16 @@
-package com.example.shovelheroapp;
+package com.example.shovelheroapp.WorkOrder;
 
 public class WorkOrder {
 
 
     private long id;
+    private String customerId; //to be foreign key
     private String orderType;
     private String status;
 
+    public WorkOrder(){
+
+    }
     public WorkOrder(long id, String orderType, String status) {
         this.id = id;
         this.orderType = orderType;

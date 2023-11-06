@@ -13,6 +13,12 @@
         android:theme="@style/Theme.ShovelHeroApp"
         tools:targetApi="31">
         <activity
+            android:name=".WorkOrder.GetWorkOrdersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WorkOrder.CreateWorkOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.shovelheroapp;
+package com.example.shovelheroapp.WorkOrder;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,12 +24,12 @@ public class WODatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public long createWorkOrder(WorkOrder workOrder) {
+    public static long createWorkOrder(WorkOrder workOrder) {
         // Insert a new WorkOrder into the database
         return 0;
     }
 
-    public List<WorkOrder> getAllWorkOrders() {
+    public static List<WorkOrder> getAllWorkOrders() {
         // Retrieve all WorkOrders from the database
         return null;
     }
