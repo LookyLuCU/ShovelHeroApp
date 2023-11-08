@@ -30,7 +30,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         statusEditText = findViewById(R.id.editTextStatus);
 
         squareFootageEditText = findViewById(R.id.squareFootageEditText);
-        pricePerSquareFootEditText = findViewById(R.id.pricePerSquareFootEditText);
+        //pricePerSquareFootEditText = findViewById(R.id.pricePerSquareFootEditText);
         workOrderPriceTextView = findViewById(R.id.workOrderPriceTextView);
     }
 

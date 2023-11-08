@@ -1,43 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".WorkOrder.CreateWorkOrderActivity">
+    android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTextOrderType"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="OrderType"/>
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Status"/>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/shovel_hero_logo"
+            android:contentDescription="Shovel Hero Logo"
+            android:layout_marginBottom="16dp"/>
 
-    <EditText
-        android:id="@+id/squareFootageEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Square Footage"
-        android:inputType="numberDecimal"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create a Work Order"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
-    <TextView
-        android:id="@+id/workOrderPriceTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Work Order Price: "
-        android:textSize="20sp"/>
+        <Button
+            android:id="@+id/btnDateAndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Date and Time"
+            android:layout_marginBottom="16dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Work Order"
-        android:onClick="createWorkOrder"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Job Location"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
 
-</LinearLayout>
+        <Spinner
+            android:id="@+id/spinnerJobLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Status"
+            android:minHeight="48dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editTextOrderType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Order Type"
+            android:minHeight="48dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/squareFootageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Square Footage"
+            android:minHeight="48dp"
+            android:inputType="numberDecimal"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxDriveway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Driveway"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxSidewalk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sidewalk"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxWalkway"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Walkway"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editSpecialInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Special Instructions (Optional)"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:minLines="3"
+            android:maxLines="6"
+            android:scrollbars="vertical"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/workOrderPriceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Work Order Price: "
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/buttonCreateOrder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Create Order"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

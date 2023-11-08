@@ -17,6 +17,12 @@ public class WorkOrder {
     private double price;
     private Date requestDate;
     private Date requestedDateTime;
+
+    private boolean isDrivewayChecked;
+    private boolean isWalkwayChecked;
+    private boolean isSidewalkChecked;
+
+    private String specialInstructions;
     private Image arrivalImage;
     private Image completedImage;
     private Image issueImage;
@@ -131,4 +137,19 @@ public class WorkOrder {
     public void setPropertyId(Address propertyId) {
         this.propertyId = propertyId;
     }
+
+    public boolean getDrivewayChecked() {return isDrivewayChecked;}
+
+    public void setDrivewayChecked(boolean isDrivewayChecked) {this.isDrivewayChecked = isDrivewayChecked;}
+
+    public boolean getWalkwayChecked() {return isWalkwayChecked;}
+
+    public void setWalkwayChecked(boolean isWalkwayChecked) {this.isWalkwayChecked = isWalkwayChecked;}
+
+    public boolean getSidewalkChecked() {return isSidewalkChecked;}
+
+    public void setSidewalkChecked(boolean isSidewalkChecked) {this.isSidewalkChecked = isSidewalkChecked;}
+    public String getSpecialInstructions() {return specialInstructions;}
+
+    public void setSpecialInstructions(String specialInstructions) {this.specialInstructions = specialInstructions;}
 }
