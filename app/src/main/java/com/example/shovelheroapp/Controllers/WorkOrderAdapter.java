@@ -1,4 +1,4 @@
-package com.example.shovelheroapp.WorkOrder;
+package com.example.shovelheroapp.Controllers;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WorkOrder workOrder = workOrders.get(position);
-        holder.orderTypeTextView.setText(workOrder.getOrderType());
+        //holder.orderTypeTextView.setText(workOrder.);
         holder.statusTextView.setText(workOrder.getStatus());
     }
 

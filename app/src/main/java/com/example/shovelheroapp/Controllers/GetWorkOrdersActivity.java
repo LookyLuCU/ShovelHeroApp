@@ -1,15 +1,13 @@
-package com.example.shovelheroapp.WorkOrder;
+package com.example.shovelheroapp.Controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
 
 import com.example.shovelheroapp.R;
+import com.example.shovelheroapp.Models.WorkOrder;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class GetWorkOrdersActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialize DBHelper and get WO list
-        workOrders = WODatabaseHelper.getAllWorkOrders();
+        //workOrders = WODatabaseHelper.getAllWorkOrders();
 
         adapter = new WorkOrderAdapter(workOrders);
         recyclerView.setAdapter(adapter);

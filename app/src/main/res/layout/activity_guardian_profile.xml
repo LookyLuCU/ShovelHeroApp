@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".User.Guardian.GuardianProfileActivity">
+    tools:context=".Controllers.GuardianProfileActivity"
+    android:background="#BDEDFB">
 
     <ImageView
         android:layout_width="150dp"
@@ -14,6 +15,7 @@
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
         android:layout_marginBottom="16dp"/>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -29,12 +31,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!--TO add: android:src=""-->
         <ImageView
             android:id="@+id/profilePicture"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="1"
-            android:src=""
             android:clickable="true"
             android:focusable="true"
             android:onClick="onUploadProfilePictureClick"
@@ -62,6 +64,7 @@
             android:layout_height="wrap_content"
             android:text="Manage Payment Info"
             android:layout_marginBottom="8dp" />
+
 
         <Button
             android:id="@+id/btnManageLocation"
@@ -97,5 +100,6 @@
             android:layout_height="wrap_content"
             android:text="Linked Youths"
             android:layout_marginBottom="8dp" />
+
     </LinearLayout>
 </LinearLayout>

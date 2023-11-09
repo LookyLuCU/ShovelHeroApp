@@ -1,10 +1,10 @@
-package com.example.shovelheroapp.User;
+package com.example.shovelheroapp.Models;
 
 import android.media.Image;
 import android.widget.CheckBox;
 
 public class Address {
-    private long addressId;
+    private int addressId;
     private Image customerAddressImage;
     private String address;
     private String city;
@@ -12,13 +12,13 @@ public class Address {
     private String postalCode;
     private String country;
     private String addressNotes;
-    private String drivewaySquarefootage;
+    private int drivewaySquareFootage;
     private CheckBox accessible;
     private CheckBox shovelAvailableOnSite;
 
 
     //CONSTRUCTOR
-    public Address(long addressId, Image customerAddressImage, String address, String city, String province, String postalCode, String country, String addressNotes, String drivewaySquarefootage, CheckBox accessible, CheckBox shovelAvailableOnSite) {
+    public Address(int addressId, Image customerAddressImage, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquarefootage, CheckBox accessible, CheckBox shovelAvailableOnSite) {
         this.addressId = addressId;
         this.customerAddressImage = customerAddressImage;
         this.address = address;
@@ -27,18 +27,18 @@ public class Address {
         this.postalCode = postalCode;
         this.country = country;
         this.addressNotes = addressNotes;
-        this.drivewaySquarefootage = drivewaySquarefootage;
+        this.drivewaySquareFootage = drivewaySquarefootage;
         this.accessible = accessible;
         this.shovelAvailableOnSite = shovelAvailableOnSite;
     }
 
 
     //GETTERS AND SETTERS
-    public long getAddressId() {
+    public int getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(long addressId) {
+    public void setAddressId(int addressId) {
         this.addressId = addressId;
     }
 
@@ -98,12 +98,12 @@ public class Address {
         this.addressNotes = addressNotes;
     }
 
-    public String getDrivewaySquarefootage() {
-        return drivewaySquarefootage;
+    public int getDrivewaySquareFootage() {
+        return drivewaySquareFootage;
     }
 
-    public void setDrivewaySquarefootage(String drivewaySquarefootage) {
-        this.drivewaySquarefootage = drivewaySquarefootage;
+    public void setDrivewaySquarefootage(int drivewaySquareFootage) {
+        this.drivewaySquareFootage = drivewaySquareFootage;
     }
 
     public CheckBox getAccessible() {
@@ -120,5 +120,14 @@ public class Address {
 
     public void setShovelAvailableOnSite(CheckBox shovelAvailableOnSite) {
         this.shovelAvailableOnSite = shovelAvailableOnSite;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", province='" + province + '\'' +
+                '}';
     }
 }

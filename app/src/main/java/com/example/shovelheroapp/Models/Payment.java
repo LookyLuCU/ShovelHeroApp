@@ -1,4 +1,7 @@
-package com.example.shovelheroapp.Billing;
+package com.example.shovelheroapp.Models;
+
+import com.example.shovelheroapp.Models.Enums.PaymentProviders;
+import com.example.shovelheroapp.Models.Enums.PaymentStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -10,6 +13,6 @@ public class Payment {
     private int paymentCardNo;
     private Date paymentExpiry;
     private int paymentCCV;
+    private WorkOrder jobPrice;
     private PaymentStatus paymentApproved;
-
 }

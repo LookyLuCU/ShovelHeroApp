@@ -1,4 +1,4 @@
-package com.example.shovelheroapp.User.Guardian;
+package com.example.shovelheroapp.Controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,5 +12,13 @@ public class GuardianProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_profile);
+
     }
+
+
+    //int birthDay = birthdateDatePicker.getDayOfMonth();
+    //int birthMonth = birthdateDatePicker.getMonth() +1; // jan = 0 so need to +1
+    //int birthYear = birthdateDatePicker.getYear();
+
+
 }
