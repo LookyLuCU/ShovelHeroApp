@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "101135752101",
+    "project_id": "shovelhero-1b0a2",
+    "storage_bucket": "shovelhero-1b0a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101135752101:android:a897f1c3bc9ec8594de64c",
+        "android_client_info": {
+          "package_name": "com.example.shovelheroapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf7IpUTx38wy9_PC_vkdXnYe_5llU2epM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

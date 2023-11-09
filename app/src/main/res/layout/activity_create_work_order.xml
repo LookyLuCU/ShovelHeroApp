@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BDEDFB"
     android:padding="16dp">
 
     <LinearLayout
@@ -34,68 +35,82 @@
             android:text="Select Date and Time"
             android:layout_marginBottom="16dp"/>
 
+        <DatePicker
+            android:id="@+id/dpCustomDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Specific Date Request"
+            android:layout_marginBottom="16dp"/>
+
+        <TimePicker
+            android:id="@+id/tpCustomTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Specific Time Request"
+            android:layout_marginBottom="16dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Job Location"
+            android:text="Address"
             android:gravity="center"
             android:textSize="16sp"
             android:layout_marginBottom="8dp"/>
 
         <Spinner
-            android:id="@+id/spinnerJobLocation"
+            android:id="@+id/spinnerAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/editTextStatus"
+            android:id="@+id/etSquareFootage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Status"
+            android:hint="Square Footage"
             android:minHeight="48dp"
-            android:layout_marginBottom="8dp"/>
+            android:inputType="number"/>
 
         <EditText
-            android:id="@+id/editTextOrderType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Order Type"
-            android:minHeight="48dp"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/squareFootageEditText"
+            android:id="@+id/etCustomShoveller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Square Footage"
             android:minHeight="48dp"
             android:inputType="numberDecimal"/>
 
+        <Button
+            android:id="@+id/btnValidateShoveller"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirm My Shoveller"
+            android:layout_marginEnd="8dp"/>
+
         <CheckBox
-            android:id="@+id/checkBoxDriveway"
+            android:id="@+id/cbDriveway"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Driveway"
             android:layout_marginBottom="8dp"/>
 
         <CheckBox
-            android:id="@+id/checkBoxSidewalk"
+            android:id="@+id/cbSidewalk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sidewalk"
             android:layout_marginBottom="8dp"/>
 
         <CheckBox
-            android:id="@+id/checkBoxWalkway"
+            android:id="@+id/cbWalkway"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Walkway"
             android:layout_marginBottom="8dp"/>
 
         <EditText
-            android:id="@+id/editSpecialInstructions"
+            android:id="@+id/etSpecialInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Special Instructions (Optional)"
@@ -107,7 +122,7 @@
             android:layout_marginBottom="16dp"/>
 
         <TextView
-            android:id="@+id/workOrderPriceTextView"
+            android:id="@+id/tvWorkOrderPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Work Order Price: "
@@ -121,7 +136,7 @@
             android:layout_marginBottom="16dp">
 
             <Button
-                android:id="@+id/buttonCreateOrder"
+                android:id="@+id/btnCreateOrder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,7 +144,7 @@
                 android:layout_marginEnd="8dp"/>
 
             <Button
-                android:id="@+id/buttonCancel"
+                android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

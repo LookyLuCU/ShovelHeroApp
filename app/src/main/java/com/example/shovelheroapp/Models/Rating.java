@@ -1,7 +1,4 @@
-package com.example.shovelheroapp.User;
-
-import com.example.shovelheroapp.User.Customer.Customer;
-import com.example.shovelheroapp.User.Shoveller.Shoveller;
+package com.example.shovelheroapp.Models;
 
 import java.util.Date;
 
@@ -11,8 +8,8 @@ public class Rating {
     public String ratingCommments;
     public Date ratingDate;
     public Boolean ratingVisible;
-    public Customer customerId;  // -->Foreign Key
-    public Shoveller shovellerId; // -->Foreign Key
+    public User customerId;  // -->Foreign Key
+    public User shovellerId; // -->Foreign Key
 
 
     public Rating(){
@@ -20,7 +17,7 @@ public class Rating {
 
 
     //CONSTRUCTOR
-    public Rating(long ratingId, int rating, String ratingCommments, Date ratingDate, Boolean ratingVisible, Customer customerId, Shoveller shovellerId) {
+    public Rating(long ratingId, int rating, String ratingCommments, Date ratingDate, Boolean ratingVisible, User customerId, User shovellerId) {
         this.ratingId = ratingId;
         this.rating = rating;
         this.ratingCommments = ratingCommments;
@@ -72,19 +69,19 @@ public class Rating {
         this.ratingVisible = ratingVisible;
     }
 
-    public Customer getCustomerId() {
+    public User getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Customer customerId) {
+    public void setCustomerId(User customerId) {
         this.customerId = customerId;
     }
 
-    public Shoveller getShovellerId() {
+    public User getShovellerId() {
         return shovellerId;
     }
 
-    public void setShovellerId(Shoveller shovellerId) {
+    public void setShovellerId(User shovellerId) {
         this.shovellerId = shovellerId;
     }
 }

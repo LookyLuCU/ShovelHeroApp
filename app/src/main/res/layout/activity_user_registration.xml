@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#BDEDFB"
+    tools:context=".Controllers.UserRegistrationActivity">
+
+    <!--ShovelHero Logo-->
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:src="@drawable/shovel_hero_logo"
+        android:contentDescription="Shovel Hero Logo"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="User Registration"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        android:layout_marginBottom="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+    <!--TO add: android:src=""-->
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onUploadProfilePictureClick"
+        android:contentDescription="Guardian Profile Picture"/>
+
+    <!--ACCOUNT TYPE SELECTION-->
+    <Spinner
+        android:id="@+id/spinner_accounttype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"/>
+
+
+    <!--USER ENTRY FIELDS-->
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etFirstNsame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <DatePicker
+        android:id="@+id/datePickerBirthdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Order Type"
+        android:inputType="text"/>
+
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Create Account"
+        android:onClick="createUser"
+        android:layout_marginBottom="8dp" />
+
+
+</LinearLayout>
+</LinearLayout>

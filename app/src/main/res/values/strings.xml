@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">ShovelHeroApp</string>
+
+
+    <!--Drop Down Selection Arrays-->
+
+    <string-array name="account_types">
+        <item>Youth Shoveller</item>
+        <Item>Customer</Item>
+        <item>Guardian</item>
+        <item>Adult Shoveller</item>
+        <item>Fundraiser</item>
+    </string-array>
+
+    <string-array name="payment_types">
+        <Item>Bank Account</Item>
+        <item>Paypal</item>
+        <item>Visa</item>
+        <item>Mastercard</item>
+        <item>American Express</item>
+    </string-array>
+
+    <string-array name="id_type">
+        <item>Drivers License</item>
+        <item>Age of Majority Card</item>
+        <item>Passport</item>
+        <item>Another ID with Birthdate and Image</item>
+    </string-array>
+
+    <string-array name="id_approval_status">
+        <item>Approved</item>
+        <item>Another ID Required</item>
+        <item>Not Approved</item>
+    </string-array>
+
+
 </resources>
