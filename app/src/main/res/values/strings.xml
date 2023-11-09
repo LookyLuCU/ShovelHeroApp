@@ -33,5 +33,13 @@
         <item>Not Approved</item>
     </string-array>
 
+    <string-array name="id_countries">
+        <item>Canada</item>
+        <item>USA</item>
+        <item>Mexico</item>
+    </string-array>
+
+
+
 
 </resources>

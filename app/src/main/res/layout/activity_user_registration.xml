@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#BDEDFB"
+    android:padding="16dp"
     tools:context=".Controllers.UserRegistrationActivity">
 
     <!--ShovelHero Logo-->
@@ -23,116 +24,79 @@
         android:gravity="center"
         android:text="User Registration"
         android:textSize="24sp"
-        android:textStyle="italic"
-        android:layout_marginBottom="16dp"/>
+        android:textStyle="italic"/>
 
-    <!--TO add: android:src=""-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
     <ImageView
         android:id="@+id/profilePicture"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_weight="1"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:clickable="true"
+        android:contentDescription="Customer Profile Picture"
         android:focusable="true"
-        android:onClick="onUploadProfilePictureClick"
-        android:contentDescription="Customer Profile Picture"/>
-
+        android:gravity="center"
+        android:onClick="onUploadProfilePictureClick" />
 
     <Spinner
         android:id="@+id/spAccountType"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:entries="@array/account_types"
-        android:text="Account Type"/>
-
+        android:gravity="center"
+        android:text="Account Type" />
 
     <TextView
-        android:id="@+id/tvUserName"
-        android:layout_width="0dp"
+        android:id="@+id/etUserName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:text="User Name"/>
 
-    <TextView
-        android:id="@+id/tvPassword"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:text="Password"/>
 
 
-    <TextView
-        android:id="@+id/tvFirstName"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/etFirstName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:text="First Name"/>
 
-    <TextView
-        android:id="@+id/tvLastname"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/etLastname"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+
         android:text="Last Name"/>
 
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:text="Email"/>
 
-    <TextView
-        android:id="@+id/tvPhone"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:text="Phone Number"/>
 
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:gravity="center_horizontal"
-android:layout_marginTop="24dp">
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Create My Account"
+        android:layout_marginBottom="8dp" />
 
-<Button
-    android:id="@+id/btnOrderShoveling"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="Order Shovelling Service"
-    android:layout_marginBottom="8dp" />
-
-<Button
-    android:id="@+id/btnManagePaymentInfo"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="Manage Payment Info"
-    android:layout_marginBottom="8dp" />
-
-<Button
-    android:id="@+id/btnAddAddress"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="Add Address"
-    android:layout_marginBottom="8dp" />
-
-
-<Button
-    android:id="@+id/btnEditPassword"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="Edit Password"
-    android:layout_marginBottom="8dp" />
-
-<Button
-    android:id="@+id/btnViewMyRatings"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:text="View My Ratings"
-    android:layout_marginBottom="8dp" />
-
+    </LinearLayout>
 </LinearLayout>
-</LinearLayout>
+

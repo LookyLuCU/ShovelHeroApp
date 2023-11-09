@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="6dp"/>
 
 
     <TextView
@@ -24,20 +24,21 @@
         android:text="Add Address"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="6dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginBottom="18dp"
+        android:orientation="vertical">
 
 
         <!--TO add: android:src=""-->
         <ImageView
             android:id="@+id/propertyImage"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onUploadPropertyImageClick"
@@ -49,6 +50,7 @@
             android:id="@+id/etAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:hint="Address"
             android:inputType="text"/>
 
@@ -56,6 +58,7 @@
             android:id="@+id/etCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:hint="City"
             android:inputType="text"/>
 
@@ -63,6 +66,7 @@
             android:id="@+id/etProvince"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:hint="Province"
             android:inputType="text"/>
 
@@ -73,12 +77,13 @@
             android:hint="Postal Code"
             android:inputType="text"/>
 
-        <DatePicker
-            android:id="@+id/etCountry"
+        <Spinner
+            android:id="@+id/spCountry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Country"
-            android:inputType="text"/>
+            android:gravity="center"
+            android:entries="@array/id_countries"
+            android:text="Country"/>
 
         <EditText
             android:id="@+id/AddressNotes"
@@ -87,26 +92,33 @@
             android:hint="Address Notes"
             android:inputType="text"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <CheckBox
             android:id="@+id/cbDriveway"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:hint="Driveway"
             android:checked="false"/>
 
         <CheckBox
             android:id="@+id/cbSidewalk"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:hint="Sidewalk"
             android:checked="false"/>
 
         <CheckBox
             android:id="@+id/cbWalkway"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:hint="Walkway"
-            android:checked="false"/>
+            android:checked="false"
+            android:layout_marginBottom="8dp"/>
+        </LinearLayout>
 
 
         <Button
@@ -114,8 +126,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Add Address"
-            android:onClick="addAddress"
-            android:layout_marginBottom="8dp" />
+            android:onClick="addAddress"/>
 
 
     </LinearLayout>
