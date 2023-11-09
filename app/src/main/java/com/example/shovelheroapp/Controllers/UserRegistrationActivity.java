@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -51,14 +52,14 @@ public class UserRegistrationActivity extends AppCompatActivity {
         //select account type
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.account_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerAccountType = findViewById(R.id.spinner_accounttype);
+        spinnerAccountType = findViewById(R.id.spAccountType);
 
         //get text input fields
         usernameEditText = findViewById(R.id.etUsername);
         passwordEditText = findViewById(R.id.etPassword);
-        firstNameEditText = findViewById(R.id.etFirstNsame);
-        lastNameEditText = findViewById(R.id.etLastName);
-        birthdateDatePicker = findViewById(R.id.datePickerBirthdate);
+        firstNameEditText = findViewById(R.id.etFirstname);
+        lastNameEditText = findViewById(R.id.etLastname);
+        birthdateDatePicker = findViewById(R.id.cvBirthdate);
         emailEditText = findViewById(R.id.etEmail);
         phoneEditText = findViewById(R.id.etPhone);
     }
@@ -75,7 +76,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
-        DatePicker birthdate = birthdateDatePicker.findViewById(R.id.datePickerBirthdate);
+        CalendarView birthdate = birthdateDatePicker.findViewById(R.id.cvBirthdate);
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
 

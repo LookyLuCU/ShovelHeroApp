@@ -12,13 +12,13 @@ public class Address {
     private String postalCode;
     private String country;
     private String addressNotes;
-    private String drivewaySquarefootage;
+    private int drivewaySquareFootage;
     private CheckBox accessible;
     private CheckBox shovelAvailableOnSite;
 
 
     //CONSTRUCTOR
-    public Address(int addressId, Image customerAddressImage, String address, String city, String province, String postalCode, String country, String addressNotes, String drivewaySquarefootage, CheckBox accessible, CheckBox shovelAvailableOnSite) {
+    public Address(int addressId, Image customerAddressImage, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquarefootage, CheckBox accessible, CheckBox shovelAvailableOnSite) {
         this.addressId = addressId;
         this.customerAddressImage = customerAddressImage;
         this.address = address;
@@ -27,7 +27,7 @@ public class Address {
         this.postalCode = postalCode;
         this.country = country;
         this.addressNotes = addressNotes;
-        this.drivewaySquarefootage = drivewaySquarefootage;
+        this.drivewaySquareFootage = drivewaySquarefootage;
         this.accessible = accessible;
         this.shovelAvailableOnSite = shovelAvailableOnSite;
     }
@@ -98,12 +98,12 @@ public class Address {
         this.addressNotes = addressNotes;
     }
 
-    public String getDrivewaySquarefootage() {
-        return drivewaySquarefootage;
+    public int getDrivewaySquareFootage() {
+        return drivewaySquareFootage;
     }
 
-    public void setDrivewaySquarefootage(String drivewaySquarefootage) {
-        this.drivewaySquarefootage = drivewaySquarefootage;
+    public void setDrivewaySquarefootage(int drivewaySquareFootage) {
+        this.drivewaySquareFootage = drivewaySquareFootage;
     }
 
     public CheckBox getAccessible() {

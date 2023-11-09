@@ -1,36 +1,45 @@
 package com.example.shovelheroapp.Models;
 
 import android.media.Image;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.ListView;
+import android.widget.TextClock;
 import android.widget.TimePicker;
 
 import com.example.shovelheroapp.Models.Address;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class WorkOrder {
 
     private int workOrderId;
-    private int customerId; //to be foreign key
-    private int customerAddressId; //to be foreign key
     private String status;
     private int squareFootage;
     private double price;
     private Date requestDate;
-    private DatePicker requestDatePicker;
-    private TimePicker requestTimePicker;
-    private Date requestedDateTime;
+    private CalendarView requestDatePicker;
+    private TextClock requestTimePicker;
+    private String requestedDateTime;
     private boolean isDrivewayChecked;
     private boolean isWalkwayChecked;
     private boolean isSidewalkChecked;
+    private List<String> itemsRequested;
     private String specialInstructions;
     private Image arrivalImage;
     private Image completedImage;
     private Image issueImage;
 
 
+    private int customerId; //to be foreign key
+    private int customerAddressId; //to be foreign key
+
+
     //private Invoice invoiceId; --> is this how we do it? with foreign key?
     //private Transaction paymentId; --> is this how we do it? Transaction? with foreign key?
+    //private int shovelerId;
 
 
     public WorkOrder(){
@@ -38,20 +47,19 @@ public class WorkOrder {
 
 
     //CONSTRUCTOR
-    public WorkOrder(int workOrderId, Date requestDate, String status, int squareFootage, boolean isDrivewayChecked, boolean isWalkwayChecked, boolean isSidewalkChecked, int customerId,, int customerAddressId) {
+    public WorkOrder(int workOrderId, Date requestDate, String status, int squareFootage, List<String> itemsRequested, int customerId, int customerAddressId) {
         this.workOrderId = workOrderId;
         this.requestDate = requestDate;
         this.status = status;
         this.squareFootage = squareFootage;
-        this.isDrivewayChecked = isDrivewayChecked;
-        this.isWalkwayChecked = isWalkwayChecked;
-        this.isSidewalkChecked = isSidewalkChecked;
+        this.itemsRequested = itemsRequested;
         this.customerId = customerId;
         this.customerAddressId = customerAddressId;
     }
 
 
     //GETTERS AND SETTERS
+
     public int getWorkOrderId() {
         return workOrderId;
     }
@@ -68,9 +76,12 @@ public class WorkOrder {
         this.status = status;
     }
 
-    public int getSquareFootage() { return squareFootage;
+    public int getSquareFootage() {
+        return squareFootage;
     }
-    public void setSquareFootage(int squareFootage) { this.price = price;
+
+    public void setSquareFootage(int squareFootage) {
+        this.squareFootage = squareFootage;
     }
 
     public double getPrice() {
@@ -89,27 +100,27 @@ public class WorkOrder {
         this.requestDate = requestDate;
     }
 
-    public DatePicker getRequestDatePicker() {
+    public CalendarView getRequestDatePicker() {
         return requestDatePicker;
     }
 
-    public void setRequestDatePicker(DatePicker requestDatePicker) {
+    public void setRequestDatePicker(CalendarView requestDatePicker) {
         this.requestDatePicker = requestDatePicker;
     }
 
-    public TimePicker getRequestTimePicker() {
+    public TextClock getRequestTimePicker() {
         return requestTimePicker;
     }
 
-    public void setRequestTimePicker(TimePicker requestTimePicker) {
+    public void setRequestTimePicker(TextClock requestTimePicker) {
         this.requestTimePicker = requestTimePicker;
     }
 
-    public Date getRequestedDateTime() {
+    public String getRequestedDateTime() {
         return requestedDateTime;
     }
 
-    public void setRequestedDateTime(Date requestedDateTime) {
+    public void setRequestedDateTime(String requestedDateTime) {
         this.requestedDateTime = requestedDateTime;
     }
 
@@ -135,6 +146,14 @@ public class WorkOrder {
 
     public void setSidewalkChecked(boolean sidewalkChecked) {
         isSidewalkChecked = sidewalkChecked;
+    }
+
+    public List<String> getItemsRequested() {
+        return itemsRequested;
+    }
+
+    public void setItemsRequested(List<String> itemsRequested) {
+        this.itemsRequested = itemsRequested;
     }
 
     public String getSpecialInstructions() {
@@ -169,19 +188,19 @@ public class WorkOrder {
         this.issueImage = issueImage;
     }
 
-    public String getCustomerUsername() {
-        return customerUsername;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerUsername(String customerUsername) {
-        this.customerUsername = customerUsername;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
-    public int getAddressId() {
-        return AddressId;
+    public int getCustomerAddressId() {
+        return customerAddressId;
     }
 
-    public void setAddressId(int addressId) {
-        AddressId = addressId;
+    public void setCustomerAddressId(int customerAddressId) {
+        this.customerAddressId = customerAddressId;
     }
 }

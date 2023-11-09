@@ -51,8 +51,8 @@
         android:gravity="center"
         android:text="Account Type" />
 
-    <TextView
-        android:id="@+id/etUserName"
+    <EditText
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Name"/>
@@ -65,7 +65,7 @@
 
 
     <EditText
-        android:id="@+id/etFirstName"
+        android:id="@+id/etFirstname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="First Name"/>
@@ -74,8 +74,13 @@
         android:id="@+id/etLastname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="Last Name"/>
+
+        <CalendarView
+            android:id="@+id/cvBirthdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Birthday"/>
 
     <EditText
         android:id="@+id/etEmail"

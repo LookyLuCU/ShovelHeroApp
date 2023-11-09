@@ -30,7 +30,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WorkOrder workOrder = workOrders.get(position);
-        holder.orderTypeTextView.setText(workOrder.getOrderType());
+        //holder.orderTypeTextView.setText(workOrder.);
         holder.statusTextView.setText(workOrder.getStatus());
     }
 

@@ -1,6 +1,7 @@
 package com.example.shovelheroapp.Models;
 
 import android.media.Image;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 
@@ -21,7 +22,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private DatePicker birthdate;
+    private CalendarView birthdate;
     private int age;
     private String email;
     private String phoneNo;
@@ -40,7 +41,7 @@ public class User {
     public User(){}
 
     //CONSTRUCTOR
-    public User(int userId, String accountType, String username, String password, String firstName, String lastName, DatePicker birthdate, String email, String phoneNo) {
+    public User(int userId, String accountType, String username, String password, String firstName, String lastName, CalendarView birthdate, String email, String phoneNo) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -101,11 +102,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public DatePicker getBirthdate() {
+    public CalendarView getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(DatePicker birthdate) {
+    public void setBirthdate(CalendarView birthdate) {
         this.birthdate = birthdate;
     }
 

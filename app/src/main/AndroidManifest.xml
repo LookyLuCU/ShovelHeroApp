@@ -36,9 +36,7 @@
         <activity
             android:name=".EmailAndPasswordActivity"
             android:exported="false" />
-        <activity
-            android:name=".Controllers.FirebaseUIActivity"
-            android:exported="false" />
+
         <activity
             android:name=".Controllers.GetWorkOrdersActivity"
             android:exported="false" />
