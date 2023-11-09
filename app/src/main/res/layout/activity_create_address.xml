@@ -35,7 +35,7 @@
 
         <!--TO add: android:src=""-->
         <ImageView
-            android:id="@+id/propertyImage"
+            android:id="@+id/imgPropertyImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:gravity="center"
@@ -86,7 +86,14 @@
             android:text="Country"/>
 
         <EditText
-            android:id="@+id/AddressNotes"
+            android:id="@+id/etSqFoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Shovelling Area Square Footage"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/etAddressNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Address Notes"
@@ -119,6 +126,24 @@
             android:checked="false"
             android:layout_marginBottom="8dp"/>
         </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbAccessible"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="Walkway"
+            android:checked="false"
+            android:layout_marginBottom="8dp"/>
+
+        <CheckBox
+            android:id="@+id/cbShovelAvailable"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="Walkway"
+            android:checked="false"
+            android:layout_marginBottom="8dp"/>
+
+
 
 
         <Button

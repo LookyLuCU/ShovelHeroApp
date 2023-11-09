@@ -104,7 +104,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
                 dateTime = simpleDateFormat.format(calendar.getTime()).toString();
                 requestedDate.setText(dateTime);
-
             }
         }
     }
@@ -203,13 +202,4 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
-
-
-
-
-
-
 }
