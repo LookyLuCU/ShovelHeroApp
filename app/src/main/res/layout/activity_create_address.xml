@@ -31,118 +31,92 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <!--TO add: android:src=""-->
         <ImageView
-            android:id="@+id/profilePicture"
+            android:id="@+id/propertyImage"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="onUploadProfilePictureClick"
-            android:contentDescription="Customer Profile Picture"/>
+            android:onClick="onUploadPropertyImageClick"
+            android:contentDescription="Property Picture"/>
 
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="0dp"
+        <!--USER ENTRY FIELDS-->
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Address"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etCity"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="City"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvAccountType"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etProvince"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Province"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvFirstName"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etPostalCode"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Postal Code"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvLastname"
-            android:layout_width="0dp"
+        <DatePicker
+            android:id="@+id/etCountry"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Country"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/AddressNotes"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Email"/>
+            android:hint="Address Notes"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/cbDriveway"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Driveway"
+            android:checked="false"/>
 
-        <ListView
-            android:id="@+id/listMyAddresses"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/cbSidewalk"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Profile Information"/>
+            android:hint="Sidewalk"
+            android:checked="false"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="24dp">
-
-        <Button
-            android:id="@+id/btnOrderShoveling"
-            android:layout_width="200dp"
+        <CheckBox
+            android:id="@+id/cbWalkway"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order Shovelling Service"
-            android:layout_marginBottom="8dp" />
+            android:hint="Walkway"
+            android:checked="false"/>
 
-        <Button
-            android:id="@+id/btnManagePaymentInfo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Manage Payment Info"
-            android:layout_marginBottom="8dp" />
 
         <Button
             android:id="@+id/btnAddAddress"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Add Address"
+            android:onClick="addAddress"
             android:layout_marginBottom="8dp" />
 
-
-        <Button
-            android:id="@+id/btnEditPassword"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Edit Password"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnViewMyRatings"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="View My Ratings"
-            android:layout_marginBottom="8dp" />
 
     </LinearLayout>
-</LinearLayout>Layout>
+</LinearLayout>
