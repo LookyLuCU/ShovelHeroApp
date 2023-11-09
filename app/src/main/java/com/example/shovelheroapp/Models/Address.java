@@ -5,7 +5,7 @@ import android.widget.CheckBox;
 
 public class Address {
     private int addressId;
-    private Image customerAddressImage;
+    //private Image customerAddressImage;
     private String address;
     private String city;
     private String province;
@@ -14,13 +14,15 @@ public class Address {
     private String addressNotes;
     private int drivewaySquareFootage;
     private CheckBox accessible;
+    private String accessibleOk;
     private CheckBox shovelAvailableOnSite;
+    private String shovelAvailable;
+
 
 
     //CONSTRUCTOR
-    public Address(int addressId, Image customerAddressImage, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquarefootage, CheckBox accessible, CheckBox shovelAvailableOnSite) {
+    public Address(int addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquarefootage, String accessibleOK, String shovelAvailable) {
         this.addressId = addressId;
-        this.customerAddressImage = customerAddressImage;
         this.address = address;
         this.city = city;
         this.province = province;
@@ -42,6 +44,7 @@ public class Address {
         this.addressId = addressId;
     }
 
+    /**
     public Image getCustomerAddressImage() {
         return customerAddressImage;
     }
@@ -49,10 +52,12 @@ public class Address {
     public void setCustomerAddressImage(Image customerAddressImage) {
         this.customerAddressImage = customerAddressImage;
     }
+     **/
 
     public String getAddress() {
         return address;
     }
+
 
     public void setAddress(String address) {
         this.address = address;

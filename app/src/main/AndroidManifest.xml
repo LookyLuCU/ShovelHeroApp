@@ -34,10 +34,6 @@
             android:name=".Controllers.CustomerProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".EmailAndPasswordActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".Controllers.GetWorkOrdersActivity"
             android:exported="false" />
         <activity
