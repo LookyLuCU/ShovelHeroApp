@@ -13,13 +13,16 @@
         android:theme="@style/Theme.ShovelHeroApp"
         tools:targetApi="31">
         <activity
+            android:name=".Controllers.ManagePropertyActivity"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.CreateAddressActivity"
             android:exported="false" />
         <activity
             android:name=".Controllers.YouthShovelerProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Controllers.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,9 +37,8 @@
             android:name=".Controllers.CustomerProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".EmailAndPasswordActivity"
+            android:name=".Controllers.EmailAndPasswordActivity"
             android:exported="false" />
-
         <activity
             android:name=".Controllers.GetWorkOrdersActivity"
             android:exported="false" />
