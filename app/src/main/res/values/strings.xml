@@ -6,14 +6,14 @@
 
     <string-array name="account_types">
         <item>Youth Shoveller</item>
-        <Item>Customer</Item>
+        <item>Customer</item>
         <item>Guardian</item>
         <item>Adult Shoveller</item>
         <item>Fundraiser</item>
     </string-array>
 
     <string-array name="payment_types">
-        <Item>Bank Account</Item>
+        <item>Bank Account</item>
         <item>Paypal</item>
         <item>Visa</item>
         <item>Mastercard</item>
