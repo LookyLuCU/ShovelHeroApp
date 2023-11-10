@@ -16,7 +16,7 @@ public class ManagePropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_property);
 
-        Button addButton = findViewById(R.id.addPropertyButton);
+        Button addButton = findViewById(R.id.addshovellerButton);
 
         addButton.setOnClickListener(new View.OnClickListener() {
                                          @Override
