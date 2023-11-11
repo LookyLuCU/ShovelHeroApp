@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/profilePicture"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:clickable="true"
         android:contentDescription="Customer Profile Picture"
         android:focusable="true"
@@ -45,7 +45,7 @@
 
     <Spinner
         android:id="@+id/spAccountType"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/account_types"
         android:gravity="center"
@@ -53,44 +53,52 @@
 
     <EditText
         android:id="@+id/etUsername"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Name"/>
+        android:hint="User Name"/>
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password"/>
+        android:inputType="textPassword"
+        android:hint="Password"/>
+
+        <EditText
+            android:id="@+id/etCoPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Confirm Password"/>
 
 
     <EditText
         android:id="@+id/etFirstname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="First Name"/>
 
     <EditText
         android:id="@+id/etLastname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Last Name"/>
 
-        <CalendarView
-            android:id="@+id/cvBirthdate"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/btnBirthdate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Birthday"/>
+            android:text="Birthdate"/>
 
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email"/>
 
     <EditText
         android:id="@+id/etPhone"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Phone Number"/>
 
@@ -100,7 +108,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Create My Account"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="14dp" />
 
     </LinearLayout>
 </LinearLayout>

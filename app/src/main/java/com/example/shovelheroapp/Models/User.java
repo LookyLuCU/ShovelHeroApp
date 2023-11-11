@@ -22,7 +22,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private CalendarView birthdate;
+    private String birthdate; // For Firebase data compatibility
     private int age;
     private String email;
     private String phoneNo;
@@ -31,17 +31,17 @@ public class User {
     //NON-CONSTRUCTOR FIELDS
     private int paymentId;  // -->Foreign key - to choose from List of properties
     private int addressId; //-->Foreign key - to choose from list of properties
-    private Image guardianId; //on Guardian view only
-    private CheckBox guardianIdValidated; // --> only available to app team
-    private List<User> linkedShovellerId; // --> on Guardian view only
-    private List<User> linkedGuardianId; // --> on YouthShoveller view only
+    private String  guardianIdUrl; //on Guardian view only
+    private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
+    private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
+    private List<String> linkedGuardianId; // --> on YouthShoveller view only
     private int shovellerRadius; // --> how far shovelling are willing to walk
 
 
     public User(){}
 
     //CONSTRUCTOR
-    public User(int userId, String accountType, String username, String password, String firstName, String lastName, CalendarView birthdate, String email, String phoneNo) {
+    public User(int userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -102,11 +102,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public CalendarView getBirthdate() {
+    public String getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(CalendarView birthdate) {
+    public void setBirthdate(String birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -150,35 +150,35 @@ public class User {
         this.addressId = addressId;
     }
 
-    public Image getGuardianId() {
-        return guardianId;
+    public String getGuardianId() {
+        return guardianIdUrl;
     }
 
-    public void setGuardianId(Image guardianId) {
-        this.guardianId = guardianId;
+    public void setGuardianId(String guardianIdUrl) {
+        this.guardianIdUrl = guardianIdUrl;
     }
 
-    public CheckBox getGuardianIdValidated() {
+    public boolean getGuardianIdValidated() {
         return guardianIdValidated;
     }
 
-    public void setGuardianIdValidated(CheckBox guardianIdValidated) {
+    public void setGuardianIdValidated(boolean guardianIdValidated) {
         this.guardianIdValidated = guardianIdValidated;
     }
 
-    public List<User> getLinkedShovellerId() {
+    public List<String> getLinkedShovellerId() {
         return linkedShovellerId;
     }
 
-    public void setLinkedShovellerId(List<User> linkedShovellerId) {
+    public void setLinkedShovellerId(List<String> linkedShovellerId) {
         this.linkedShovellerId = linkedShovellerId;
     }
 
-    public List<User> getLinkedGuardianId() {
+    public List<String> getLinkedGuardianId() {
         return linkedGuardianId;
     }
 
-    public void setLinkedGuardianId(List<User> linkedGuardianId) {
+    public void setLinkedGuardianId(List<String> linkedGuardianId) {
         this.linkedGuardianId = linkedGuardianId;
     }
 

@@ -3,15 +3,18 @@ package com.example.shovelheroapp.Controllers;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shovelheroapp.Models.User;
@@ -26,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -38,7 +42,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
-    private DatePicker birthdateDatePicker;
+    private TextView birthdateText;
+    private String selectedBirthdate;
     private EditText emailEditText;
     private EditText phoneEditText;
 
@@ -59,9 +64,37 @@ public class UserRegistrationActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etPassword);
         firstNameEditText = findViewById(R.id.etFirstname);
         lastNameEditText = findViewById(R.id.etLastname);
-        birthdateDatePicker = findViewById(R.id.cvBirthdate);
         emailEditText = findViewById(R.id.etEmail);
         phoneEditText = findViewById(R.id.etPhone);
+        birthdateText = findViewById(R.id.btnBirthdate);
+
+        birthdateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerPrompt();
+            }
+        });
+
+    }
+
+    public void showDatePickerPrompt() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+       // Should create a custom DatePicker to make selecting year easier.
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                UserRegistrationActivity.this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // Date formatting
+                    selectedBirthdate =  (selectedMonth + 1) + "-" + selectedDay + "-" + selectedYear;
+                    birthdateText.setText(selectedBirthdate);
+                },
+                year, month, day);
+        datePickerDialog.show();
+
     }
 
     public void createUser(View view) {
@@ -76,9 +109,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
-        CalendarView birthdate = birthdateDatePicker.findViewById(R.id.cvBirthdate);
+       // CalendarView birthdate = birthdateDatePicker.findViewById(R.id.cvBirthdate);
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
+        String birthdate = selectedBirthdate;
 
         //create new user
         User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);

@@ -1,4 +1,4 @@
-package com.example.shovelheroapp;
+package com.example.shovelheroapp.Controllers;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,9 +6,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+import android.widget.Button;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.shovelheroapp.R;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         userTypeSpinner.setAdapter(adapter);
+
+        Button registerButton = findViewById(R.id.buttonRegister);
+        registerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //***************************
