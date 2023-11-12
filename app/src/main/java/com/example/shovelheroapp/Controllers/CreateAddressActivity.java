@@ -49,7 +49,7 @@ public class CreateAddressActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_address);
+        setContentView(R.layout.activity_address_create);
 
         //get text input fields
         customerAddressImage = findViewById(R.id.imgPropertyImage);
