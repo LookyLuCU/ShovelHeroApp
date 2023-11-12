@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
                                 for (DataSnapshot userSnapShot : snapshot.getChildren()) {
                                     User user = userSnapShot.getValue(User.class);
 
-                                    if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
+                                    if (user != null && user.getPassword().equals(password)){
+                                    //if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
+
 
                                         //valid username and password
                                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
