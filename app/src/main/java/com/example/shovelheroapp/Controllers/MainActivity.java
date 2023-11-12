@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
+        shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users/users");
 
         accountTypeSpinner = findViewById(R.id.spinnerAccountType);
         usernameEditText = findViewById(R.id.etUsername);
@@ -84,12 +84,11 @@ public class MainActivity extends AppCompatActivity {
                                     if (user != null && user.getPassword().equals(password)){
                                     //if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
 
-
                                         //valid username and password
                                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
                                         //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-                                        switch (accountType) {
+                                        switch (user.getAccountType()) {
                                             case "Youth Shoveller":
                                                 Intent intentYouth = new Intent(MainActivity.this, YouthShovelerProfileActivity.class);
                                                 int youthID = user.getUserId();

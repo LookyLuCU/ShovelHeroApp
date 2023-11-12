@@ -7,19 +7,18 @@
     tools:context=".Controllers.YouthShovelerProfileActivity">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
         android:layout_marginBottom="16dp"/>
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Youth Soveller Profile"
+        android:text="Youth Shoveller Profile"
         android:textSize="24sp"
         android:textStyle="italic"
         android:layout_marginBottom="16dp"/>
@@ -45,45 +44,75 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/lblUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username"/>
+            <TextView
+                android:id="@+id/lblUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"/>
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username"/>
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
 
-
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvAccountType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Type"/>
+            <TextView
+                android:id="@+id/lblPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"/>
 
-        <TextView
-            android:id="@+id/tvFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="First Name"/>
+            <TextView
+                android:id="@+id/tvPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tvLastname"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Last Name"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/lblFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"/>
+
+            <TextView
+                android:id="@+id/tvFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/lblLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Name"/>
+
+            <TextView
+                android:id="@+id/tvLastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvEmail"

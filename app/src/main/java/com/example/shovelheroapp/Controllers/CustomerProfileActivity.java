@@ -64,7 +64,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
                 //initialize ShovelHeroDB (Firebase)
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference customerReference = database.getReference("users");
+                DatabaseReference customerReference = database.getReference("users/users");
                 DatabaseReference addressReference = database.getReference("addresses");
 
 

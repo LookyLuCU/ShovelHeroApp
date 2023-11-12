@@ -69,7 +69,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
                 //initialize ShovelHeroDB (Firebase)
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference youthReference = database.getReference("users");
+                DatabaseReference youthReference = database.getReference("users/users");
                 DatabaseReference addressReference = database.getReference("addresses");
 
 
@@ -84,7 +84,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             accountTypeTV = findViewById(R.id.tvAccountType);
                             accountTypeTV.setText(user.getAccountType().toString());
 
-                            usernameTV = findViewById(R.id.tvUserName);
+                            usernameTV = findViewById(R.id.tvUsername);
                             usernameTV.setText(user.getUsername().toString());
 
                             passwordTV = findViewById(R.id.tvPassword);
@@ -145,7 +145,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Intent intentNewWO = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
-                                    int customerId = user.getUserId();
+                                    int youthId = user.getUserId();
                                     intentNewWO.putExtra("USER_ID", youthId);
                                     startActivity(intentNewWO);
                                 }
@@ -217,7 +217,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             });
                             }
                         }
-
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {

@@ -10,7 +10,7 @@
     tools:context=".Controllers.MainActivity">
 
     <ImageView
-        android:id="@+id/shovelHeroLogo"
+        android:id="@+id/imgLogo"
         android:layout_width="319dp"
         android:layout_height="157dp"
         android:adjustViewBounds="false"
