@@ -24,7 +24,8 @@ import java.util.List;
 
 public class CreateAddressActivity extends AppCompatActivity {
     private static final String TAG = "CreateAddressActivity";
-    private int addressId;
+
+    private String addressId;
     private ImageView customerAddressImage;
     private EditText addressEditText;
     private EditText cityEditText;
@@ -75,6 +76,8 @@ public class CreateAddressActivity extends AppCompatActivity {
         DatabaseReference addressReference = database.getReference("addresses");
 
         ///TO ADD THE PIC LATER
+
+        addressId = addressReference.push().getKey();
         String address = addressEditText.getText().toString();
         String city = cityEditText.getText().toString();
         String province = provinceEditText.getText().toString();
@@ -107,12 +110,12 @@ public class CreateAddressActivity extends AppCompatActivity {
 
 
         String accountType = currentUser.getAccountType().toString();
-        int currentCustomerId = currentUser.getUserId();
+        String currentCustomerId = currentUser.getUserId();
 
         //create new address
         Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessibleOK, shovelAvaialable);
         //push to ShovelHeroDB & add ID (this does it automatically)
-        addressReference.child("addresses").push().setValue(newAddress)
+        addressReference.child(addressId).setValue(newAddress)
 
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -126,19 +129,19 @@ public class CreateAddressActivity extends AppCompatActivity {
                         switch (accountType) {
                             case "Youth Shoveller":
                                 Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
-                                int youthID = currentCustomerId;
+                                String youthID = currentCustomerId;
                                 intentYouth.putExtra("USER_ID", youthID);
                                 startActivity(intentYouth);
                                 break;
                             case "Customer":
                                 Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
-                                int customerId = currentCustomerId;
+                                String customerId = currentCustomerId;
                                 intentCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCustomer);
                                 break;
                             case "Guardian":
                                 Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
-                                int guardianId = currentCustomerId;
+                                String guardianId = currentCustomerId;
                                 intentGuardian.putExtra("USER_ID", guardianId);
                                 startActivity(intentGuardian);
                             default:

@@ -27,7 +27,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
 
     private static final String TAG = "CustomerProfileActivity";
-    private int customerId;
+    private String customerId;
     private TextView accountTypeTV;
     private TextView usernameTV;
     private TextView passwordTV;
@@ -57,14 +57,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
         //get username from registration or UserId from Login
         Intent intent = getIntent();
         if (intent != null) {
-            int currentCustomerId = intent.getIntExtra("USER_ID", customerId);
-            if (currentCustomerId != 0) {
+            String currentCustomerId = intent.getStringExtra("USER_ID");
+            if (currentCustomerId != null) {
 
-                final int customerId = currentCustomerId;
+                //final String customerId = currentCustomerId;
 
                 //initialize ShovelHeroDB (Firebase)
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference customerReference = database.getReference("users/users");
+                DatabaseReference customerReference = database.getReference("users");
                 DatabaseReference addressReference = database.getReference("addresses");
 
 
@@ -111,7 +111,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View view) {
                                         Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                                        int customerId = user.getUserId();
+                                        String customerId = user.getUserId();
                                         intentNewWO.putExtra("USER_ID", customerId);
                                         startActivity(intentNewWO);
                                     }

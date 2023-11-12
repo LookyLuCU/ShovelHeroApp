@@ -36,7 +36,7 @@ import java.util.GregorianCalendar;
 public class UserRegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "UserRegistrationActivity";
-    private int userId;
+    private String userId;
     private Spinner spinnerAccountType;
     private EditText usernameEditText;
     private EditText passwordEditText;
@@ -84,7 +84,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
        // Should create a custom DatePicker to make selecting year easier.
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 UserRegistrationActivity.this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
@@ -104,6 +103,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
         DatabaseReference userReference = database.getReference("users");
 
         // save fields to proper input type
+
+        userId = userReference.push().getKey();
         String accountType = spinnerAccountType.getSelectedItem().toString();
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
@@ -118,7 +119,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);
 
         //push to ShovelHeroDB & add ID (this does it automatically)
-        userReference.child("users").push().setValue(newUser)
+        userReference.child(userId).setValue(newUser)
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -126,24 +127,23 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
                         Toast.makeText(UserRegistrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
 
-                        //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-
+                        //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATION
                         switch (accountType) {
                             case "Youth Shoveller":
                                 Intent intentYouth = new Intent(UserRegistrationActivity.this, YouthShovelerProfileActivity.class);
-                                int youthID = userId;
+                                String youthID = userId;
                                 intentYouth.putExtra("USER_ID", youthID);
                                 startActivity(intentYouth);
                                 break;
                             case "Customer":
                                 Intent intentCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
-                                int customerId = userId;
+                                String customerId = userId;
                                 intentCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCustomer);
                                 break;
                             case "Guardian":
                                 Intent intentGuardian = new Intent(UserRegistrationActivity.this, GuardianProfileActivity.class);
-                                int guardianId = userId;
+                                String guardianId = userId;
                                 intentGuardian.putExtra("USER_ID", guardianId);
                                 startActivity(intentGuardian);
                             default:

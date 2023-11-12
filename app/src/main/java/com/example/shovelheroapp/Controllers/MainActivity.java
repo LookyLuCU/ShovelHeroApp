@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users/users");
+        shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         accountTypeSpinner = findViewById(R.id.spinnerAccountType);
         usernameEditText = findViewById(R.id.etUsername);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         public void loginUser(View view) {
             final String username = usernameEditText.getText().toString().trim();
             final String password = passwordEditText.getText().toString().trim();
-            final String accountType = accountTypeSpinner.getSelectedItem().toString();
+            //final String accountType = accountTypeSpinner.getSelectedItem().toString();
 
             //Check if username exists
             shovelHeroDatabaseReference.orderByChild("username").equalTo(username)
@@ -91,19 +91,19 @@ public class MainActivity extends AppCompatActivity {
                                         switch (user.getAccountType()) {
                                             case "Youth Shoveller":
                                                 Intent intentYouth = new Intent(MainActivity.this, YouthShovelerProfileActivity.class);
-                                                int youthID = user.getUserId();
+                                                String youthID = user.getUserId();
                                                 intentYouth.putExtra("USER_ID", youthID);
                                                 startActivity(intentYouth);
                                                 break;
                                             case "Customer":
                                                 Intent intentCustomer = new Intent(MainActivity.this, CustomerProfileActivity.class);
-                                                int customerId = user.getUserId();
+                                                String customerId = user.getUserId();
                                                 intentCustomer.putExtra("USER_ID", customerId);
                                                 startActivity(intentCustomer);
                                                 break;
                                             case "Guardian":
                                                 Intent intentGuardian = new Intent(MainActivity.this, GuardianProfileActivity.class);
-                                                int guardianId = user.getUserId();
+                                                String guardianId = user.getUserId();
                                                 intentGuardian.putExtra("USER_ID", guardianId);
                                                 startActivity(intentGuardian);
                                             default:

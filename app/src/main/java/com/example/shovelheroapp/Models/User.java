@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
     //MANDATORY FIELDS
 
-    private int userId;
+    private String userId;
     private String accountType;
     private String username;
     private String password;
@@ -41,7 +41,7 @@ public class User {
     public User(){}
 
     //CONSTRUCTOR
-    public User(int userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
+    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -55,11 +55,11 @@ public class User {
 
 
     //GETTERS AND SETTER
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
     public String getAccountType() {

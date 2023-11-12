@@ -15,7 +15,7 @@ import java.util.List;
 
 public class WorkOrder {
 
-    private int workOrderId;
+    private String workOrderId;
     private String status;
     private int squareFootage;
     private double price;
@@ -33,8 +33,8 @@ public class WorkOrder {
     private Image issueImage;
 
 
-    private int customerId; //to be foreign key
-    private int customerAddressId; //to be foreign key
+    private String customerId; //to be foreign key
+    private String customerAddressId; //to be foreign key
 
 
     //private Invoice invoiceId; --> is this how we do it? with foreign key?
@@ -47,7 +47,7 @@ public class WorkOrder {
 
 
     //CONSTRUCTOR
-    public WorkOrder(int workOrderId, Date requestDate, String status, int squareFootage, List<String> itemsRequested, int customerId, int customerAddressId) {
+    public WorkOrder(String workOrderId, Date requestDate, String status, int squareFootage, List<String> itemsRequested, String customerId, String customerAddressId) {
         this.workOrderId = workOrderId;
         this.requestDate = requestDate;
         this.status = status;
@@ -60,11 +60,11 @@ public class WorkOrder {
 
     //GETTERS AND SETTERS
 
-    public int getWorkOrderId() {
+    public String getWorkOrderId() {
         return workOrderId;
     }
 
-    public void setWorkOrderId(int workOrderId) {
+    public void setWorkOrderId(String workOrderId) {
         this.workOrderId = workOrderId;
     }
 
@@ -188,19 +188,19 @@ public class WorkOrder {
         this.issueImage = issueImage;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public int getCustomerAddressId() {
+    public String getCustomerAddressId() {
         return customerAddressId;
     }
 
-    public void setCustomerAddressId(int customerAddressId) {
+    public void setCustomerAddressId(String customerAddressId) {
         this.customerAddressId = customerAddressId;
     }
 }

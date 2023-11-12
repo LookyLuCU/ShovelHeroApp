@@ -32,6 +32,7 @@ import java.util.List;
 public class CreateWorkOrderActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateWorkOrderActivity";
+
     private Spinner addressSpinner;
     private EditText squareFootageEditText; //-->This should be from AddressId
     private EditText customerShovelerEditText; //-->This should be from AddressId
@@ -49,12 +50,12 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     private String status;
     TextView dateTimeInLongTextView;
 
-    private int iterator;
-    private int workOrderID;
+    //private int iterator;
+    private String workOrderID;
 
     private Double wOPrice = 0.0;
-    private int customerId;
-    private int addressId;
+    private String customerId;
+    private String addressId;
 
 
     private User currentUser;
@@ -74,10 +75,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         //bring over customer username
         Intent intent = getIntent();
         if (intent != null) {
-            int currentCustomerId = intent.getIntExtra("USER_ID", customerId);
-            if (currentCustomerId != 0) {
+            String currentCustomerId = intent.getStringExtra("USER_ID");
+            if (currentCustomerId != null) {
 
-                final int customerId = currentCustomerId;
+                final String customerId = currentCustomerId;
 
                 addressSpinner = findViewById(R.id.spinnerAddress);
 
@@ -115,7 +116,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         requestDate = Calendar.getInstance().getTime();
 
         long addressSelection = addressSpinner.getSelectedItemId();
-        int addressId = (int) addressSelection;
+        String addressId = Long.toString(addressSelection);
 
         String address = addressSpinner.toString();
         String status = Status.Open.toString();
@@ -148,11 +149,11 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
         //create WO object and save to DB
-        WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, currentUser.getUserId(), itemsRequested, currentUser.getUserId(), currentUser.getAddressId());
+        WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, currentAddress.getDrivewaySquareFootage(), itemsRequested, currentUser.getUserId(), addressId);
         workOrderReference.child("workorders").setValue(newWorkOrder);
 
         String accountType = currentUser.getAccountType().toString();
-        int currentCustomerId = currentUser.getUserId();
+        String currentCustomerId = currentUser.getUserId();
 
         workOrderReference.push().setValue(newWorkOrder)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -166,19 +167,19 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                         switch (accountType) {
                             case "Youth Shoveller":
                                 Intent intentYouth = new Intent(CreateWorkOrderActivity.this, YouthShovelerProfileActivity.class);
-                                int youthID = currentCustomerId;
+                                String youthID = currentCustomerId;
                                 intentYouth.putExtra("USER_ID", youthID);
                                 startActivity(intentYouth);
                                 break;
                             case "Customer":
                                 Intent intentCustomer = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
-                                int customerId = currentCustomerId;
+                                String customerId = currentCustomerId;
                                 intentCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCustomer);
                                 break;
                             case "Guardian":
                                 Intent intentGuardian = new Intent(CreateWorkOrderActivity.this, GuardianProfileActivity.class);
-                                int guardianId = currentCustomerId;
+                                String guardianId = currentCustomerId;
                                 intentGuardian.putExtra("USER_ID", guardianId);
                                 startActivity(intentGuardian);
                             default:
