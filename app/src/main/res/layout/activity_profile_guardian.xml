@@ -42,10 +42,47 @@
             android:contentDescription="Guardian Profile Picture"/>
 
         <TextView
-            android:id="@+id/btnProfileInfo"
-            android:layout_width="0dp"
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvLastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:text="Email"/>
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile Information"/>
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"/>
+
+        <ListView
+            android:id="@+id/listMyAddresses"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
             android:text="Profile Information"/>
 
     </LinearLayout>
@@ -58,18 +95,10 @@
         android:layout_marginTop="24dp">
 
         <Button
-            android:id="@+id/btnManagePaymentInfo"
+            android:id="@+id/btnLinkedYouths"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Manage Payment Info"
-            android:layout_marginBottom="8dp" />
-
-
-        <Button
-            android:id="@+id/btnManageLocation"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Manage Location"
+            android:text="Linked Youths"
             android:layout_marginBottom="8dp" />
 
         <Button
@@ -77,6 +106,20 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Manage Youth Info"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnManagePaymentInfo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Manage Payment Info"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnManageProfileInfo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Manage Profile Info and Location"
             android:layout_marginBottom="8dp" />
 
         <Button
@@ -94,10 +137,10 @@
             android:layout_marginBottom="8dp" />
 
         <Button
-            android:id="@+id/btnLinkedYouths"
+            android:id="@+id/btnLogout"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Linked Youths"
+            android:text="Logout"
             android:layout_marginBottom="8dp" />
 
     </LinearLayout>

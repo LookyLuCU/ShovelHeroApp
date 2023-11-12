@@ -18,6 +18,7 @@ public class Address {
     private CheckBox shovelAvailableOnSite;
     private String shovelAvailable;
 
+    public Address(){}
 
 
     //CONSTRUCTOR
@@ -107,7 +108,7 @@ public class Address {
         return drivewaySquareFootage;
     }
 
-    public void setDrivewaySquarefootage(int drivewaySquareFootage) {
+    public void setDrivewaySquareFootage(int drivewaySquareFootage) {
         this.drivewaySquareFootage = drivewaySquareFootage;
     }
 

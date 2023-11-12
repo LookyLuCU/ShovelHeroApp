@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etPassword);
     }
 
-
         //tried slightly different way to be consistent with registration
         /**
         Spinner userTypeSpinner = findViewById(R.id.spinnerUsertype);
@@ -82,30 +81,40 @@ public class MainActivity extends AppCompatActivity {
                                     User user = userSnapShot.getValue(User.class);
 
                                     if (user != null && user.getPassword().equals(password)){
-                                    //if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
+                                        //if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
+
+                                        String accountType = user.getAccountType();
 
                                         //valid username and password
                                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                        System.out.println("login success");
 
-                                        //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-                                        switch (user.getAccountType()) {
+                                        //****todo***TO ADD FUNDRAISER AND ADULT SHOVELLER
+                                        switch (accountType) {
                                             case "Youth Shoveller":
-                                                Intent intentYouth = new Intent(MainActivity.this, YouthShovelerProfileActivity.class);
+                                                Intent intentLoginYouth = new Intent(MainActivity.this, YouthShovelerProfileActivity.class);
                                                 String youthID = user.getUserId();
-                                                intentYouth.putExtra("USER_ID", youthID);
-                                                startActivity(intentYouth);
+                                                intentLoginYouth.putExtra("USER_ID", youthID);
+                                                System.out.println("putextra step") ;
+                                                //***HERE is where it crashes****
+                                                startActivity(intentLoginYouth);
+                                                System.out.println("starting " + accountType + " Profile");
+                                                finish();
                                                 break;
                                             case "Customer":
-                                                Intent intentCustomer = new Intent(MainActivity.this, CustomerProfileActivity.class);
+                                                Intent intentLoginCustomer = new Intent(MainActivity.this, CustomerProfileActivity.class);
                                                 String customerId = user.getUserId();
-                                                intentCustomer.putExtra("USER_ID", customerId);
-                                                startActivity(intentCustomer);
+                                                intentLoginCustomer.putExtra("USER_ID", customerId);
+                                                startActivity(intentLoginCustomer);
+                                                finish();
                                                 break;
                                             case "Guardian":
-                                                Intent intentGuardian = new Intent(MainActivity.this, GuardianProfileActivity.class);
+                                                Intent intentLoginGuardian = new Intent(MainActivity.this, GuardianProfileActivity.class);
                                                 String guardianId = user.getUserId();
-                                                intentGuardian.putExtra("USER_ID", guardianId);
-                                                startActivity(intentGuardian);
+                                                intentLoginGuardian.putExtra("USER_ID", guardianId);
+                                                startActivity(intentLoginGuardian);
+                                                finish();
+                                                break;
                                             default:
                                                 Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
                                                 startActivity(intent);
@@ -116,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             } else {
-                                Toast.makeText(MainActivity.this, "User not found. Pleae try again or create a new account.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "User not found. Please try again or create a new account.", Toast.LENGTH_SHORT).show();
 ;                            }
                         }
 
@@ -126,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
-
+        //***OK***TESTED AND WORKING
         public void createNewUser(View view){
             Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
             startActivity(intent);

@@ -6,8 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class YouthShovelerProfileActivity extends AppCompatActivity {
 
@@ -28,20 +32,22 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     //initialize ShovelHeroDB (Firebase)
     DatabaseReference shovelHeroDatabase;
 
-    private String youthId;
-    private TextView accountTypeTV;
+
     private TextView usernameTV;
     private TextView passwordTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
-    private DatePicker birthdateDatePicker;
     private TextView emailTV;
     private TextView phoneTV;
     private String userId;
     private String guardianId;
 
     //address list
-    private TextView addressTV;
+
+    private ListView addressListView;
+    private ArrayAdapter<String> addressAdapter;
+    private List<String> addressList;
+   // private TextView addressTV;
 
     //private Address cityTV;
     //private Address provinceTV;
@@ -70,56 +76,75 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
-        addressTV = findViewById(R.id.tvAddress);
+        btnViewJobs = findViewById(R.id.btnViewJobs);
+        btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
+        btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
+        btnEditPassword = findViewById(R.id.btnEditPassword);
+        btnViewRatings = findViewById(R.id.btnViewRatings);
+        btnLogout = findViewById(R.id.btnLogout);
+        //addressTV = findViewById(R.id.tvAddress);
 
-        //get username from registration or UserId from Login
+        //ADDRESS LIST
+        addressListView = findViewById(R.id.listMyAddresses);
+        addressList = new ArrayList<>();
+        addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
+        addressListView.setAdapter(addressAdapter);
+
+        //get Username from registration page or or UserID from Login
         Intent intent = getIntent();
-        if (intent != null) {
+        if (intent.hasExtra("USER_ID")) {
             String currentYouthId = intent.getStringExtra("USER_ID");
             if (currentYouthId != null) {
                 final String youthId = currentYouthId;
 
                 //get and display user data
-                retrieveUserProfile(youthId);
+                retrieveYouthProfile(youthId);
+            } else {
+                Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: YouthID is null", Toast.LENGTH_SHORT).show();
             }
+        } else {
+            Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    private void retrieveUserProfile(String youthId) {
+
+    private void retrieveYouthProfile(String youthId) {
         shovelHeroDatabase.child(youthId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
-                    Address address = snapshot.getValue(Address.class);
 
                     if (user != null) {
-
                         //display user profile info
-                        usernameTV.setText("Username: " + user.getUsername().toString());
-                        passwordTV.setText("Password: " + user.getPassword().toString());
-                        firstNameTV.setText("First Name: " + user.getFirstName().toString());
-                        lastNameTV.setText("Last Name: " + user.getLastName().toString());
-                        emailTV.setText("Email: " + user.getEmail().toString());
-                        phoneTV.setText("Phone Number: " + user.getPhoneNo().toString());
-                        addressTV.setText("Address: " + address.getAddress() +
-                                ", " + address.getCity() +
-                                ", " + address.getProvince() +
-                                ", " + address.getPostalCode() +
-                                ", " + address.getCountry());
+                        usernameTV.setText("Username: " + user.getUsername());
+                        passwordTV.setText("Password: " + user.getPassword());
+                        firstNameTV.setText("First Name: " + user.getFirstName());
+                        lastNameTV.setText("Last Name: " + user.getLastName());
+                        emailTV.setText("Email: " + user.getEmail());
+                        phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
+                        if(user.getAddresses() == null){
+                            System.out.println("Please add your address to view local job listings");
+                            Toast.makeText(YouthShovelerProfileActivity.this, "Please add your address to view local job listings", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //ANOTHER TRY AT LISTING ADDRESS
+                            displayAddresses(user.getAddresses());
+                        }
 
                         //VIEW JOBS BUTTON
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intentNewWO = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
+                                Intent intentViewYouthJobs = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
                                 String youthId = user.getUserId();
-                                intentNewWO.putExtra("USER_ID", youthId);
-                                startActivity(intentNewWO);
+                                intentViewYouthJobs.putExtra("USER_ID", youthId);
+                                startActivity(intentViewYouthJobs);
                             }
                         });
+
 
                         //MANAGE PAYMENT BUTTON
                         btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
@@ -127,10 +152,10 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
                                 /**
-                                 Intent intentNewWO = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
+                                 Intent intentManageYouthPayment = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
                                  String youthId = user.getUserId();
-                                 intentNewWO.putExtra("USER_ID", youthId);
-                                 startActivity(intentNewWO);
+                                 intentManageYouthPayment.putExtra("USER_ID", youthId);
+                                 startActivity(intentManageYouthPayment);
                                  **/
                             }
                         });
@@ -141,11 +166,12 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
 
+
                                 /**
-                                 Intent intentViewJobs = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);
+                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);
                                  String youthId = user.getUserId();
-                                 intentViewJobs.putExtra("USER_ID", youthId);
-                                 startActivity(intentViewJobs);
+                                 intentManageYouthProfile.putExtra("USER_ID", youthId);
+                                 startActivity(intentManageYouthProfile);
                                  **/
                             }
                         });
@@ -198,12 +224,17 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
             }
         });
     }
-}
-
-
-
-
-
-
-
+    private void displayAddresses(List<User.Address1> addresses) {
+        addressList.clear();
+            for (User.Address1 address : addresses) {
+                String addressString = address.getAddress1() +
+                        ", " + address.getCity1() +
+                        ", " + address.getProvince1() +
+                        ", " + address.getPostalCode1() +
+                        ", " + address.getCountry1();
+                addressList.add(addressString);
+            }
+            addressAdapter.notifyDataSetChanged();
+        }
+    }
 

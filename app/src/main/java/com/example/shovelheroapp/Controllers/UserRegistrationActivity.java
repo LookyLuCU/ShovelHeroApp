@@ -93,7 +93,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 },
                 year, month, day);
         datePickerDialog.show();
-
     }
 
     public void createUser(View view) {
@@ -118,7 +117,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         //create new user
         User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);
 
-        //push to ShovelHeroDB & add ID (this does it automatically)
+        //add to shovelHeroDB
         userReference.child(userId).setValue(newUser)
 
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -130,22 +129,22 @@ public class UserRegistrationActivity extends AppCompatActivity {
                         //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATION
                         switch (accountType) {
                             case "Youth Shoveller":
-                                Intent intentYouth = new Intent(UserRegistrationActivity.this, YouthShovelerProfileActivity.class);
+                                Intent intentCreateYouth = new Intent(UserRegistrationActivity.this, YouthShovelerProfileActivity.class);
                                 String youthID = userId;
-                                intentYouth.putExtra("USER_ID", youthID);
-                                startActivity(intentYouth);
+                                intentCreateYouth.putExtra("USER_ID", youthID);
+                                startActivity(intentCreateYouth);
                                 break;
                             case "Customer":
-                                Intent intentCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
+                                Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
                                 String customerId = userId;
-                                intentCustomer.putExtra("USER_ID", customerId);
-                                startActivity(intentCustomer);
+                                intentCreateCustomer.putExtra("USER_ID", customerId);
+                                startActivity(intentCreateCustomer);
                                 break;
                             case "Guardian":
-                                Intent intentGuardian = new Intent(UserRegistrationActivity.this, GuardianProfileActivity.class);
+                                Intent intentCreateGuardian = new Intent(UserRegistrationActivity.this, GuardianProfileActivity.class);
                                 String guardianId = userId;
-                                intentGuardian.putExtra("USER_ID", guardianId);
-                                startActivity(intentGuardian);
+                                intentCreateGuardian.putExtra("USER_ID", guardianId);
+                                startActivity(intentCreateGuardian);
                             default:
                                 Intent intent = new Intent(UserRegistrationActivity.this, UserRegistrationActivity.class);
                                 startActivity(intent);

@@ -94,7 +94,6 @@ public class CreateAddressActivity extends AppCompatActivity {
             String shovelAvailable = "Available";
         }
 
-
         //ITEMS REQUESTED LIST
         if (drivewayCB.isChecked()) {
             itemsRequestedList.add("Driveway");
@@ -108,12 +107,12 @@ public class CreateAddressActivity extends AppCompatActivity {
             itemsRequestedList.add("Walkway");
         }
 
-
         String accountType = currentUser.getAccountType().toString();
         String currentCustomerId = currentUser.getUserId();
 
         //create new address
         Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessibleOK, shovelAvaialable);
+
         //push to ShovelHeroDB & add ID (this does it automatically)
         addressReference.child(addressId).setValue(newAddress)
 

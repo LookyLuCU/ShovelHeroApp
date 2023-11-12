@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +27,11 @@ import java.util.List;
 
 public class CustomerProfileActivity extends AppCompatActivity {
 
-
     private static final String TAG = "CustomerProfileActivity";
+
+    //initialize ShovelHeroDB (Firebase)
+    DatabaseReference shovelHeroDatabase;
+
     private String customerId;
     private TextView accountTypeTV;
     private TextView usernameTV;
@@ -39,7 +44,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private int userId;
 
     //address list
-    private List<Address> addressList;
+    private ListView addressListView;
+    private ArrayAdapter<String> addressAdapter;
+    private List<String> addressList;
+
 
     //buttons
     Button btnOrderShoveling;
@@ -54,78 +62,121 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_customer);
 
+        shovelHeroDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        usernameTV = findViewById(R.id.tvUsername);
+        passwordTV = findViewById(R.id.tvPassword);
+        firstNameTV = findViewById(R.id.tvFirstName);
+        lastNameTV = findViewById(R.id.tvLastname);
+        emailTV = findViewById(R.id.tvEmail);
+        phoneTV = findViewById(R.id.tvPhone);
+        btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
+
+        addressListView = findViewById(R.id.listMyAddresses);
+        addressList = new ArrayList<>();
+        addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
+        addressListView.setAdapter(addressAdapter);
+
         //get username from registration or UserId from Login
         Intent intent = getIntent();
         if (intent != null) {
             String currentCustomerId = intent.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
 
-                //final String customerId = currentCustomerId;
+                final String customerId = currentCustomerId;
 
-                //initialize ShovelHeroDB (Firebase)
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference customerReference = database.getReference("users");
-                DatabaseReference addressReference = database.getReference("addresses");
-
-
-                //Retrieve user data
-                customerReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            User user = snapshot.getValue(User.class);
-
-                            accountTypeTV = findViewById(R.id.tvAccountType);
-                            accountTypeTV.setText(user.getAccountType().toString());
-
-                            usernameTV = findViewById(R.id.tvUserName);
-                            usernameTV.setText(user.getUsername().toString());
-
-                            passwordTV = findViewById(R.id.tvPassword);
-                            passwordTV.setText(user.getPassword().toString());
-
-                            firstNameTV = findViewById(R.id.tvFirstName);
-                            firstNameTV.setText(user.getFirstName().toString());
-
-                            lastNameTV = findViewById(R.id.tvLastname);
-                            lastNameTV.setText(user.getLastName().toString());
-
-                            emailTV = findViewById(R.id.tvEmail);
-                            emailTV.setText(user.getEmail().toString());
-
-                            phoneTV = findViewById(R.id.tvPhone);
-                            phoneTV.setText(user.getPhoneNo().toString());
-
-                            //need to fix to print only address for current customer
-
-                            List<Address> addressList = new ArrayList<Address>();
-                            for (Address address : addressList) {
-                                System.out.print(address.getAddress() +
-                                        ", " + address.getCity() +
-                                        ", " + address.getProvince() +
-                                        ", " + address.getPostalCode() +
-                                        ", " + address.getCountry()
-                                );
-
-                                btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                                        String customerId = user.getUserId();
-                                        intentNewWO.putExtra("USER_ID", customerId);
-                                        startActivity(intentNewWO);
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(CustomerProfileActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                //get and display user data
+                retrieveCustomerProfile(customerId);
             }
+            else {
+                Toast.makeText(CustomerProfileActivity.this, "Temp msg: CustomerID is null", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(CustomerProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
     }
-}
+
+    private void retrieveCustomerProfile(String customerId) {
+        shovelHeroDatabase.child(customerId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    User user = snapshot.getValue(User.class);
+                    //Address address = snapshot.getValue(Address.class);
+
+                    if (user != null) {
+                        //display customer profile data
+                        usernameTV.setText(user.getUsername().toString());
+                        passwordTV.setText(user.getPassword().toString());
+                        firstNameTV.setText(user.getFirstName().toString());
+                        lastNameTV.setText(user.getLastName().toString());
+                        emailTV.setText(user.getEmail().toString());
+                        phoneTV.setText(user.getPhoneNo().toString());
+
+                        if(user.getAddresses() == null){
+                            System.out.println("Please add your address to place an order");
+                            Toast.makeText(CustomerProfileActivity.this, "Please add your address to place an order", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //**todo**Fix to print only address for current customer
+                            displayAddresses(user.getAddresses());
+                        }
+
+
+                        /** 1st TRY CREATING ADRESS LIST
+                        List<Address> addressList = new ArrayList<Address>();
+
+                        for (Address customerAddress : addressList) {
+                            System.out.print(customerAddress.getAddress() +
+                                    ", " + customerAddress.getCity() +
+                                    ", " + customerAddress.getProvince() +
+                                    ", " + customerAddress.getPostalCode() +
+                                    ", " + customerAddress.getCountry()
+                            );
+                         **/
+
+
+
+                        btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
+                                String customerId = user.getUserId();
+                                intentNewWO.putExtra("USER_ID", customerId);
+                                startActivity(intentNewWO);
+                            }
+                        });
+                    } else {
+                        //handle no user data
+                    }
+                } else {
+                    //handle userid does not exist
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(CustomerProfileActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+        private void displayAddresses(List<User.Address1> addresses) {
+            addressList.clear();
+            for (User.Address1 address : addresses) {
+                String addressString = address.getAddress1() +
+                        ", " + address.getCity1() +
+                        ", " + address.getProvince1() +
+                        ", " + address.getPostalCode1() +
+                        ", " + address.getCountry1();
+                addressList.add(addressString);
+            }
+            addressAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+
+
+

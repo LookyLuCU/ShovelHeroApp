@@ -10,6 +10,7 @@ import com.example.shovelheroapp.Models.Enums.AccountType;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class User {
     private int age;
     private String email;
     private String phoneNo;
+    private List<Address1> addresses;
 
 
     //NON-CONSTRUCTOR FIELDS
@@ -33,6 +35,7 @@ public class User {
     private int addressId; //-->Foreign key - to choose from list of properties
     private String  guardianIdUrl; //on Guardian view only
     private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
+
     private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
     private List<String> linkedGuardianId; // --> on YouthShoveller view only
     private int shovellerRadius; // --> how far shovelling are willing to walk
@@ -51,7 +54,9 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
         this.phoneNo = phoneNo;
+        this.addresses = new ArrayList<>();
     }
+
 
 
     //GETTERS AND SETTER
@@ -134,6 +139,14 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
+    public List<Address1> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address1> addresses) {
+        this.addresses = addresses;
+    }
+
     public int getPaymentId() {
         return paymentId;
     }
@@ -141,6 +154,8 @@ public class User {
     public void setPaymentId(int paymentId) {
         this.paymentId = paymentId;
     }
+
+
 
     public int getAddressId() {
         return addressId;
@@ -188,5 +203,139 @@ public class User {
 
     public void setShovellerRadius(int shovellerRadius) {
         this.shovellerRadius = shovellerRadius;
+    }
+
+
+    public static class Address1 {
+        private String addressId1;
+        //private Image customerAddressImage;
+        private String address1;
+        private String city1;
+        private String province1;
+        private String postalCode1;
+        private String country1;
+        private String addressNotes1;
+        private int drivewaySquareFootage1;
+        private CheckBox accessible1;
+        private String accessibleOk1;
+        private CheckBox shovelAvailableOnSite1;
+        private String shovelAvailable1;
+
+
+        public Address1() {}
+
+        //CONSTRUCTOR
+
+
+        public Address1(String addressId1, String address1, String city1, String province1, String postalCode1, String country1, String addressNotes1, int drivewaySquareFootage1, CheckBox accessible1, String accessibleOk1, CheckBox shovelAvailableOnSite1, String shovelAvailable1) {
+            this.addressId1 = addressId1;
+            this.address1 = address1;
+            this.city1 = city1;
+            this.province1 = province1;
+            this.postalCode1 = postalCode1;
+            this.country1 = country1;
+            this.addressNotes1 = addressNotes1;
+            this.drivewaySquareFootage1 = drivewaySquareFootage1;
+            this.accessible1 = accessible1;
+            this.accessibleOk1 = accessibleOk1;
+            this.shovelAvailableOnSite1 = shovelAvailableOnSite1;
+            this.shovelAvailable1 = shovelAvailable1;
+        }
+
+        public String getAddressId1() {
+            return addressId1;
+        }
+
+        public void setAddressId1(String addressId1) {
+            this.addressId1 = addressId1;
+        }
+
+        public String getAddress1() {
+            return address1;
+        }
+
+        public void setAddress1(String address1) {
+            this.address1 = address1;
+        }
+
+        public String getCity1() {
+            return city1;
+        }
+
+        public void setCity1(String city1) {
+            this.city1 = city1;
+        }
+
+        public String getProvince1() {
+            return province1;
+        }
+
+        public void setProvince1(String province1) {
+            this.province1 = province1;
+        }
+
+        public String getPostalCode1() {
+            return postalCode1;
+        }
+
+        public void setPostalCode1(String postalCode1) {
+            this.postalCode1 = postalCode1;
+        }
+
+        public String getCountry1() {
+            return country1;
+        }
+
+        public void setCountry1(String country1) {
+            this.country1 = country1;
+        }
+
+        public String getAddressNotes1() {
+            return addressNotes1;
+        }
+
+        public void setAddressNotes1(String addressNotes1) {
+            this.addressNotes1 = addressNotes1;
+        }
+
+        public int getDrivewaySquareFootage1() {
+            return drivewaySquareFootage1;
+        }
+
+        public void setDrivewaySquareFootage1(int drivewaySquareFootage1) {
+            this.drivewaySquareFootage1 = drivewaySquareFootage1;
+        }
+
+        public CheckBox getAccessible1() {
+            return accessible1;
+        }
+
+        public void setAccessible1(CheckBox accessible1) {
+            this.accessible1 = accessible1;
+        }
+
+        public String getAccessibleOk1() {
+            return accessibleOk1;
+        }
+
+        public void setAccessibleOk1(String accessibleOk1) {
+            this.accessibleOk1 = accessibleOk1;
+        }
+
+        public CheckBox getShovelAvailableOnSite1() {
+            return shovelAvailableOnSite1;
+        }
+
+        public void setShovelAvailableOnSite1(CheckBox shovelAvailableOnSite1) {
+            this.shovelAvailableOnSite1 = shovelAvailableOnSite1;
+        }
+
+        public String getShovelAvailable1() {
+            return shovelAvailable1;
+        }
+
+        public void setShovelAvailable1(String shovelAvailable1) {
+            this.shovelAvailable1 = shovelAvailable1;
+        }
     }
 }

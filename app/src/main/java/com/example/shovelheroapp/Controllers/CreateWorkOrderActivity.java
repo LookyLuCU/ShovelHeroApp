@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -20,10 +22,14 @@ import com.example.shovelheroapp.R;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +39,15 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateWorkOrderActivity";
 
+    private DatabaseReference addressTable;
+
+    //address spinner
     private Spinner addressSpinner;
+    private List<User.Address1> spinnerItemList;
+    private ArrayAdapter<String> spinnerAdapter;
+
+
+    private String workOrderId;
     private EditText squareFootageEditText; //-->This should be from AddressId
     private EditText customerShovelerEditText; //-->This should be from AddressId
     private TextView workOrderPriceTextView;
@@ -59,8 +73,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
     private User currentUser;
-    private Address currentAddress;
-
+    private User.Address1 currentAddress;
 
 
     @Override
@@ -79,10 +92,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             if (currentCustomerId != null) {
 
                 final String customerId = currentCustomerId;
-
-                addressSpinner = findViewById(R.id.spinnerAddress);
-
-                //autofilled
                 squareFootageEditText = findViewById(R.id.etSquareFootage);
                 customerShovelerEditText = findViewById(R.id.etCustomShoveller);
 
@@ -97,69 +106,84 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
                 dateTime = simpleDateFormat.format(calendar.getTime()).toString();
                 requestedDate.setText(dateTime);
+
+                //spinner adapter
+                addressSpinner = findViewById(R.id.spinnerAddress);
+                spinnerItemList = new ArrayList<>();
+                spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                addressSpinner.setAdapter(spinnerAdapter);
             }
         }
     }
 
-
-
-    public void createWorkOrder(View view) {
+    public void createWorkOrder (View view){
 
         //initiatize ShovelHero DB
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference workOrderReference = database.getReference("workorders");
-        DatabaseReference usersReference = database.getReference("users");
-        DatabaseReference addressesReference = database.getReference("addresses");
+        FirebaseDatabase shovelHeroDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference workOrderReference = shovelHeroDatabase.getReference("workorders");
+        DatabaseReference usersReference = shovelHeroDatabase.getReference("users");
+        addressTable = shovelHeroDatabase.getReference("address");
 
+
+        //retrieve addresses from Firebase
+        retrieveAddresses();
+
+        //Handle Spinner address selection
+        addressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Handle the selected address item
+                currentAddress = spinnerItemList.get(position);
+                // You can use 'selectedAddress' for further processing or adding to the work order.
+                Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress1() + ", " + currentAddress.getCity1() + ", " + currentAddress.getCity1(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing
+            }
+        });
 
         //save fields to proper input type
+        workOrderId = workOrderReference.push().getKey();
         requestDate = Calendar.getInstance().getTime();
-
-        long addressSelection = addressSpinner.getSelectedItemId();
-        String addressId = Long.toString(addressSelection);
-
-        String address = addressSpinner.toString();
+        String address = currentAddress.getAddress1();
         String status = Status.Open.toString();
-        int sqrFootage = Integer.parseInt(squareFootageEditText.getText().toString());
-
+        int sqrFootage = currentAddress.getDrivewaySquareFootage1();
         String customerRequestedDate = requestedDate.toString();
         String customerRequestedTime = requestedTime.toString();
 
 
-        //ORDER COMLPEXITY AND PRICING
-        if(drivewayCheckBox.isChecked()) {
+        //ORDER COMLEPEXITY AND PRICING
+        if (drivewayCheckBox.isChecked()) {
             itemsRequested.add("Driveway");
-            if (currentAddress.getDrivewaySquareFootage() <= 600) {
+            if (sqrFootage <= 600) {
                 wOPrice = wOPrice + 20.00;
             } else {
                 double pricePerSquareFoot = 0.06;
-                wOPrice = currentAddress.getDrivewaySquareFootage() * pricePerSquareFoot;
+                wOPrice = sqrFootage * pricePerSquareFoot;
             }
         }
 
-        if(sidewalkCheckBox.isChecked()) {
+        if (sidewalkCheckBox.isChecked()) {
             itemsRequested.add("Sidewalk");
-                wOPrice = wOPrice + 10.00;
-            }
+            wOPrice = wOPrice + 10.00;
+        }
 
-        if(walkwayCheckBox.isChecked()) {
+        if (walkwayCheckBox.isChecked()) {
             itemsRequested.add("Walkway");
             wOPrice = wOPrice + 10.00;
         }
 
-
         //create WO object and save to DB
-        WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, currentAddress.getDrivewaySquareFootage(), itemsRequested, currentUser.getUserId(), addressId);
-        workOrderReference.child("workorders").setValue(newWorkOrder);
-
-        String accountType = currentUser.getAccountType().toString();
-        String currentCustomerId = currentUser.getUserId();
-
-        workOrderReference.push().setValue(newWorkOrder)
+        WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, sqrFootage, itemsRequested, currentUser.getUserId(), addressId);
+        workOrderReference.child(workOrderId).setValue(newWorkOrder)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        String accountType = currentUser.getAccountType().toString();
+                        String currentCustomerId = currentUser.getUserId();
                         Toast.makeText(CreateWorkOrderActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
 
                         //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
@@ -195,4 +219,27 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    private void retrieveAddresses() {
+        addressTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
+                    User.Address1 spinnerItem = addressSnapshot.getValue(User.Address1.class);
+                    if (spinnerItem != null) {
+                        spinnerItemList.add(spinnerItem);
+                        spinnerAdapter.add(spinnerItem.getAddress1() + ", " + spinnerItem.getCity1() + ", " + spinnerItem.getProvince1()); // Display the street in the Spinner
+                    }
+                }
+                spinnerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+    }
 }
+
