@@ -10,7 +10,7 @@
     tools:context=".Controllers.MainActivity">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/shovelHeroLogo"
         android:layout_width="319dp"
         android:layout_height="157dp"
         android:adjustViewBounds="false"
@@ -22,7 +22,7 @@
         app:srcCompat="@drawable/shovel_hero_logo" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/missionStatment"
         android:layout_width="325dp"
         android:layout_height="150dp"
         android:text="\nShovelHero is an innovative mobile and web app designed to revolutioniza the winter shovelling experience for homeowners while providing young entrepreneurs with opportunities for personal growth and financial independence."
@@ -38,7 +38,7 @@
         app:layout_constraintVertical_bias="0.356" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/lblUserType"
         android:layout_width="109dp"
         android:layout_height="22dp"
         android:text="User Type: "
@@ -54,6 +54,19 @@
         app:layout_constraintVertical_bias="0.519" />
 
     <Spinner
+        android:id="@+id/spinnerAccountType"
+        android:layout_width="143dp"
+        android:layout_height="36dp"
+        android:entries="@array/account_types"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.708"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.529" />
+
+    <!--trying embedded spinner above-->
+    <!--Spinner
         android:id="@+id/spinnerUsertype"
         android:layout_width="143dp"
         android:layout_height="36dp"
@@ -62,10 +75,10 @@
         app:layout_constraintHorizontal_bias="0.708"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.529" />
+        app:layout_constraintVertical_bias="0.529" /-->
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/lblUsername"
         android:layout_width="109dp"
         android:layout_height="22dp"
         android:text="Username: "
@@ -81,7 +94,7 @@
         app:layout_constraintVertical_bias="0.616" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/lblPassword"
         android:layout_width="109dp"
         android:layout_height="22dp"
         android:text="Password: "
@@ -97,7 +110,7 @@
         app:layout_constraintVertical_bias="0.681" />
 
     <EditText
-        android:id="@+id/editTextUsername"
+        android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -110,11 +123,11 @@
         app:layout_constraintVertical_bias="0.629" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/etPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.766"
@@ -123,12 +136,13 @@
         app:layout_constraintVertical_bias="0.695" />
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#2991C8"
         android:text="Login"
         android:textSize="16sp"
+        android:onClick="loginUser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +150,7 @@
         app:layout_constraintVertical_bias="0.784" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/lblNoAccount"
         android:layout_width="156dp"
         android:layout_height="19dp"
         android:text="Don't have an account? "
@@ -151,12 +165,13 @@
         app:layout_constraintVertical_bias="0.883" />
 
     <Button
-        android:id="@+id/buttonRegister"
+        android:id="@+id/btnRegister"
         android:layout_width="114dp"
         android:layout_height="37dp"
         android:backgroundTint="#2991C8"
         android:text="Register"
         android:textSize="12sp"
+        android:onClick="createNewUser"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.797"

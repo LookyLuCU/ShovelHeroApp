@@ -11,14 +11,16 @@
 
     <!--ShovelHero Logo-->
     <ImageView
+        android:id="@+id/imgLogo"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
         android:layout_marginBottom="16dp"/>
 
     <TextView
+        android:id="@+id/lblUserProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -36,12 +38,27 @@
     <ImageView
         android:id="@+id/profilePicture"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="20dp"
         android:clickable="true"
         android:contentDescription="Customer Profile Picture"
         android:focusable="true"
         android:gravity="center"
         android:onClick="onUploadProfilePictureClick" />
+
+
+    <!--Account Selection-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/lblAccountType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="Select Account Type" />
+
 
     <Spinner
         android:id="@+id/spAccountType"
@@ -50,6 +67,8 @@
         android:entries="@array/account_types"
         android:gravity="center"
         android:text="Account Type" />
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/etUsername"
@@ -64,43 +83,42 @@
         android:inputType="textPassword"
         android:hint="Password"/>
 
-        <EditText
-            android:id="@+id/etCoPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Confirm Password"/>
-
+    <EditText
+        android:id="@+id/etCoPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Confirm Password"/>
 
     <EditText
         android:id="@+id/etFirstname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="First Name"/>
+        android:hint="First Name"/>
 
     <EditText
         android:id="@+id/etLastname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Last Name"/>
+        android:hint="Last Name"/>
 
-        <EditText
-            android:id="@+id/btnBirthdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Birthdate"/>
+    <EditText
+        android:id="@+id/btnBirthdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Birthdate"/>
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email"/>
+        android:hint="Email"/>
 
     <EditText
         android:id="@+id/etPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Phone Number"/>
+        android:hint="Phone Number"/>
 
 
     <Button
@@ -108,6 +126,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Create My Account"
+        android:onClick="createUser"
         android:layout_marginBottom="14dp" />
 
     </LinearLayout>

@@ -11,6 +11,6 @@ public class AcceptWOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accept_worder);
+        setContentView(R.layout.activity_work_order_accept);
     }
 }
