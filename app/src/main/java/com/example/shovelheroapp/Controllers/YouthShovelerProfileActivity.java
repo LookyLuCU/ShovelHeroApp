@@ -47,11 +47,11 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     //private List<Address> addressList;
 
     //buttons
-    Button btnViewAvailableJobs;
+    Button btnViewJobs;
     Button btnManagePaymentInfo;
-    Button getBtnManageInfo;
+    Button btnManageProfileInfo;
     Button btnEditPassword;
-    Button btnViewMyRatings;
+    Button btnViewRatings;
     Button btnLogout;
 
     @Override
@@ -62,7 +62,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         //get username from registration or UserId from Login
         Intent intent = getIntent();
         if (intent != null) {
-            int currentYouthId = intent.getIntExtra("USER_ID", youthID);
+            int currentYouthId = intent.getIntExtra("USER_ID", youthId);
             if (currentYouthId != 0) {
 
                 final int youthId = currentYouthId;
@@ -140,22 +140,88 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
                              **/
 
-                                btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                                        int customerId = user.getUserId();
-                                        intentNewWO.putExtra("USER_ID", customerId);
-                                        startActivity(intentNewWO);
-                                    }
-                                });
+                            //VIEW JOBS BUTTON
+                            btnViewJobs.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intentNewWO = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
+                                    int customerId = user.getUserId();
+                                    intentNewWO.putExtra("USER_ID", youthId);
+                                    startActivity(intentNewWO);
+                                }
+                            });
+
+                            //MANAGE PAYMENT BUTTON
+                            btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
+
+                                    /**
+                                    Intent intentNewWO = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
+                                    int customerId = user.getUserId();
+                                    intentNewWO.putExtra("USER_ID", youthId);
+                                    startActivity(intentNewWO);
+                                     **/
+                                }
+                            });
+
+                            //VIEW JOBS BUTTON
+                            btnManageProfileInfo.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
+
+                                    /**
+                                    Intent intentViewJobs = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);
+                                    int youthId = user.getUserId();
+                                    intentViewJobs.putExtra("USER_ID", youthId);
+                                    startActivity(intentViewJobs);
+                                     **/
+                                }
+                            });
+
+                            //EDIT PASSWORD BUTTON
+                            btnEditPassword.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intentEditPassword = new Intent(YouthShovelerProfileActivity.this, CreateWorkOrderActivity.class);
+                                    int youthId = user.getUserId();
+                                    intentEditPassword.putExtra("USER_ID", youthId);
+                                    startActivity(intentEditPassword);
+                                }
+                            });
+
+                            //VIEW RATINGS BUTTON
+                            btnViewRatings.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: View ratings activity under construction", Toast.LENGTH_SHORT).show();
+
+                                    /**
+                                    Intent intentViewRatings = new Intent(YouthShovelerProfileActivity.this, ViewRatingsActivity.class);
+                                    int youthId = user.getUserId();
+                                    intentViewRatings.putExtra("USER_ID", youthId);
+                                    startActivity(intentViewRatings);
+                                     **/
+                                }
+                            });
+
+                            //Logout BUTTON
+                            btnLogout.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intentLogout = new Intent(YouthShovelerProfileActivity.this, MainActivity.class);
+                                    startActivity(intentLogout);
+                                }
+                            });
                             }
                         }
-                    }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(CustomerProfileActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(YouthShovelerProfileActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

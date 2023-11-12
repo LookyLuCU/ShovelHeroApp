@@ -119,6 +119,13 @@
         android:layout_marginTop="24dp">
 
     <Button
+        android:id="@+id/btnViewJobs"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="View New Shovelling Jobs"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
         android:id="@+id/btnManagePaymentInfo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -129,7 +136,7 @@
         android:id="@+id/btnManageProfileInfo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Manage Info"
+        android:text="Manage Profile Info"
         android:layout_marginBottom="8dp" />
 
     <Button
@@ -145,6 +152,14 @@
         android:layout_height="wrap_content"
         android:text="View Ratings"
         android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:layout_marginBottom="8dp" />
+
     </LinearLayout>
 
 </LinearLayout>
