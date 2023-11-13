@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Controllers.YouthShovelerProfileActivity">
+    tools:context=".Controllers.YouthShovelerProfileActivity"
+    android:background="#BDEDFB">
 
     <ImageView
         android:layout_width="100dp"
@@ -21,66 +22,111 @@
         android:text="Youth Shoveller Profile"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:layout_marginBottom="6dp"/>
-    
+        android:layout_marginBottom="6dp"
+        android:textColor="@color/black"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imgProfilePicture"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onUploadProfilePicture"
-            android:contentDescription="Profile Picture"/>
-
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/tvFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/tvLastname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/tvEmail"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/imgProfilePicture"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="Profile Picture"
+                android:focusable="true"
+                android:onClick="onUploadProfilePicture"
+                android:src="@drawable/shovel_hero_logo"
+                android:scaleType="fitXY"
+                android:background="@color/white"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile Information"/>
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address"/>
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username PlaceHolder"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
 
-        <ListView
-            android:id="@+id/listMyAddresses"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Profile Information"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                >
+
+                <TextView
+                    android:id="@+id/tvFirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FirstName"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tvLastname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email@somedomain.com"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(123) 456-7890"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123 Address Avenue"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvBirthdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12 November 2015"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
@@ -89,49 +135,70 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="1dp">
+        android:layout_marginTop="5dp">
 
-    <Button
-        android:id="@+id/btnViewJobs"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="View New Shovelling Jobs"
-        android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/btnViewJobs"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="View New Shovelling Jobs"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
-    <Button
-        android:id="@+id/btnManagePaymentInfo"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Manage Payment Info"
-        android:layout_marginBottom="8dp"/>
+        <Button
+            android:id="@+id/btnManagePaymentInfo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Manage Payment Info"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
-    <Button
-        android:id="@+id/btnManageProfileInfo"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Manage Profile Info"
-        android:layout_marginBottom="8dp" />
+        <Button
+            android:id="@+id/btnManageProfileInfo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Manage Profile Info"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
-    <Button
-        android:id="@+id/btnEditPassword"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Edit Password"
-        android:layout_marginBottom="8dp" />
+        <Button
+            android:id="@+id/btnEditPassword"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Edit Password"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
-    <Button
-        android:id="@+id/btnViewRatings"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="View Ratings"
-        android:layout_marginBottom="8dp" />
+        <Button
+            android:id="@+id/btnViewRatings"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="View Ratings"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_marginBottom="8dp" />
+        <Button
+            android:id="@+id/btnViewGuardian"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="View Guardian"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 

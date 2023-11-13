@@ -1,11 +1,17 @@
 package com.example.shovelheroapp.Controllers;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +54,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private String selectedBirthdate;
     private EditText emailEditText;
     private EditText phoneEditText;
-
+    private ImageButton profileChangeImage;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +76,20 @@ public class UserRegistrationActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.etEmail);
         phoneEditText = findViewById(R.id.etPhone);
         birthdateText = findViewById(R.id.btnBirthdate);
+        profileChangeImage = findViewById(R.id.imgProfilePicture);
 
         birthdateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerPrompt();
+            }
+        });
+
+        //image button listener
+        profileChangeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
             }
         });
 
@@ -157,6 +175,38 @@ public class UserRegistrationActivity extends AppCompatActivity {
                         Toast.makeText(UserRegistrationActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void selectImage(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        getImage.launch(intent);
+    }
+
+    ActivityResultLauncher<Intent> getImage = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    selectedImageUri = data.getData();
+                    setImageButtonBackground(selectedImageUri);
+                    saveImageToDatabase(selectedImageUri);
+                }
+            });
+
+    private void setImageButtonBackground(Uri imageUri) {
+        try {
+            // Load the selected image from the URI
+            Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            // Set the image as the background of the ImageButton
+            profileChangeImage.setImageBitmap(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveImageToDatabase(Uri imageBytes) {
+        //***TO DO
     }
 }
 
