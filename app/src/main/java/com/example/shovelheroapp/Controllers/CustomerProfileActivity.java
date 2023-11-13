@@ -108,7 +108,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
-                    //Address address = snapshot.getValue(Address.class);
 
                     if (user != null) {
                         //display customer profile data

@@ -10,7 +10,7 @@ public class Address {
     private String country;
     private String addressNotes;
     private int drivewaySquareFootage;
-    private String accessibleOk;
+    private String accessible;
     private String shovelAvailable;
 
 
@@ -19,7 +19,7 @@ public class Address {
     //CONSTRUCTOR
 
 
-    public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquareFootage, String accessibleOk, String shovelAvailable) {
+    public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquareFootage, String accessible, String shovelAvailable) {
         this.addressId = addressId;
         this.address = address;
         this.city = city;
@@ -28,7 +28,7 @@ public class Address {
         this.country = country;
         this.addressNotes = addressNotes;
         this.drivewaySquareFootage = drivewaySquareFootage;
-        this.accessibleOk = accessibleOk;
+        this.accessible = accessible;
         this.shovelAvailable = shovelAvailable;
     }
 
@@ -96,12 +96,12 @@ public class Address {
         this.drivewaySquareFootage = drivewaySquareFootage;
     }
 
-    public String getAccessibleOk() {
-        return accessibleOk;
+    public String getAccessible() {
+        return accessible;
     }
 
-    public void setAccessibleOk(String accessibleOk) {
-        this.accessibleOk = accessibleOk;
+    public void setAccessible(String accessibleOk) {
+        this.accessible = accessible;
     }
 
     public String getShovelAvailable() {
