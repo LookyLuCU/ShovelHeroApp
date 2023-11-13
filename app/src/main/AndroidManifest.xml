@@ -10,13 +10,19 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShovelHeroApp"
-        android:hardwareAccelerated="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Controllers.EditPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Controllers.OrderHistoryActivity"
+            android:exported="false" />
         <activity
             android:name=".Controllers.EditUserProfileActivity"
             android:exported="false" />
