@@ -12,14 +12,15 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             android:src="@drawable/shovel_hero_logo"
             android:contentDescription="Shovel Hero Logo"
             android:layout_marginBottom="16dp"/>
 
         <TextView
+            android:id="@+id/lblCreateWO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create a Work Order"

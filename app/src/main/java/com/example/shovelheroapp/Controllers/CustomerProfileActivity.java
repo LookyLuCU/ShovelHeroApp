@@ -32,8 +32,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     //initialize ShovelHeroDB (Firebase)
     DatabaseReference shovelHeroDatabase;
 
-    private String customerId;
-    private TextView accountTypeTV;
+
     private TextView usernameTV;
     private TextView passwordTV;
     private TextView firstNameTV;
@@ -71,6 +70,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
         btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
+        btnAddAddress = findViewById(R.id.btnAddAddress);
 
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
@@ -106,37 +106,23 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
                     if (user != null) {
                         //display customer profile data
-                        usernameTV.setText(user.getUsername().toString());
-                        passwordTV.setText(user.getPassword().toString());
-                        firstNameTV.setText(user.getFirstName().toString());
-                        lastNameTV.setText(user.getLastName().toString());
-                        emailTV.setText(user.getEmail().toString());
-                        phoneTV.setText(user.getPhoneNo().toString());
+                        usernameTV.setText(user.getUsername());
+                        passwordTV.setText(user.getPassword());
+                        firstNameTV.setText(user.getFirstName());
+                        lastNameTV.setText(user.getLastName());
+                        emailTV.setText(user.getEmail());
+                        phoneTV.setText(user.getPhoneNo());
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address to place an order");
                             Toast.makeText(CustomerProfileActivity.this, "Please add your address to place an order", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            //**todo**Fix to print only address for current customer
                             displayAddresses(user.getAddresses());
                         }
 
 
-                        /** 1st TRY CREATING ADRESS LIST
-                        List<Address> addressList = new ArrayList<Address>();
-
-                        for (Address customerAddress : addressList) {
-                            System.out.print(customerAddress.getAddress() +
-                                    ", " + customerAddress.getCity() +
-                                    ", " + customerAddress.getProvince() +
-                                    ", " + customerAddress.getPostalCode() +
-                                    ", " + customerAddress.getCountry()
-                            );
-                         **/
-
-
-
+                            //ORDER SHOVELLING BUTTON
                         btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -144,6 +130,17 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                 String customerId = user.getUserId();
                                 intentNewWO.putExtra("USER_ID", customerId);
                                 startActivity(intentNewWO);
+                            }
+                        });
+
+                        //CREATE NEW ADDRESS BUTTON
+                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
+                                String customerId = user.getUserId();
+                                intentNewAddress.putExtra("USER_ID", customerId);
+                                startActivity(intentNewAddress);
                             }
                         });
                     } else {

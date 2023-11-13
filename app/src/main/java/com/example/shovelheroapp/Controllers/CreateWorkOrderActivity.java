@@ -125,25 +125,29 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         DatabaseReference usersReference = shovelHeroDatabase.getReference("users");
         addressTable = shovelHeroDatabase.getReference("address");
 
+        if(currentUser.getAddresses() == null){
+            Toast.makeText(CreateWorkOrderActivity.this, "Please add an address", Toast.LENGTH_SHORT).show();
+        } else {
+            //retrieve addresses from Firebase
+            retrieveAddresses();
 
-        //retrieve addresses from Firebase
-        retrieveAddresses();
 
-        //Handle Spinner address selection
-        addressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle the selected address item
-                currentAddress = spinnerItemList.get(position);
-                // You can use 'selectedAddress' for further processing or adding to the work order.
-                Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress1() + ", " + currentAddress.getCity1() + ", " + currentAddress.getCity1(), Toast.LENGTH_SHORT).show();
-            }
+            //Handle Spinner address selection
+            addressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    // Handle the selected address item
+                    currentAddress = spinnerItemList.get(position);
+                    // You can use 'selectedAddress' for further processing or adding to the work order.
+                    Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress1() + ", " + currentAddress.getCity1() + ", " + currentAddress.getCity1(), Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // Do nothing
+                }
+            });
+        }
 
         //save fields to proper input type
         workOrderId = workOrderReference.push().getKey();

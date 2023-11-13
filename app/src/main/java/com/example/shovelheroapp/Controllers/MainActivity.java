@@ -42,30 +42,6 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etPassword);
     }
 
-        //tried slightly different way to be consistent with registration
-        /**
-        Spinner userTypeSpinner = findViewById(R.id.spinnerUsertype);
-        String[] userTypes = {"Shoveller", "Guardian", "Customer", "Fundraiser", "Administrator"};
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userTypes);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        userTypeSpinner.setAdapter(adapter);
-         **/
-
-        //added own method for user registration below
-        /**
-        //New Account Registration
-        Button registerButton = findViewById(R.id.btnRegister);
-        registerButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
-                startActivity(intent);
-            }
-        });
-         **/
-
         public void loginUser(View view) {
             final String username = usernameEditText.getText().toString().trim();
             final String password = passwordEditText.getText().toString().trim();
@@ -118,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                             default:
                                                 Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
                                                 startActivity(intent);
+                                                break;
                                         }
                                     }
                                     else {
@@ -141,43 +118,4 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
-
-
-    //***************************
-    //FIREBASE AUTH ONLY ALLOWS 3 USER FIELDS - CONSIDERING SETTING UP AUTH VIA REALTIME DB
-    //**************************
-
-    /**
-    public void checkCurrentUser() {
-        // [START check_current_user]
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-        } else {
-            // No user is signed in
-        }
-        // [END check_current_user]
-    }
-
-    public void getUserProfile() {
-        // [START get_user_profile]
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String userName = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            String uid = user.getUid();
-        }
-        // [END get_user_profile]
-    }
-     **/
 

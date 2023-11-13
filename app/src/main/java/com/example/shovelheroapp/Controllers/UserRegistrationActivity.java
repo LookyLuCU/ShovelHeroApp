@@ -109,7 +109,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString();
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
-       // CalendarView birthdate = birthdateDatePicker.findViewById(R.id.cvBirthdate);
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String birthdate = selectedBirthdate;
@@ -145,6 +144,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                                 String guardianId = userId;
                                 intentCreateGuardian.putExtra("USER_ID", guardianId);
                                 startActivity(intentCreateGuardian);
+                                break;
                             default:
                                 Intent intent = new Intent(UserRegistrationActivity.this, UserRegistrationActivity.class);
                                 startActivity(intent);

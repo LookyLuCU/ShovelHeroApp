@@ -138,10 +138,12 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                /**
                                 Intent intentViewYouthJobs = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
                                 String youthId = user.getUserId();
                                 intentViewYouthJobs.putExtra("USER_ID", youthId);
                                 startActivity(intentViewYouthJobs);
+                                 **/
                             }
                         });
 
@@ -165,7 +167,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
-
 
                                 /**
                                  Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);

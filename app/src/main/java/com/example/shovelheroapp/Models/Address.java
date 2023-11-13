@@ -13,16 +13,14 @@ public class Address {
     private String country;
     private String addressNotes;
     private int drivewaySquareFootage;
-    private CheckBox accessible;
-    private String accessibleOk;
-    private CheckBox shovelAvailableOnSite;
+    private String accessible;
     private String shovelAvailable;
 
     public Address(){}
 
 
     //CONSTRUCTOR
-    public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquarefootage, String accessibleOK, String shovelAvailable) {
+    public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquareFootage, String accessible, String shovelAvailable) {
         this.addressId = addressId;
         this.address = address;
         this.city = city;
@@ -30,13 +28,11 @@ public class Address {
         this.postalCode = postalCode;
         this.country = country;
         this.addressNotes = addressNotes;
-        this.drivewaySquareFootage = drivewaySquarefootage;
+        this.drivewaySquareFootage = drivewaySquareFootage;
         this.accessible = accessible;
-        this.shovelAvailableOnSite = shovelAvailableOnSite;
+        this.shovelAvailable = shovelAvailable;
     }
 
-
-    //GETTERS AND SETTERS
     public String getAddressId() {
         return addressId;
     }
@@ -45,20 +41,9 @@ public class Address {
         this.addressId = addressId;
     }
 
-    /**
-    public Image getCustomerAddressImage() {
-        return customerAddressImage;
-    }
-
-    public void setCustomerAddressImage(Image customerAddressImage) {
-        this.customerAddressImage = customerAddressImage;
-    }
-     **/
-
     public String getAddress() {
         return address;
     }
-
 
     public void setAddress(String address) {
         this.address = address;
@@ -112,21 +97,35 @@ public class Address {
         this.drivewaySquareFootage = drivewaySquareFootage;
     }
 
-    public CheckBox getAccessible() {
+    public String getAccessible() {
         return accessible;
     }
 
-    public void setAccessible(CheckBox accessible) {
+    public void setAccessible(String accessible) {
         this.accessible = accessible;
     }
 
-    public CheckBox getShovelAvailableOnSite() {
-        return shovelAvailableOnSite;
+    public String getShovelAvailable() {
+        return shovelAvailable;
     }
 
-    public void setShovelAvailableOnSite(CheckBox shovelAvailableOnSite) {
-        this.shovelAvailableOnSite = shovelAvailableOnSite;
+    public void setShovelAvailable(String shovelAvailable) {
+        this.shovelAvailable = shovelAvailable;
     }
+
+    /**
+     public Image getCustomerAddressImage() {
+     return customerAddressImage;
+     }
+
+     public void setCustomerAddressImage(Image customerAddressImage) {
+     this.customerAddressImage = customerAddressImage;
+     }
+     **/
+
+
+    //GETTERS AND SETTERS
+
 
     @Override
     public String toString() {

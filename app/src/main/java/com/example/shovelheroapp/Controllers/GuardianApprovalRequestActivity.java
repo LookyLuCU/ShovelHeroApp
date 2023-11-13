@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.shovelheroapp.R;
 
-public class AcceptWOrderActivity extends AppCompatActivity {
+public class GuardianApprovalRequestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_work_order_accept);
+        setContentView(R.layout.activity_guardian_approval_request);
     }
 }

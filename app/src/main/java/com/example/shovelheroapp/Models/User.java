@@ -216,9 +216,7 @@ public class User {
         private String country1;
         private String addressNotes1;
         private int drivewaySquareFootage1;
-        private CheckBox accessible1;
         private String accessibleOk1;
-        private CheckBox shovelAvailableOnSite1;
         private String shovelAvailable1;
 
 
@@ -227,7 +225,7 @@ public class User {
         //CONSTRUCTOR
 
 
-        public Address1(String addressId1, String address1, String city1, String province1, String postalCode1, String country1, String addressNotes1, int drivewaySquareFootage1, CheckBox accessible1, String accessibleOk1, CheckBox shovelAvailableOnSite1, String shovelAvailable1) {
+        public Address1(String addressId1, String address1, String city1, String province1, String postalCode1, String country1, String addressNotes1, int drivewaySquareFootage1, String accessibleOk1, String shovelAvailable1) {
             this.addressId1 = addressId1;
             this.address1 = address1;
             this.city1 = city1;
@@ -236,9 +234,7 @@ public class User {
             this.country1 = country1;
             this.addressNotes1 = addressNotes1;
             this.drivewaySquareFootage1 = drivewaySquareFootage1;
-            this.accessible1 = accessible1;
             this.accessibleOk1 = accessibleOk1;
-            this.shovelAvailableOnSite1 = shovelAvailableOnSite1;
             this.shovelAvailable1 = shovelAvailable1;
         }
 
@@ -306,28 +302,12 @@ public class User {
             this.drivewaySquareFootage1 = drivewaySquareFootage1;
         }
 
-        public CheckBox getAccessible1() {
-            return accessible1;
-        }
-
-        public void setAccessible1(CheckBox accessible1) {
-            this.accessible1 = accessible1;
-        }
-
         public String getAccessibleOk1() {
             return accessibleOk1;
         }
 
         public void setAccessibleOk1(String accessibleOk1) {
             this.accessibleOk1 = accessibleOk1;
-        }
-
-        public CheckBox getShovelAvailableOnSite1() {
-            return shovelAvailableOnSite1;
-        }
-
-        public void setShovelAvailableOnSite1(CheckBox shovelAvailableOnSite1) {
-            this.shovelAvailableOnSite1 = shovelAvailableOnSite1;
         }
 
         public String getShovelAvailable1() {

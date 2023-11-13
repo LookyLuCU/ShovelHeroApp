@@ -12,14 +12,16 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.shovelheroapp.Models.Address;
+import com.example.shovelheroapp.Controllers.AsyncTasks.AddToAddressDatabaseTask;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateAddressActivity extends AppCompatActivity {
@@ -40,11 +42,12 @@ public class CreateAddressActivity extends AppCompatActivity {
     private EditText drivewaySquareFootageEditText;
     private CheckBox accessibleCB;
     private CheckBox shovelAvailableOnsiteCB;
-    private String accessibleOK;
-    private String shovelAvaialable;
+    private String accessible;
+    private String shovelAvailable;
 
     private User currentUser;
-    private Address currentAddress;
+    private String customerId;
+    private User.Address1 currentAddress;
 
 
     @Override
@@ -60,16 +63,27 @@ public class CreateAddressActivity extends AppCompatActivity {
         postalCodeEditText = findViewById(R.id.etPostalCode);
         countrySpinner = findViewById(R.id.spCountry);
         addressNotesEditText = findViewById(R.id.etAddressNotes);
+        drivewaySquareFootageEditText = findViewById(R.id.etSqFoot);
         drivewayCB = findViewById(R.id.cbDriveway);
         walkwayCB = findViewById(R.id.cbWalkway);
         sidewalkCB = findViewById(R.id.cbSidewalk);
-        drivewaySquareFootageEditText = findViewById(R.id.etSqFoot);
         accessibleCB = findViewById(R.id.cbAccessible);
         shovelAvailableOnsiteCB = findViewById(R.id.cbShovelAvailable);
 
+        //get username from customer profile intent
+        Intent intent = getIntent();
+        String currentCustomerId = intent.getStringExtra("USER_ID");
+        // Get user ID from the intent
+        customerId = getIntent().getStringExtra("USER_ID");
+        if (customerId == null) {
+            Toast.makeText(this, "Temp msg: CustomerID is null", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void newAddress(View view) {
+    public void createAddress(View view) {
+
+        //initialize itemsRequestedList
+        itemsRequestedList = new ArrayList<>();
 
         //intialize ShovelHeroDB
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -84,76 +98,182 @@ public class CreateAddressActivity extends AppCompatActivity {
         String postalCode = postalCodeEditText.getText().toString();
         String country = countrySpinner.getSelectedItem().toString();
         String addressNotes = addressNotesEditText.getText().toString();
-        int sqFootage = Integer.parseInt(drivewaySquareFootageEditText.getText().toString());
+        String sqFootageStr = drivewaySquareFootageEditText.getText().toString();
+        int sqFootage = sqFootageStr.isEmpty() ? 0 : Integer.parseInt(sqFootageStr);
 
-        if(accessibleCB.isChecked()){
-            String accessibleOK = "Accessible";
+        if (accessibleCB.isChecked()) {
+            accessible = "Accessible";
+        } else {
+            accessible = null;
         }
 
-        if(shovelAvailableOnsiteCB.isChecked()){
-            String shovelAvailable = "Available";
+        if (shovelAvailableOnsiteCB.isChecked()) {
+            shovelAvailable = "Available";
+        } else {
+            shovelAvailable = null;
         }
 
         //ITEMS REQUESTED LIST
         if (drivewayCB.isChecked()) {
             itemsRequestedList.add("Driveway");
+        } else {
+            itemsRequestedList.add("NO Driveway Please");
         }
 
         if (sidewalkCB.isChecked()) {
             itemsRequestedList.add("Sidewalk");
+        } else {
+            itemsRequestedList.add("NO Sidewalk Please");
         }
 
         if (walkwayCB.isChecked()) {
             itemsRequestedList.add("Walkway");
+        } else {
+            itemsRequestedList.add("NO Walkway Please");
         }
 
-        String accountType = currentUser.getAccountType().toString();
-        String currentCustomerId = currentUser.getUserId();
-
         //create new address
-        Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessibleOK, shovelAvaialable);
+        //Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+        User.Address1 newAddress = new User.Address1(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
 
         //push to ShovelHeroDB & add ID (this does it automatically)
-        addressReference.child(addressId).setValue(newAddress)
+        //addressReference.child(addressId).setValue(newAddress)
+        new AddToAddressDatabaseTask().execute(newAddress);
 
+        if(newAddress.getAddress1() != null) {
+            Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
 
+            //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
+
+            saveAndReturnToProfile(customerId);
+        }
+
+        /**
+            if(accountType != null) {
+                switch (accountType) {
+                    case "Youth Shoveller":
+                        Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
+                        String youthID = currentUser.getUserId();
+                        intentYouth.putExtra("USER_ID", youthID);
+                        startActivity(intentYouth);
+                        break;
+                    case "Customer":
+                        Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
+                        String customerId = currentUser.getUserId();
+                        intentCustomer.putExtra("USER_ID", customerId);
+                        startActivity(intentCustomer);
+                        break;
+                    case "Guardian":
+                        Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
+                        String guardianId = currentUser.getUserId();
+                        intentGuardian.putExtra("USER_ID", guardianId);
+                        startActivity(intentGuardian);
+                        break;
+                    default:
+                        Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+            } else{
+                System.out.println("Account Type is Null");
+            }
+        }
+         **/
+
+        /**
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        Toast.makeText(CreateAddressActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
 
                         //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
 
-                        switch (accountType) {
-                            case "Youth Shoveller":
-                                Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
-                                String youthID = currentCustomerId;
-                                intentYouth.putExtra("USER_ID", youthID);
-                                startActivity(intentYouth);
-                                break;
-                            case "Customer":
-                                Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
-                                String customerId = currentCustomerId;
-                                intentCustomer.putExtra("USER_ID", customerId);
-                                startActivity(intentCustomer);
-                                break;
-                            case "Guardian":
-                                Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
-                                String guardianId = currentCustomerId;
-                                intentGuardian.putExtra("USER_ID", guardianId);
-                                startActivity(intentGuardian);
-                            default:
-                                Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
-                                startActivity(intent);
+                        if(accountType != null) {
+                            switch (accountType) {
+                                case "Youth Shoveller":
+                                    Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
+                                    String youthID = currentUser.getUserId();
+                                    intentYouth.putExtra("USER_ID", youthID);
+                                    startActivity(intentYouth);
+                                    break;
+                                case "Customer":
+                                    Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
+                                    String customerId = currentUser.getUserId();
+                                    intentCustomer.putExtra("USER_ID", customerId);
+                                    startActivity(intentCustomer);
+                                    break;
+                                case "Guardian":
+                                    Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
+                                    String guardianId = currentUser.getUserId();
+                                    intentGuardian.putExtra("USER_ID", guardianId);
+                                    startActivity(intentGuardian);
+                                    break;
+                                default:
+                                    Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
+                                    startActivity(intent);
+                                    break;
+                            }
+                        } else{
+                            System.out.println("Account Type is Null");
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
                         Toast.makeText(CreateAddressActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
+         **/
+    }
+
+    private void saveAndReturnToProfile(String customerId){
+        DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(customerId);
+        userTable.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentUser = snapshot.getValue(User.class);
+                String accountType = currentUser.getAccountType();
+
+                //**todo** ADD ADULT SHOEVLLER AND GUARDIAN
+                if(accountType != null) {
+                    switch (accountType) {
+                        case "Youth Shoveller":
+                            Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
+                            String youthID = currentUser.getUserId();
+                            intentYouth.putExtra("USER_ID", youthID);
+                            startActivity(intentYouth);
+                            break;
+                        case "Customer":
+                            Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
+                            String customerId = currentUser.getUserId();
+                            intentCustomer.putExtra("USER_ID", customerId);
+                            startActivity(intentCustomer);
+                            break;
+                        case "Guardian":
+                            Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
+                            String guardianId = currentUser.getUserId();
+                            intentGuardian.putExtra("USER_ID", guardianId);
+                            startActivity(intentGuardian);
+                            break;
+                        default:
+                            Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
+                } else{
+                    System.out.println("Account Type is Null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
+
+
