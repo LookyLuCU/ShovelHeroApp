@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference shovelHeroDatabaseReference;
     private EditText usernameEditText, passwordEditText;
-    private Spinner accountTypeSpinner;
 
     private static final String TAG = "MainActivity";
 
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-        accountTypeSpinner = findViewById(R.id.spinnerAccountType);
         usernameEditText = findViewById(R.id.etUsername);
         passwordEditText = findViewById(R.id.etPassword);
     }
