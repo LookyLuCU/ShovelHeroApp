@@ -1,17 +1,6 @@
 package com.example.shovelheroapp.Models;
 
-import android.media.Image;
-import android.widget.CalendarView;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-
-import com.example.shovelheroapp.Models.Enums.AccountType;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -27,7 +16,7 @@ public class User {
     private int age;
     private String email;
     private String phoneNo;
-    private List<Address1> addresses;
+    private List<Address> addresses;
 
 
     //NON-CONSTRUCTOR FIELDS
@@ -139,11 +128,11 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
-    public List<Address1> getAddresses() {
+    public List<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address1> addresses) {
+    public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
 
@@ -206,116 +195,116 @@ public class User {
     }
 
 
-    public static class Address1 {
-        private String addressId1;
+    public static class Address {
+        private String addressId;
         //private Image customerAddressImage;
-        private String address1;
-        private String city1;
-        private String province1;
-        private String postalCode1;
-        private String country1;
-        private String addressNotes1;
-        private int drivewaySquareFootage1;
-        private String accessibleOk1;
-        private String shovelAvailable1;
+        private String address;
+        private String city;
+        private String province;
+        private String postalCode;
+        private String country;
+        private String addressNotes;
+        private int drivewaySquareFootage;
+        private String accessibleOk;
+        private String shovelAvailable;
 
 
-        public Address1() {}
+        public Address() {}
 
         //CONSTRUCTOR
 
 
-        public Address1(String addressId1, String address1, String city1, String province1, String postalCode1, String country1, String addressNotes1, int drivewaySquareFootage1, String accessibleOk1, String shovelAvailable1) {
-            this.addressId1 = addressId1;
-            this.address1 = address1;
-            this.city1 = city1;
-            this.province1 = province1;
-            this.postalCode1 = postalCode1;
-            this.country1 = country1;
-            this.addressNotes1 = addressNotes1;
-            this.drivewaySquareFootage1 = drivewaySquareFootage1;
-            this.accessibleOk1 = accessibleOk1;
-            this.shovelAvailable1 = shovelAvailable1;
+        public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquareFootage, String accessibleOk, String shovelAvailable) {
+            this.addressId = addressId;
+            this.address = address;
+            this.city = city;
+            this.province = province;
+            this.postalCode = postalCode;
+            this.country = country;
+            this.addressNotes = addressNotes;
+            this.drivewaySquareFootage = drivewaySquareFootage;
+            this.accessibleOk = accessibleOk;
+            this.shovelAvailable = shovelAvailable;
         }
 
-        public String getAddressId1() {
-            return addressId1;
+        public String getAddressId() {
+            return addressId;
         }
 
-        public void setAddressId1(String addressId1) {
-            this.addressId1 = addressId1;
+        public void setAddressId(String addressId) {
+            this.addressId = addressId;
         }
 
-        public String getAddress1() {
-            return address1;
+        public String getAddress() {
+            return address;
         }
 
-        public void setAddress1(String address1) {
-            this.address1 = address1;
+        public void setAddress(String address) {
+            this.address = address;
         }
 
-        public String getCity1() {
-            return city1;
+        public String getCity() {
+            return city;
         }
 
-        public void setCity1(String city1) {
-            this.city1 = city1;
+        public void setCity(String city) {
+            this.city = city;
         }
 
-        public String getProvince1() {
-            return province1;
+        public String getProvince() {
+            return province;
         }
 
-        public void setProvince1(String province1) {
-            this.province1 = province1;
+        public void setProvince(String province) {
+            this.province = province;
         }
 
-        public String getPostalCode1() {
-            return postalCode1;
+        public String getPostalCode() {
+            return postalCode;
         }
 
-        public void setPostalCode1(String postalCode1) {
-            this.postalCode1 = postalCode1;
+        public void setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
         }
 
-        public String getCountry1() {
-            return country1;
+        public String getCountry() {
+            return country;
         }
 
-        public void setCountry1(String country1) {
-            this.country1 = country1;
+        public void setCountry(String country) {
+            this.country = country;
         }
 
-        public String getAddressNotes1() {
-            return addressNotes1;
+        public String getAddressNotes() {
+            return addressNotes;
         }
 
-        public void setAddressNotes1(String addressNotes1) {
-            this.addressNotes1 = addressNotes1;
+        public void setAddressNotes(String addressNotes) {
+            this.addressNotes = addressNotes;
         }
 
-        public int getDrivewaySquareFootage1() {
-            return drivewaySquareFootage1;
+        public int getDrivewaySquareFootage() {
+            return drivewaySquareFootage;
         }
 
-        public void setDrivewaySquareFootage1(int drivewaySquareFootage1) {
-            this.drivewaySquareFootage1 = drivewaySquareFootage1;
+        public void setDrivewaySquareFootage(int drivewaySquareFootage) {
+            this.drivewaySquareFootage = drivewaySquareFootage;
         }
 
-        public String getAccessibleOk1() {
-            return accessibleOk1;
+        public String getAccessibleOk() {
+            return accessibleOk;
         }
 
-        public void setAccessibleOk1(String accessibleOk1) {
-            this.accessibleOk1 = accessibleOk1;
+        public void setAccessibleOk(String accessibleOk) {
+            this.accessibleOk = accessibleOk;
         }
 
-        public String getShovelAvailable1() {
-            return shovelAvailable1;
+        public String getShovelAvailable() {
+            return shovelAvailable;
         }
 
-        public void setShovelAvailable1(String shovelAvailable1) {
-            this.shovelAvailable1 = shovelAvailable1;
+        public void setShovelAvailable(String shovelAvailable) {
+            this.shovelAvailable = shovelAvailable;
         }
     }
 }

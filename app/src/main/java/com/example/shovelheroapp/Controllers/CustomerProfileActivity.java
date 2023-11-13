@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.shovelheroapp.Models.Address;
+
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -159,14 +159,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
     }
 
-        private void displayAddresses(List<User.Address1> addresses) {
+        private void displayAddresses(List<User.Address> addresses) {
             addressList.clear();
-            for (User.Address1 address : addresses) {
-                String addressString = address.getAddress1() +
-                        ", " + address.getCity1() +
-                        ", " + address.getProvince1() +
-                        ", " + address.getPostalCode1() +
-                        ", " + address.getCountry1();
+            for (User.Address address : addresses) {
+                String addressString = address.getAddress() +
+                        ", " + address.getCity() +
+                        ", " + address.getProvince() +
+                        ", " + address.getPostalCode() +
+                        ", " + address.getCountry();
                 addressList.add(addressString);
             }
             addressAdapter.notifyDataSetChanged();

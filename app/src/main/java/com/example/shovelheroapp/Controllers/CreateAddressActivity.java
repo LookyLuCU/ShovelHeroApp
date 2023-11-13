@@ -47,7 +47,7 @@ public class CreateAddressActivity extends AppCompatActivity {
 
     private User currentUser;
     private String customerId;
-    private User.Address1 currentAddress;
+    private User.Address currentAddress;
 
 
     @Override
@@ -133,100 +133,18 @@ public class CreateAddressActivity extends AppCompatActivity {
         }
 
         //create new address
-        //Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
-        User.Address1 newAddress = new User.Address1(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+        User.Address newAddress = new User.Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
 
-        //push to ShovelHeroDB & add ID (this does it automatically)
-        //addressReference.child(addressId).setValue(newAddress)
+        //ASYNC ADD TO ADDRESS TABLE IN DB (overloads when not async)
         new AddToAddressDatabaseTask().execute(newAddress);
 
-        if(newAddress.getAddress1() != null) {
+        if(newAddress.getAddress() != null) {
             Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
 
             //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
 
             saveAndReturnToProfile(customerId);
         }
-
-        /**
-            if(accountType != null) {
-                switch (accountType) {
-                    case "Youth Shoveller":
-                        Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
-                        String youthID = currentUser.getUserId();
-                        intentYouth.putExtra("USER_ID", youthID);
-                        startActivity(intentYouth);
-                        break;
-                    case "Customer":
-                        Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
-                        String customerId = currentUser.getUserId();
-                        intentCustomer.putExtra("USER_ID", customerId);
-                        startActivity(intentCustomer);
-                        break;
-                    case "Guardian":
-                        Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
-                        String guardianId = currentUser.getUserId();
-                        intentGuardian.putExtra("USER_ID", guardianId);
-                        startActivity(intentGuardian);
-                        break;
-                    default:
-                        Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-            } else{
-                System.out.println("Account Type is Null");
-            }
-        }
-         **/
-
-        /**
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                        Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
-
-                        //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-
-                        if(accountType != null) {
-                            switch (accountType) {
-                                case "Youth Shoveller":
-                                    Intent intentYouth = new Intent(CreateAddressActivity.this, YouthShovelerProfileActivity.class);
-                                    String youthID = currentUser.getUserId();
-                                    intentYouth.putExtra("USER_ID", youthID);
-                                    startActivity(intentYouth);
-                                    break;
-                                case "Customer":
-                                    Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
-                                    String customerId = currentUser.getUserId();
-                                    intentCustomer.putExtra("USER_ID", customerId);
-                                    startActivity(intentCustomer);
-                                    break;
-                                case "Guardian":
-                                    Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
-                                    String guardianId = currentUser.getUserId();
-                                    intentGuardian.putExtra("USER_ID", guardianId);
-                                    startActivity(intentGuardian);
-                                    break;
-                                default:
-                                    Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
-                                    startActivity(intent);
-                                    break;
-                            }
-                        } else{
-                            System.out.println("Account Type is Null");
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(CreateAddressActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
-                    }
-                });
-         **/
     }
 
     private void saveAndReturnToProfile(String customerId){

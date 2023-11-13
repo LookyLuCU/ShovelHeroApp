@@ -227,14 +227,14 @@ public class GuardianProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void displayAddresses(List<User.Address1> addresses) {
+    private void displayAddresses(List<User.Address> addresses) {
         addressList.clear();
-        for (User.Address1 address : addresses) {
-            String addressString = address.getAddress1() +
-                    ", " + address.getCity1() +
-                    ", " + address.getProvince1() +
-                    ", " + address.getPostalCode1() +
-                    ", " + address.getCountry1();
+        for (User.Address address : addresses) {
+            String addressString = address.getAddress() +
+                    ", " + address.getCity() +
+                    ", " + address.getProvince() +
+                    ", " + address.getPostalCode() +
+                    ", " + address.getCountry();
             addressList.add(addressString);
         }
         addressAdapter.notifyDataSetChanged();

@@ -15,7 +15,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.shovelheroapp.Models.Address;
+
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -43,7 +43,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     //address spinner
     private Spinner addressSpinner;
-    private List<User.Address1> spinnerItemList;
+    private List<User.Address> spinnerItemList;
     private ArrayAdapter<String> spinnerAdapter;
 
 
@@ -73,7 +73,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
     private User currentUser;
-    private User.Address1 currentAddress;
+    private User.Address currentAddress;
 
 
     @Override
@@ -139,7 +139,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     // Handle the selected address item
                     currentAddress = spinnerItemList.get(position);
                     // You can use 'selectedAddress' for further processing or adding to the work order.
-                    Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress1() + ", " + currentAddress.getCity1() + ", " + currentAddress.getCity1(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress() + ", " + currentAddress.getCity() + ", " + currentAddress.getCity(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -152,9 +152,9 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         //save fields to proper input type
         workOrderId = workOrderReference.push().getKey();
         requestDate = Calendar.getInstance().getTime();
-        String address = currentAddress.getAddress1();
+        String address = currentAddress.getAddress();
         String status = Status.Open.toString();
-        int sqrFootage = currentAddress.getDrivewaySquareFootage1();
+        int sqrFootage = currentAddress.getDrivewaySquareFootage();
         String customerRequestedDate = requestedDate.toString();
         String customerRequestedTime = requestedTime.toString();
 
@@ -230,10 +230,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    User.Address1 spinnerItem = addressSnapshot.getValue(User.Address1.class);
+                    User.Address spinnerItem = addressSnapshot.getValue(User.Address.class);
                     if (spinnerItem != null) {
                         spinnerItemList.add(spinnerItem);
-                        spinnerAdapter.add(spinnerItem.getAddress1() + ", " + spinnerItem.getCity1() + ", " + spinnerItem.getProvince1()); // Display the street in the Spinner
+                        spinnerAdapter.add(spinnerItem.getAddress() + ", " + spinnerItem.getCity() + ", " + spinnerItem.getProvince()); // Display the street in the Spinner
                     }
                 }
                 spinnerAdapter.notifyDataSetChanged();
