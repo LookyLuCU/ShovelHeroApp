@@ -133,14 +133,20 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             displayAddresses(user.getAddresses());
                         }
 
+                        //BUTTON: ADD A LINKED YOUTH ACCOUNT (by username)
+
+                        //IMAGE: ADD ID - once dropped by user, to notify app team for verification (only app team can verify)
+
                         //VIEW MY YOUTHS BUTTON - **todo**an Array list like addresses?
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                /**
                                 Intent intentViewYouthJobs = new Intent(GuardianProfileActivity.this, YouthShovelerProfileActivity.class);
                                 String youthId = user.getUserId();
                                 intentViewYouthJobs.putExtra("USER_ID", youthId);
                                 startActivity(intentViewYouthJobs);
+                                 **/
                             }
                         });
 
@@ -159,15 +165,14 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        //VIEW JOBS BUTTON
+                        //MANAGE PROFILE BUTTON
                         btnManageProfileInfo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
-
+                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage user profile under construction", Toast.LENGTH_SHORT).show();
 
                                 /**
-                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);
+                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, EditUserProfileActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthProfile.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthProfile);
