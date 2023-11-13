@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -138,12 +139,11 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                /**
-                                Intent intentViewYouthJobs = new Intent(YouthShovelerProfileActivity.this, GetWorkOrdersActivity.class);
+                                Intent intentViewYouthJobs = new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class);
                                 String youthId = user.getUserId();
                                 intentViewYouthJobs.putExtra("USER_ID", youthId);
                                 startActivity(intentViewYouthJobs);
-                                 **/
+
                             }
                         });
 
@@ -162,18 +162,15 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        //VIEW JOBS BUTTON
+                        //MANAGE YOUTH PROFILE BUTTON
                         btnManageProfileInfo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
-
-                                /**
-                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, MangeYouthShovellerActivity.class);
+                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, EditUserProfileActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthProfile.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthProfile);
-                                 **/
                             }
                         });
 
@@ -225,9 +222,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
             }
         });
     }
-    private void displayAddresses(List<User.Address> addresses) {
+    private void displayAddresses(List<Address> addresses) {
         addressList.clear();
-            for (User.Address address : addresses) {
+            for (Address address : addresses) {
                 String addressString = address.getAddress() +
                         ", " + address.getCity() +
                         ", " + address.getProvince() +

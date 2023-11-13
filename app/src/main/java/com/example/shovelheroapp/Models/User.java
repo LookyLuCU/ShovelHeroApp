@@ -194,7 +194,7 @@ public class User {
         this.shovellerRadius = shovellerRadius;
     }
 
-
+/**
     public static class Address {
         private String addressId;
         //private Image customerAddressImage;
@@ -307,4 +307,5 @@ public class User {
             this.shovelAvailable = shovelAvailable;
         }
     }
+ **/
 }

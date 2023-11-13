@@ -69,10 +69,7 @@ public class MainActivity extends AppCompatActivity {
                                                 Intent intentLoginYouth = new Intent(MainActivity.this, YouthShovelerProfileActivity.class);
                                                 String youthID = user.getUserId();
                                                 intentLoginYouth.putExtra("USER_ID", youthID);
-                                                System.out.println("putextra step") ;
-                                                //***HERE is where it crashes****
                                                 startActivity(intentLoginYouth);
-                                                System.out.println("starting " + accountType + " Profile");
                                                 finish();
                                                 break;
                                             case "Customer":

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.shovelheroapp.Controllers.AsyncTasks.AddToAddressDatabaseTask;
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +48,7 @@ public class CreateAddressActivity extends AppCompatActivity {
 
     private User currentUser;
     private String customerId;
-    private User.Address currentAddress;
+    private Address currentAddress;
 
 
     @Override
@@ -133,7 +134,7 @@ public class CreateAddressActivity extends AppCompatActivity {
         }
 
         //create new address
-        User.Address newAddress = new User.Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+        Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
 
         //ASYNC ADD TO ADDRESS TABLE IN DB (overloads when not async)
         new AddToAddressDatabaseTask().execute(newAddress);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -43,7 +44,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     //address spinner
     private Spinner addressSpinner;
-    private List<User.Address> spinnerItemList;
+    private List<Address> spinnerItemList;
     private ArrayAdapter<String> spinnerAdapter;
 
 
@@ -73,7 +74,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
     private User currentUser;
-    private User.Address currentAddress;
+    private Address currentAddress;
 
 
     @Override
@@ -230,7 +231,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    User.Address spinnerItem = addressSnapshot.getValue(User.Address.class);
+                    Address spinnerItem = addressSnapshot.getValue(Address.class);
                     if (spinnerItem != null) {
                         spinnerItemList.add(spinnerItem);
                         spinnerAdapter.add(spinnerItem.getAddress() + ", " + spinnerItem.getCity() + ", " + spinnerItem.getProvince()); // Display the street in the Spinner

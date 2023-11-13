@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -132,7 +133,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             displayAddresses(user.getAddresses());
                         }
 
-                        //VIEW MY YOUTHS BUTTON
+                        //VIEW MY YOUTHS BUTTON - **todo**an Array list like addresses?
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -227,9 +228,9 @@ public class GuardianProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void displayAddresses(List<User.Address> addresses) {
+    private void displayAddresses(List<Address> addresses) {
         addressList.clear();
-        for (User.Address address : addresses) {
+        for (Address address : addresses) {
             String addressString = address.getAddress() +
                     ", " + address.getCity() +
                     ", " + address.getProvince() +

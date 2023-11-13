@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -54,6 +55,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     Button btnAddAddress;
     Button btnEditPassword;
     Button btnViewMyRatings;
+    Button btnLogout;
 
 
     @Override
@@ -70,7 +72,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
         btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
+        btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
         btnAddAddress = findViewById(R.id.btnAddAddress);
+        btnEditPassword = findViewById(R.id.btnEditPassword);
+        btnViewMyRatings = findViewById(R.id.btnViewMyRatings);
+        btnLogout = findViewById(R.id.btnLogout);
 
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
@@ -133,7 +139,21 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        //CREATE NEW ADDRESS BUTTON
+                        //MANAGE PAYMENT BUTTON
+                        btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+
+                            public void onClick(View view) {
+                                /**
+                                Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
+                                String customerId = user.getUserId();
+                                intentManagePayment.putExtra("USER_ID", customerId);
+                                startActivity(intentManagePayment);
+                                 **/
+                            }
+                        });
+
+                        //ADD ADDRESS BUTTON
                         btnAddAddress.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -143,6 +163,44 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                 startActivity(intentNewAddress);
                             }
                         });
+
+                        //EDIT PASSWORD BUTTON
+                        btnEditPassword.setOnClickListener(new View.OnClickListener() {
+                            @Override
+
+                            public void onClick(View view) {
+                                /**
+                                 Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
+                                 String customerId = user.getUserId();
+                                 intentEditPassword.putExtra("USER_ID", customerId);
+                                 startActivity(intentEditPassword);
+                                 **/
+                            }
+                        });
+
+                        //VIEW RATINGS BUTTON
+                        btnViewMyRatings.setOnClickListener(new View.OnClickListener() {
+                            @Override
+
+                            public void onClick(View view) {
+                                /**
+                                 Intent intentViewRatings = new Intent(CustomerProfileActivity.this, ViewRatingsActivity.class);
+                                 String customerId = user.getUserId();
+                                 intentViewRatings.putExtra("USER_ID", customerId);
+                                 startActivity(intentViewRatings);
+                                 **/
+                            }
+                        });
+
+                        //Logout BUTTON
+                        btnLogout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentLogout = new Intent(CustomerProfileActivity.this, MainActivity.class);
+                                startActivity(intentLogout);
+                            }
+                        });
+
                     } else {
                         //handle no user data
                     }
@@ -159,9 +217,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
     }
 
-        private void displayAddresses(List<User.Address> addresses) {
+        private void displayAddresses(List<Address> addresses) {
             addressList.clear();
-            for (User.Address address : addresses) {
+            for (Address address : addresses) {
                 String addressString = address.getAddress() +
                         ", " + address.getCity() +
                         ", " + address.getProvince() +
