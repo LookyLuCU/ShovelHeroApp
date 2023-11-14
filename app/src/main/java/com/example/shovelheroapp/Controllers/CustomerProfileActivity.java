@@ -40,7 +40,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
 
     private TextView usernameTV;
-    private TextView passwordTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
     private DatePicker birthdateDatePicker;
@@ -79,7 +78,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         userTable = FirebaseDatabase.getInstance().getReference("users");
 
         usernameTV = findViewById(R.id.tvUsername);
-        passwordTV = findViewById(R.id.tvPassword);
         firstNameTV = findViewById(R.id.tvFirstName);
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
@@ -106,31 +104,32 @@ public class CustomerProfileActivity extends AppCompatActivity {
             currentCustomerId = intent.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
                 retrieveCustomerProfileData(currentCustomerId);
+                System.out.println("customer ID recieved: " + currentCustomerId);  //WORKING
             }
         }
     }
 
-    private void retrieveCustomerProfileData(String customerId) {
-        userTable.child(customerId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveCustomerProfileData(String currentCustomerId) {
+        userTable.child(currentCustomerId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    User user = snapshot.getValue(User.class);
+                    currentUser = snapshot.getValue(User.class);
 
-                    if (user != null) {
+                    if (currentUser != null) {
                         //display customer profile data
-                        usernameTV.setText("Username: " + user.getUsername());
-                        passwordTV.setText("Password: " + user.getPassword());
-                        firstNameTV.setText("First Name: " + user.getFirstName());
-                        lastNameTV.setText("Last Name: " + user.getLastName());
-                        emailTV.setText("Email: " + user.getEmail());
-                        phoneTV.setText("Phone Number: " + user.getPhoneNo());
+                        usernameTV.setText("Username: " + currentUser.getUsername());
+                        firstNameTV.setText("Name: " + currentUser.getFirstName());
+                        lastNameTV.setText(currentUser.getLastName());
+                        emailTV.setText("Email: " + currentUser.getEmail());
+                        phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
 
-                        //readAddressesFromFirebase();
-                        retrieveAddressesFromFirebase();
+                        readAddressesFromFirebase();
+                        //retrieveAddressesFromFirebase();
+
 
                         //*******
-                        //BUTTONS
+                        //CUSTOMER BUTTONS
                         //*******
 
                         //ORDER SHOVELLING BUTTON
@@ -138,7 +137,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                                String customerId = user.getUserId();
+                                String customerId = currentUser.getUserId();
                                 intentNewWO.putExtra("USER_ID", customerId);
                                 startActivity(intentNewWO);
                             }
@@ -151,7 +150,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 /**
                                  Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
-                                 String customerId = user.getUserId();
+                                 String customerId = currentUser.getUserId();
                                  intentManagePayment.putExtra("USER_ID", customerId);
                                  startActivity(intentManagePayment);
                                  **/
@@ -163,7 +162,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
-                                String customerId = user.getUserId();
+                                String customerId = currentUser.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
                             }
@@ -175,7 +174,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
                             public void onClick(View view) {
                                  Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
-                                 String customerId = user.getUserId();
+                                 String customerId = currentUser.getUserId();
                                  intentEditPassword.putExtra("USER_ID", customerId);
                                  startActivity(intentEditPassword);
                             }
@@ -188,7 +187,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 /**
                                  Intent intentViewRatings = new Intent(CustomerProfileActivity.this, ViewRatingsActivity.class);
-                                 String customerId = user.getUserId();
+                                 String customerId = currentUser.getUserId();
                                  intentViewRatings.putExtra("USER_ID", customerId);
                                  startActivity(intentViewRatings);
                                  **/
@@ -222,7 +221,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     }
 
 
-    /**
+
     private void readAddressesFromFirebase() {
         userTable.child("addresses").addValueEventListener(new ValueEventListener() {
             @Override
@@ -244,7 +243,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
 
     }
-    **/
+
 
     private void retrieveAddressesFromFirebase() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("addresses");

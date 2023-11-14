@@ -16,89 +16,107 @@
         android:contentDescription="Shovel Hero Logo"
         android:layout_marginBottom="6dp"/>
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Profile"
+        android:text="Customer Profile"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:layout_marginBottom="6dp"/>
-
+        android:layout_marginBottom="6dp"
+        android:textColor="@color/black"/>
 
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:layout_marginTop="2dp">
+    android:orientation="horizontal">
 
-        <!--TO add: android:src=""-->
-        <ImageView
-            android:id="@+id/profilePicture"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="onUploadProfilePictureClick"
-            android:contentDescription="Customer Profile Picture"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <!--TO add: android:src=""-->
+            <ImageButton
+                android:id="@+id/imgProfilePicture"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="Profile Picture"
+                android:focusable="true"
+                android:onClick="onUploadProfilePicture"
+                android:src="@drawable/shovel_hero_logo"
+                android:scaleType="fitXY"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username"/>
+            android:textAlignment="center"
+            android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/tvAccountType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Type"/>
+                <TextView
+                    android:id="@+id/tvFirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="First Name"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/tvFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="First Name"/>
+                <TextView
+                    android:id="@+id/tvLastname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Name"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/tvLastname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Name"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email"/>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile Information"/>
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
 
-        <!--ListView
-            android:id="@+id/listMyAddresses"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Profile Information"/-->
+            <!--ListView
+                android:id="@+id/listMyAddresses"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Profile Information"/-->
 
-        <TextView
-            android:id="@+id/lblAddresses"
-            android:gravity="left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Addresses"/>
+            <TextView
+                android:id="@+id/lblAddresses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Addresses"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/addressRecyclerView"
@@ -106,63 +124,79 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"/>
 
+        <TextView
+            android:id="@+id/tvBirthdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12 November 2015"
+            android:textAlignment="center"
+            android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="2dp">
+        android:gravity="center"
+        android:layout_marginTop="5dp">
 
         <Button
             android:id="@+id/btnOrderShoveling"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
-            android:text="Order Shovelling Service"
-            android:layout_marginBottom="3dp" />
-
-        <Button
-            android:id="@+id/btnManagePaymentInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
-            android:text="Manage Payment Info"
-            android:layout_marginBottom="3dp" />
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Request Shovelling Service"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnAddAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:text="Add Address"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
+        <Button
+            android:id="@+id/btnManagePaymentInfo"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Manage Payment Info"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btnEditPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:text="Edit Password"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btnViewMyRatings"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
-            android:text="View My Ratings"
-            android:layout_marginBottom="3dp" />
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="View Ratings"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btnLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:textSize="14sp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:text="Logout"
-            android:layout_marginBottom="3dp" />
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
-</LinearLayout>
 </LinearLayout>

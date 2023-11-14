@@ -31,7 +31,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     private static final String TAG = "YouthShovelerProfileActivity";
 
     //initialize ShovelHeroDB (Firebase)
-    DatabaseReference shovelHeroDatabase;
+    DatabaseReference userTable;
 
 
     private TextView usernameTV;
@@ -69,10 +69,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_youth_shoveler);
 
-        shovelHeroDatabase = FirebaseDatabase.getInstance().getReference("users");
+        userTable = FirebaseDatabase.getInstance().getReference("users");
 
         usernameTV = findViewById(R.id.tvUsername);
-        passwordTV = findViewById(R.id.tvPassword);
         firstNameTV = findViewById(R.id.tvFirstName);
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
@@ -91,27 +90,20 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
         addressListView.setAdapter(addressAdapter);
 
-        //get Username from registration page or or UserID from Login
+        //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
-        if (intent.hasExtra("USER_ID")) {
-            String currentYouthId = intent.getStringExtra("USER_ID");
-            if (currentYouthId != null) {
-                final String youthId = currentYouthId;
-
-                //get and display user data
-                retrieveYouthProfile(youthId);
-            } else {
-                Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: YouthID is null", Toast.LENGTH_SHORT).show();
+        if (intent != null) {
+            String currentUserId = intent.getStringExtra("USER_ID");
+            if (currentUserId != null) {
+                retrieveYouthProfile(currentUserId);
             }
-        } else {
-            Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
     }
 
 
 
-    private void retrieveYouthProfile(String youthId) {
-        shovelHeroDatabase.child(youthId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveYouthProfile(String currentUserId) {
+        userTable.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -120,11 +112,14 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     if (user != null) {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
-                        passwordTV.setText("Password: " + user.getPassword());
                         firstNameTV.setText("First Name: " + user.getFirstName());
                         lastNameTV.setText("Last Name: " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
+
+                        //readAddressesFromFirebase();
+                        //retrieveAddressesFromFirebase();
+
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address to view local job listings");
@@ -134,6 +129,11 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             //ANOTHER TRY AT LISTING ADDRESS
                             displayAddresses(user.getAddresses());
                         }
+
+
+                        //*******
+                        //YOUTH SHOVELLER BUTTONS
+                        //*******
 
                         //VIEW JOBS BUTTON
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +178,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         btnEditPassword.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intentEditPassword = new Intent(YouthShovelerProfileActivity.this, CreateWorkOrderActivity.class);
+                                Intent intentEditPassword = new Intent(YouthShovelerProfileActivity.this, EditPasswordActivity.class);
                                 String youthId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", youthId);
                                 startActivity(intentEditPassword);
