@@ -16,7 +16,6 @@ import com.example.shovelheroapp.R;
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
-
     private List<Address> addressList;
 
     public AddressAdapter(List<Address> addressList) {
@@ -33,7 +32,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Address address = addressList.get(position);
-
         holder.tvAddress.setText(address.getAddress());
         holder.tvCity.setText(address.getCity());
         holder.tvProvince.setText(address.getProvince());
@@ -43,7 +41,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.tvSquareFootage.setText(address.getDrivewaySquareFootage());
         holder.tvAccessible.setText(address.getAccessible());
         holder.tvShovelAvailable.setText(address.getShovelAvailable());
-
     }
 
     @Override

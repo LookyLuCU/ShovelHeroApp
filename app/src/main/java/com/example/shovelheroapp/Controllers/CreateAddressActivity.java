@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,7 +29,6 @@ import java.util.List;
 public class CreateAddressActivity extends AppCompatActivity {
     private static final String TAG = "CreateAddressActivity";
 
-    private String addressId;
     private ImageView customerAddressImage;
     private EditText addressEditText;
     private EditText cityEditText;
@@ -46,8 +46,11 @@ public class CreateAddressActivity extends AppCompatActivity {
     private String accessible;
     private String shovelAvailable;
 
+
     private User currentUser;
-    private String customerId;
+    private String currentUserId;
+
+    private Button btnCreateAddress;
 
 
     private DatabaseReference userTable;
@@ -57,6 +60,9 @@ public class CreateAddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_create);
+
+        //inialize itemsRequestedList
+        itemsRequestedList = new ArrayList<>();
 
         //get text input fields
         customerAddressImage = findViewById(R.id.imgPropertyImage);
@@ -73,28 +79,30 @@ public class CreateAddressActivity extends AppCompatActivity {
         accessibleCB = findViewById(R.id.cbAccessible);
         shovelAvailableOnsiteCB = findViewById(R.id.cbShovelAvailable);
 
+        btnCreateAddress = findViewById(R.id.btnCreateAddress);
+
         //get username from customer profile intent
-        Intent intent = getIntent();
-        String currentCustomerId = intent.getStringExtra("USER_ID");
-        // Get user ID from the intent
-        customerId = getIntent().getStringExtra("USER_ID");
-        if (customerId == null) {
+
+        currentUserId = getIntent().getStringExtra("USER_ID");
+        if (currentUserId == null) {
             Toast.makeText(this, "Temp msg: CustomerID is null", Toast.LENGTH_SHORT).show();
         }
+
+        //Instantiate userTable
+        userTable = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
+
+        btnCreateAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAddress();
+                saveAndReturnToProfile(currentUserId);
+                Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public void createAddress(View view) {
-
-        //initialize itemsRequestedList
-        itemsRequestedList = new ArrayList<>();
-
-        //intialize ShovelHeroDB
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference addressReference = database.getReference("addresses");
-
-        ///TO ADD THE PIC LATER
-
-        addressId = addressReference.push().getKey();
+    public void createAddress() {
+        String addressId = userTable.child("addresses").push().getKey();
         String address = addressEditText.getText().toString();
         String city = cityEditText.getText().toString();
         String province = provinceEditText.getText().toString();
@@ -107,13 +115,13 @@ public class CreateAddressActivity extends AppCompatActivity {
         if (accessibleCB.isChecked()) {
             accessible = "Accessible";
         } else {
-            accessible = null;
+            accessible = "Not an Accessible Site";
         }
 
         if (shovelAvailableOnsiteCB.isChecked()) {
             shovelAvailable = "Available";
         } else {
-            shovelAvailable = null;
+            shovelAvailable = "Bring Your Own Shovel";
         }
 
         //ITEMS REQUESTED LIST
@@ -135,39 +143,17 @@ public class CreateAddressActivity extends AppCompatActivity {
             itemsRequestedList.add("NO Walkway Please");
         }
 
-        //create new address
-        Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
-
-        //ASYNC ADD TO ADDRESS TABLE IN DB (overloads when not async)
-        new AddToAddressDatabaseTask().execute(newAddress);
-
-        if(newAddress.getAddress() != null) {
-            Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
-
-            //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-
-            saveAndReturnToProfile(customerId);
-        }
-    }
-
-    private void addAddress() {
-        addressId = userTable.child("addresses").push().getKey();
-        String address = addressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
-        String province = provinceEditText.getText().toString();
-        String postalCode = postalCodeEditText.getText().toString();
-        String country = countrySpinner.getSelectedItem().toString();
-        String addressNotes = addressNotesEditText.getText().toString();
-        String sqFootageStr = drivewaySquareFootageEditText.getText().toString();
-        int sqFootage = sqFootageStr.isEmpty() ? 0 : Integer.parseInt(sqFootageStr);
-
+        //CREATE ADDRESS OBJECT (WITHIN USER) THEN RESET FIELDS FOR NEW ENTRY
         if (!address.isEmpty() && !city.isEmpty() && !province.isEmpty() && !postalCode.isEmpty() && !country.isEmpty() && !sqFootageStr.isEmpty()) {
-            String addressId = userTable.child("addresses").push().getKey();
             Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+
+            System.out.println("New address created: " + newAddress.getAddress());
 
             //save new address and reset input form
             if (addressId != null) {
                 userTable.child("addresses").child(addressId).setValue(newAddress);
+                System.out.println("New address added to Firebase under user: " + newAddress.getAddress());
+
                 addressEditText.setText("");
                 cityEditText.setText("");
                 provinceEditText.setText("");
@@ -178,10 +164,14 @@ public class CreateAddressActivity extends AppCompatActivity {
                 shovelAvailableOnsiteCB.setChecked(false);
             }
         }
+        else {
+            System.out.println("Missing address info, please retry");
+        }
     }
 
-    private void saveAndReturnToProfile(String customerId){
-        DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(customerId);
+
+    private void saveAndReturnToProfile(String currentUserId){
+        DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
         userTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -221,7 +211,7 @@ public class CreateAddressActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("There is a database error");
             }
         });
     }

@@ -22,13 +22,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateAddressFromUserActivity extends AppCompatActivity {
-
     private static final String TAG = "CreateAddressFromUserActivity";
 
-    private String addressId;
     private ImageView customerAddressImage;
     private EditText addressEditText;
     private EditText cityEditText;
@@ -55,10 +54,14 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
 
     private DatabaseReference userTable;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_address_from_user);
+
+        //inialize itemsRequestedList
+        itemsRequestedList = new ArrayList<>();
 
         //get text input fields
         customerAddressImage = findViewById(R.id.imgPropertyImage);
@@ -78,8 +81,8 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
         btnCreateAddress = findViewById(R.id.btnCreateAddress);
 
         //get username from customer profile intent
-        Intent intent = getIntent();
-        String currentCustomerId = intent.getStringExtra("USER_ID");
+        //Intent intent = getIntent();
+        //String currentCustomerId = intent.getStringExtra("USER_ID");
         // Get user ID from the intent
         currentUserId = getIntent().getStringExtra("USER_ID");
         if (currentUserId == null) {
@@ -93,7 +96,8 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addAddress();
-                Toast.makeText(CreateAddressFromUserActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                saveAndReturnToProfile(currentUserId);
+                Toast.makeText(CreateAddressFromUserActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,7 +105,7 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
 
     //ADD ADDRESS NODE TO USER IN FIREBASE
     private void addAddress() {
-        addressId = userTable.child("addresses").push().getKey();
+        String addressId = userTable.child("addresses").push().getKey();
         String address = addressEditText.getText().toString();
         String city = cityEditText.getText().toString();
         String province = provinceEditText.getText().toString();
@@ -114,13 +118,13 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
         if (accessibleCB.isChecked()) {
             accessible = "Accessible";
         } else {
-            accessible = null;
+            accessible = "Not an Accessible Site";
         }
 
         if (shovelAvailableOnsiteCB.isChecked()) {
             shovelAvailable = "Available";
         } else {
-            shovelAvailable = null;
+            shovelAvailable = "Bring Your Own Shovel";
         }
 
         //ITEMS REQUESTED LIST
@@ -144,12 +148,16 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
 
         //CREATE ADDRESS OBJECT (WITHIN USER) THEN RESET FIELDS FOR NEW ENTRY
         if (!address.isEmpty() && !city.isEmpty() && !province.isEmpty() && !postalCode.isEmpty() && !country.isEmpty() && !sqFootageStr.isEmpty()) {
-            String addressId = userTable.child("addresses").push().getKey();
+            //String addressId = userTable.child("addresses").push().getKey();
             Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+
+            System.out.println("New address created: " + newAddress.getAddress());
 
             //save new address and reset input form
             if (addressId != null) {
                 userTable.child("addresses").child(addressId).setValue(newAddress);
+                System.out.println("New address added to Firebase under user: " + newAddress.getAddress());
+
                 addressEditText.setText("");
                 cityEditText.setText("");
                 provinceEditText.setText("");
@@ -160,9 +168,13 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
                 shovelAvailableOnsiteCB.setChecked(false);
             }
         }
+        else {
+            System.out.println("Missing address info, please retry");
+        }
     }
 
 
+    //WORKING
     private void saveAndReturnToProfile(String currentUserId){
         DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
         userTable.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -204,7 +216,7 @@ public class CreateAddressFromUserActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("There is a database error");
             }
         });
     }

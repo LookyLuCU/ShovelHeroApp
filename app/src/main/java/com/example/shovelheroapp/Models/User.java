@@ -39,7 +39,7 @@ public class User {
     public User(){}
 
     //CONSTRUCTOR
-    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
+    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo, List<Address> addresses) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -54,8 +54,6 @@ public class User {
 
 
     //GETTERS AND SETTERS
-
-
     public String getUserId() {
         return userId;
     }
