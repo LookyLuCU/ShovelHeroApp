@@ -96,7 +96,7 @@ public class CustomerProfileWithAddressesActivity extends AppCompatActivity {
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
         if (intent != null) {
-            currentCustomerId = intent.getStringExtra("userId");
+            currentCustomerId = intent.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
                 retrieveCustomerProfileData(currentCustomerId);
             }
