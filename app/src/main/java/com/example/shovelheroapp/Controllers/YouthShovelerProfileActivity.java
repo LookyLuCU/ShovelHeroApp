@@ -48,7 +48,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     private ListView addressListView;
     private ArrayAdapter<String> addressAdapter;
     private List<String> addressList;
-   // private TextView addressTV;
+   private TextView addressTV;
 
     //private Address cityTV;
     //private Address provinceTV;
@@ -82,13 +82,15 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewRatings);
         btnLogout = findViewById(R.id.btnLogout);
-        //addressTV = findViewById(R.id.tvAddress);
+        addressTV = findViewById(R.id.tvAddress);
 
+        /**
         //ADDRESS LIST
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
         addressListView.setAdapter(addressAdapter);
+         **/
 
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();

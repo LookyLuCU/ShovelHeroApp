@@ -52,6 +52,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     //private ListView addressListView;
     //private ArrayAdapter<String> addressAdapter;
     //private List<String> addressList;
+    private TextView tvAddress;
 
     //AddressList setup
     private RecyclerView addressRecyclerView;
@@ -82,7 +83,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        tvAddress = findViewById(R.id.tvAddress);
 
+        /**
         //instantiate addressList + adapter
         btnAddAddress = findViewById(R.id.btnAddAddress);
         addressRecyclerView = findViewById(R.id.addressRecyclerView);
@@ -90,6 +93,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         adapter = new AddressAdapter(addressList);
         addressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addressRecyclerView.setAdapter(adapter);
+         **/
 
         btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
         btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);

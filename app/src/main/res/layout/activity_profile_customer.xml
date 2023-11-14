@@ -111,18 +111,12 @@
                 android:text="Profile Information"/-->
 
             <TextView
-                android:id="@+id/lblAddresses"
+                android:id="@+id/tvAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Addresses"
+                android:text="123 Address Avenue"
                 android:textAlignment="center"
                 android:textColor="@color/black"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/addressRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"/>
 
         <TextView
             android:id="@+id/tvBirthdate"

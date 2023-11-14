@@ -50,7 +50,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private RecyclerView addressRecyclerView;
     AddressAdapter adapter;
 
-    // private TextView addressTV;
+    private TextView addressTV;
     //private Address cityTV;
     //private Address provinceTV;
     //private Address postalCodeTV;
@@ -78,7 +78,9 @@ public class GuardianProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        addressTV = findViewById(R.id.tvAddress);
 
+        /**
         //instantiate addressList + adapter
         btnAddAddress = findViewById(R.id.btnAddAddress);
         //addressRecyclerView = findViewById(R.id.addressRecyclerView);
@@ -86,6 +88,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
         //adapter = new AddressAdapter(addressList);
         addressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         addressRecyclerView.setAdapter(adapter);
+         **/
 
         btnViewRatings = findViewById(R.id.btnLinkedYouths);
         btnViewJobs = findViewById(R.id.btnManageYouthInfo);
@@ -97,11 +100,13 @@ public class GuardianProfileActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         //addressTV = findViewById(R.id.tvAddress);
 
+        /**
         //ADDRESS LIST
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
         addressListView.setAdapter(addressAdapter);
+         **/
 
         //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
@@ -140,7 +145,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         }
                         else {
                             //ANOTHER TRY AT LISTING ADDRESS
-                            displayAddresses(user.getAddresses());
+                            //displayAddresses(user.getAddresses());
                         }
 
 

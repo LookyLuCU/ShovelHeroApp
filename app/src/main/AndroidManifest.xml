@@ -27,6 +27,9 @@
             android:name=".Controllers.EditUserProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".Controllers.GuardianProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Controllers.GuardianApprovalRequestActivity"
             android:exported="false" />
         <activity
