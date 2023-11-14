@@ -46,8 +46,7 @@
                 android:onClick="onUploadProfilePicture"
                 android:src="@drawable/shovel_hero_logo"
                 android:scaleType="fitXY"
-                android:background="@color/white"
-                />
+                android:background="@color/white"/>
 
         </LinearLayout>
 

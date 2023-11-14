@@ -117,9 +117,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
+
                         //readAddressesFromFirebase();
                         //retrieveAddressesFromFirebase();
-
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address to view local job listings");
@@ -147,7 +147,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             }
                         });
 
-
                         //MANAGE PAYMENT BUTTON
                         btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -158,7 +157,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                  String youthId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthPayment);
-
                             }
                         });
 
