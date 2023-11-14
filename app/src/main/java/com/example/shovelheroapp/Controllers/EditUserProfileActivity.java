@@ -31,8 +31,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
     // Tested and works.
     // However, the Date Picker will not load if there isn't navigation to the view.
 
-    private EditText editPassword, confirmPassword, editFirstname, editLastname;
-    private EditText editBirthdate, editEmail, editPhoneNumber;
+    private EditText  editFirstname, editLastname, editBirthdate, editEmail, editPhoneNumber;
     private Button updateProfile;
     private String userId;
 
@@ -44,8 +43,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_user_profile);
 
         // Get Views
-        editPassword = findViewById(R.id.etEditPassword);
-        confirmPassword = findViewById(R.id.etConfirmPassword);
         editFirstname = findViewById(R.id.etEditFirstname);
         editLastname = findViewById(R.id.etEditLastname);
         editBirthdate = findViewById(R.id.etEditBirthdate);
@@ -124,7 +121,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
     private void updateUserProfile() {
         // TODO: input field validation
 
-        String newPassword = editPassword.getText().toString();
         String newFirstname = editFirstname.getText().toString();
         String newLastname = editLastname.getText().toString();
         String newBirthdate = editBirthdate.getText().toString();
@@ -132,7 +128,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
         String newPhoneNumber = editPhoneNumber.getText().toString();
 
         Map<String, Object> updateProfileData = new HashMap<>();
-        updateProfileData.put("password", newPassword);
         updateProfileData.put("firstName", newFirstname);
         updateProfileData.put("lastName", newLastname);
         updateProfileData.put("birthdate", newBirthdate);

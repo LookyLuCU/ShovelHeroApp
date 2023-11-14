@@ -27,22 +27,6 @@
         android:layout_marginBottom="16dp"/>
 
     <EditText
-        android:id="@+id/etEditPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:hint="Password"/>
-
-    <EditText
-        android:id="@+id/etConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:hint="Confirm Password"/>
-
-    <EditText
         android:id="@+id/etEditFirstname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
