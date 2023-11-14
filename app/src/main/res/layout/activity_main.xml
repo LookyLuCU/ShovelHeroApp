@@ -37,19 +37,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.356" />
 
-
-    <!--trying embedded spinner above-->
-    <!--Spinner
-        android:id="@+id/spinnerUsertype"
-        android:layout_width="143dp"
-        android:layout_height="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.708"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.529" /-->
-
     <TextView
         android:id="@+id/lblUsername"
         android:layout_width="109dp"

@@ -118,7 +118,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         }
     }
 
-    public void createWorkOrder (View view){
+    public void createWorkOrder(View view) {
 
         //initiatize ShovelHero DB
         FirebaseDatabase shovelHeroDatabase = FirebaseDatabase.getInstance();
@@ -126,7 +126,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         DatabaseReference usersReference = shovelHeroDatabase.getReference("users");
         addressTable = shovelHeroDatabase.getReference("address");
 
-        if(currentUser.getAddresses() == null){
+        if (currentUser.getAddresses() == null) {
             Toast.makeText(CreateWorkOrderActivity.this, "Please add an address", Toast.LENGTH_SHORT).show();
         } else {
             //retrieve addresses from Firebase
@@ -181,6 +181,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             wOPrice = wOPrice + 10.00;
         }
 
+
         //create WO object and save to DB
         WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, sqrFootage, itemsRequested, currentUser.getUserId(), addressId);
         workOrderReference.child(workOrderId).setValue(newWorkOrder)
@@ -225,7 +226,29 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 });
     }
 
+    private void retrieveUserAndAddress(String customerId) {
+        DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(customerId);
+        userTable.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentUser = snapshot.getValue(User.class);
+                String accountType = currentUser.getAccountType();
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        //DatabaseReference addressTable = userTable.child("addresses")
+
+
+    }
+
+    //get address from selection
     private void retrieveAddresses() {
         addressTable.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -246,5 +269,53 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+        //FROM NEW ADDRESS LOGIC - to return to profile after creating work order
+        private void saveAndReturnToProfile (String customerId){
+            DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(customerId);
+            userTable.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    currentUser = snapshot.getValue(User.class);
+                    String accountType = currentUser.getAccountType();
+
+                    //**todo** ADD ADULT SHOEVLLER AND GUARDIAN
+                    if (accountType != null) {
+                        switch (accountType) {
+                            case "Youth Shoveller":
+                                Intent intentYouth = new Intent(CreateWorkOrderActivity.this, YouthShovelerProfileActivity.class);
+                                String youthID = currentUser.getUserId();
+                                intentYouth.putExtra("USER_ID", youthID);
+                                startActivity(intentYouth);
+                                break;
+                            case "Customer":
+                                Intent intentCustomer = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
+                                String customerId = currentUser.getUserId();
+                                intentCustomer.putExtra("USER_ID", customerId);
+                                startActivity(intentCustomer);
+                                break;
+                            case "Guardian":
+                                Intent intentGuardian = new Intent(CreateWorkOrderActivity.this, GuardianProfileActivity.class);
+                                String guardianId = currentUser.getUserId();
+                                intentGuardian.putExtra("USER_ID", guardianId);
+                                startActivity(intentGuardian);
+                                break;
+                            default:
+                                Intent intent = new Intent(CreateWorkOrderActivity.this, UserRegistrationActivity.class);
+                                startActivity(intent);
+                                break;
+                        }
+                    } else {
+                        System.out.println("Account Type is Null");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
 

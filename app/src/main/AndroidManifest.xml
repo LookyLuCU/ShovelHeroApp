@@ -18,13 +18,13 @@
         android:theme="@style/Theme.ShovelHeroApp"
         tools:targetApi="31">
         <activity
-            android:name=".Controllers.ManagePaymentActivity"
+            android:name=".Controllers.CreateAddressFromUserActivity"
             android:exported="false" />
         <activity
-            android:name=".Controllers.EditPasswordActivity"
+            android:name=".Controllers.CustomerProfileWithAddressesActivity"
             android:exported="false" />
         <activity
-            android:name=".Controllers.OrderHistoryActivity"
+            android:name=".Controllers.AddressAdapter"
             android:exported="false" />
         <activity
             android:name=".Controllers.EditUserProfileActivity"

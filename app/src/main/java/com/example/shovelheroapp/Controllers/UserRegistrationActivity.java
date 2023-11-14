@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
@@ -40,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class UserRegistrationActivity extends AppCompatActivity {
 
@@ -152,7 +154,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                                 startActivity(intentCreateYouth);
                                 break;
                             case "Customer":
-                                Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
+                                Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileWithAddressesActivity.class);
                                 String customerId = userId;
                                 intentCreateCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCreateCustomer);
