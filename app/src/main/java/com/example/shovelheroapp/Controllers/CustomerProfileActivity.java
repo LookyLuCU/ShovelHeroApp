@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -144,12 +147,12 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
 
                             public void onClick(View view) {
-                                /**
-                                Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
+
+                                Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePaymentActivity.class);
                                 String customerId = user.getUserId();
                                 intentManagePayment.putExtra("USER_ID", customerId);
                                 startActivity(intentManagePayment);
-                                 **/
+
                             }
                         });
 
@@ -169,12 +172,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
 
                             public void onClick(View view) {
-                                /**
                                  Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
                                  String customerId = user.getUserId();
                                  intentEditPassword.putExtra("USER_ID", customerId);
                                  startActivity(intentEditPassword);
-                                 **/
                             }
                         });
 

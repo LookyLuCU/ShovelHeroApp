@@ -153,12 +153,12 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                /**
+
                                  Intent intentManageYouthPayment = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthPayment);
-                                 **/
+
                             }
                         });
 
