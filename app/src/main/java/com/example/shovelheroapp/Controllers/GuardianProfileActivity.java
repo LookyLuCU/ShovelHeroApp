@@ -156,12 +156,12 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                /**
-                                 Intent intentManageYouthPayment = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
+
+                                 Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthPayment);
-                                 **/
+
                             }
                         });
 
@@ -185,12 +185,10 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
                             @Override
                             public void onClick(View view) {
-                                /**
                                 Intent intentEditPassword = new Intent(GuardianProfileActivity.this, EditPasswordActivity.class);
                                 String youthId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", youthId);
                                 startActivity(intentEditPassword);
-                                 **/
                             }
 
                         });
