@@ -2,18 +2,13 @@ package com.example.shovelheroapp.Controllers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +106,27 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 System.out.println("customer ID recieved: " + currentCustomerId);  //WORKING
             }
         }
+
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewCustomer);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_profile:
+                    startActivity(new Intent(CustomerProfileActivity.this, CustomerProfileActivity.class));
+                    return true;
+                case R.id.menu_workorders:
+                    startActivity(new Intent(CustomerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                    return true;
+                case R.id.menu_orderhistory:
+                    startActivity(new Intent(CustomerProfileActivity.this, OrderHistoryActivity.class));
+                    return true;
+                case R.id.menu_logout:
+                    startActivity(new Intent(CustomerProfileActivity.this, MainActivity.class));
+                    finish();
+                    return true;
+            }
+            return false;
+        });
     }
 
     private void retrieveCustomerProfileData(String currentCustomerId) {
