@@ -105,9 +105,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.menu_profile:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, CustomerProfileActivity.class));
-                    return true;
                 case R.id.menu_workorders:
                     startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
                     return true;

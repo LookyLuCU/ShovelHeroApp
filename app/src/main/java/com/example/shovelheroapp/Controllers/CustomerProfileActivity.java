@@ -111,9 +111,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewCustomer);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.menu_profile:
-                    startActivity(new Intent(CustomerProfileActivity.this, CustomerProfileActivity.class));
-                    return true;
                 case R.id.menu_workorders:
                     startActivity(new Intent(CustomerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
                     return true;

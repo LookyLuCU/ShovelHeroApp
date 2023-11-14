@@ -121,9 +121,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewGuardian);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.menu_profile:
-                    startActivity(new Intent(GuardianProfileActivity.this, CustomerProfileActivity.class));
-                    return true;
                 case R.id.menu_workorders:
                     startActivity(new Intent(GuardianProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
                     return true;

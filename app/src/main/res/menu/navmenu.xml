@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_profile"
-        android:title="Profile"
-        android:icon="@drawable/baseline_person_24">
-    </item>
-    <item
         android:id="@+id/menu_workorders"
         android:title="Orders"
         android:icon="@drawable/baseline_list_alt_24">
