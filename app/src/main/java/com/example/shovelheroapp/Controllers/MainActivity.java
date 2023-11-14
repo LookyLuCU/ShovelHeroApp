@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                                 finish();
                                                 break;
                                             case "Customer":
-                                                Intent intentLoginCustomer = new Intent(MainActivity.this, CustomerProfileWithAddressesActivity.class);
+                                                Intent intentLoginCustomer = new Intent(MainActivity.this, CustomerProfileActivity.class);
                                                 String customerId = user.getUserId();
                                                 intentLoginCustomer.putExtra("USER_ID", customerId);
                                                 startActivity(intentLoginCustomer);

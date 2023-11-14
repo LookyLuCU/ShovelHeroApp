@@ -156,7 +156,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                                 startActivity(intentCreateYouth);
                                 break;
                             case "Customer":
-                                Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileWithAddressesActivity.class);
+                                Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
                                 String customerId = userId;
                                 intentCreateCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCreateCustomer);

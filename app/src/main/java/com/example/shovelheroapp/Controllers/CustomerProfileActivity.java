@@ -126,7 +126,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
-                        readAddressesFromFirebase();
+                        //readAddressesFromFirebase();
+                        retrieveAddressesFromFirebase();
 
                         //*******
                         //BUTTONS
@@ -161,7 +162,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         btnAddAddress.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressFromUserActivity.class);
+                                Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
                                 String customerId = user.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
@@ -173,12 +174,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
 
                             public void onClick(View view) {
-                                /**
                                  Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
                                  String customerId = user.getUserId();
                                  intentEditPassword.putExtra("USER_ID", customerId);
                                  startActivity(intentEditPassword);
-                                 **/
                             }
                         });
 
@@ -223,6 +222,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     }
 
 
+    /**
     private void readAddressesFromFirebase() {
         userTable.child("addresses").addValueEventListener(new ValueEventListener() {
             @Override
@@ -242,5 +242,64 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 // Handle error
             }
         });
+
     }
+    **/
+
+    private void retrieveAddressesFromFirebase() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("addresses");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Check if the data is a list
+                if (dataSnapshot.exists() && dataSnapshot.hasChildren() && dataSnapshot.getChildrenCount() > 1) {
+                    List<Address> addressList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Address address = snapshot.getValue(Address.class);
+                        if (address != null) {
+                            addressList.add(address);
+                        }
+                    }
+                    // Handle the list of addresses
+                    handleAddressList(addressList);
+                } else if (dataSnapshot.exists() && dataSnapshot.hasChildren() && dataSnapshot.getChildrenCount() == 1) {
+                    // Check if the data is a single item (HashMap)
+                    Address address = dataSnapshot.child("uniqueKey").getValue(Address.class);
+                    if (address != null) {
+                        // Handle the single address
+                        handleSingleAddress(address);
+                    }
+                } else {
+                    // Handle the case when there is no data
+                    handleNoData();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+    }
+
+    private void handleAddressList(List<Address> addressList) {
+        // Your logic for handling a list of addresses
+        System.out.println("I guess there is a list of addresses here");
+    }
+
+    private void handleSingleAddress(Address address) {
+        // Your logic for handling a single address
+        System.out.println("I guess there is only 1 address here");
+    }
+
+    private void handleNoData() {
+        // Your logic for handling the case when there is no data
+        System.out.println("I guess there were no addresses listed here");
+    }
+
+    // Other methods and code in your activity...
 }
+
+
+
