@@ -58,6 +58,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         TextView tvPostalCode;
         TextView tvCountry;
         TextView tvAddressNotes;
+        TextView tvSquareFootage;
         TextView tvAccessible;
         TextView tvShovelAvailable;
 
@@ -70,6 +71,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             tvPostalCode = itemView.findViewById(R.id.tvPostalCode);
             tvCountry = itemView.findViewById(R.id.tvCountry);
             tvAddressNotes = itemView.findViewById(R.id.tvAddress);
+            tvSquareFootage = itemView.findViewById(R.id.tvSquareFootage);
             tvAccessible = itemView.findViewById(R.id.tvAccessible);
             tvShovelAvailable = itemView.findViewById(R.id.tvShovelAvailable);
         }

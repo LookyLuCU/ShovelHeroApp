@@ -32,6 +32,8 @@ public class Address {
         this.shovelAvailable = shovelAvailable;
     }
 
+
+    //CONSTRUCTORS
     public String getAddressId() {
         return addressId;
     }
@@ -100,7 +102,7 @@ public class Address {
         return accessible;
     }
 
-    public void setAccessible(String accessibleOk) {
+    public void setAccessible(String accessible) {
         this.accessible = accessible;
     }
 

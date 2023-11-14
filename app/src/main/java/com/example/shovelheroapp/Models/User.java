@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    //MANDATORY FIELDS
 
+    //MANDATORY FIELDS
     private String userId;
     private String accountType;
     private String username;
@@ -18,8 +18,7 @@ public class User {
     private int age;
     private String email;
     private String phoneNo;
-    private List<Address> addresses;
-    private int shovellerRadius; // --> how far is shoveller willing to walk
+
 
 
     //NON-CONSTRUCTOR FIELDS
@@ -27,7 +26,11 @@ public class User {
     //private int addressId; //-->Foreign key - to choose from list of properties
     private String  guardianIdUrl; //on Guardian view only
     private CheckBox guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
+    private int shovellerRadius; // --> how far is shoveller willing to walk
 
+
+    //PROFILE LISTS
+    private List<Address> addresses;
     private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
     private List<String> linkedGuardianId; // --> on YouthShoveller view only
 
@@ -36,7 +39,7 @@ public class User {
     public User(){}
 
     //CONSTRUCTOR
-    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo, List<Address> addresses) {
+    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -46,11 +49,12 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
         this.phoneNo = phoneNo;
-        this.addresses = addresses;
+        this.addresses = new ArrayList<>();
     }
 
 
     //GETTERS AND SETTERS
+
 
     public String getUserId() {
         return userId;
@@ -132,22 +136,6 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public int getShovellerRadius() {
-        return shovellerRadius;
-    }
-
-    public void setShovellerRadius(int shovellerRadius) {
-        this.shovellerRadius = shovellerRadius;
-    }
-
     public String getGuardianIdUrl() {
         return guardianIdUrl;
     }
@@ -162,6 +150,22 @@ public class User {
 
     public void setGuardianIdValidated(CheckBox guardianIdValidated) {
         this.guardianIdValidated = guardianIdValidated;
+    }
+
+    public int getShovellerRadius() {
+        return shovellerRadius;
+    }
+
+    public void setShovellerRadius(int shovellerRadius) {
+        this.shovellerRadius = shovellerRadius;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public List<String> getLinkedShovellerId() {

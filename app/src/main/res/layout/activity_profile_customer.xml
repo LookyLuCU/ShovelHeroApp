@@ -87,11 +87,24 @@
             android:layout_height="wrap_content"
             android:text="Profile Information"/>
 
-        <ListView
+        <!--ListView
             android:id="@+id/listMyAddresses"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:text="Profile Information"/>
+            android:text="Profile Information"/-->
+
+        <TextView
+            android:id="@+id/lblAddresses"
+            android:gravity="left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Addresses"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/addressRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"/>
 
 
     <LinearLayout
