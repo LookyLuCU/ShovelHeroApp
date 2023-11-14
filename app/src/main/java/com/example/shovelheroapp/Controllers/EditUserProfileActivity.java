@@ -6,11 +6,13 @@ import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.example.shovelheroapp.Models.User;
@@ -53,7 +55,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         editBirthdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerPrompt();
+                showBirthYearPicker();
             }
         });
 
@@ -74,17 +76,34 @@ public class EditUserProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void showDatePickerPrompt() {
+    public void showBirthYearPicker() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
+        NumberPicker birthYearPicker = new NumberPicker(this);
+        birthYearPicker.setMinValue(1903);
+        birthYearPicker.setMaxValue(year);
+        birthYearPicker.setValue(year);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Year")
+                .setView(birthYearPicker)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedYear = birthYearPicker.getValue();
+                    // display date picker after date selection
+                    showDatePickerWithBirthYear(selectedYear);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+    private void showDatePickerWithBirthYear(int year) {
+        final Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Should create a custom DatePicker to make selecting year easier.
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 EditUserProfileActivity.this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Date formatting
+                    // Format date
                     selectedBirthdate =  (selectedMonth + 1) + "-" + selectedDay + "-" + selectedYear;
                     editBirthdate.setText(selectedBirthdate);
                 },
