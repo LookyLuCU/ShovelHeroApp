@@ -107,13 +107,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
         if (intent != null) {
             currentCustomerId = intent.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
-                retrieveCustomerProfileData(currentCustomerId);
                 System.out.println("customer ID recieved: " + currentCustomerId);  //WORKING
+
+                retrieveCustomerProfileData(currentCustomerId);
             }
         }
     }
 
     private void retrieveCustomerProfileData(String currentCustomerId) {
+        System.out.println("customer ID recieved tp retrieve cx profile: " + currentCustomerId);  //WORKING
+
         userTable.child(currentCustomerId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,9 +131,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         emailTV.setText("Email: " + currentUser.getEmail());
                         phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
 
-                        readAddressesFromFirebase();
+                        //readAddressesFromFirebase();
                         //retrieveAddressesFromFirebase();
-
 
                         //*******
                         //CUSTOMER BUTTONS

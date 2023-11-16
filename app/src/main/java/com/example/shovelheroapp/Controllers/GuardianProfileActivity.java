@@ -78,6 +78,13 @@ public class GuardianProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        btnViewRatings = findViewById(R.id.btnLinkedYouths);
+        btnViewJobs = findViewById(R.id.btnManageYouthInfo);
+        btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
+        btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
+        btnEditPassword = findViewById(R.id.btnEditPassword);
+        btnViewRatings = findViewById(R.id.btnViewYouthRatings);
+        btnLogout = findViewById(R.id.btnLogout);
         addressTV = findViewById(R.id.tvAddress);
 
         /**
@@ -90,14 +97,9 @@ public class GuardianProfileActivity extends AppCompatActivity {
         addressRecyclerView.setAdapter(adapter);
          **/
 
-        btnViewRatings = findViewById(R.id.btnLinkedYouths);
-        btnViewJobs = findViewById(R.id.btnManageYouthInfo);
-        btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
-        btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
-        btnEditPassword = findViewById(R.id.btnEditPassword);
-        btnViewRatings = findViewById(R.id.btnViewYouthRatings);
 
-        btnLogout = findViewById(R.id.btnLogout);
+
+
         //addressTV = findViewById(R.id.tvAddress);
 
         /**

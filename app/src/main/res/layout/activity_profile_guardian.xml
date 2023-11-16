@@ -39,8 +39,8 @@
         <!--TO add: android:src=""-->
         <ImageView
             android:id="@+id/imgProfilePicture"
-            android:layout_width="190dp"
-            android:layout_height="190dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_weight="1"
             android:clickable="true"
             android:contentDescription="Guardian Profile Picture"

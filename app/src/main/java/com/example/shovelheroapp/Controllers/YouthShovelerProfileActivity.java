@@ -129,7 +129,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         }
                         else {
                             //ANOTHER TRY AT LISTING ADDRESS
-                            displayAddresses(user.getAddresses());
+                            //displayAddresses(user.getAddresses());
                         }
 
 
