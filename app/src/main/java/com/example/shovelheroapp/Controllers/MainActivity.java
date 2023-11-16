@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+//THIS IS A TEST
+
 import android.widget.Spinner;
 
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
+        System.out.println("Firebase connected");
 
         usernameEditText = findViewById(R.id.etUsername);
         passwordEditText = findViewById(R.id.etPassword);
@@ -55,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
                                     User user = userSnapShot.getValue(User.class);
 
                                     if (user != null && user.getPassword().equals(password)){
-                                        //if (user != null && user.getPassword().equals(password) && user.getAccountType().equals(accountType)){
+                                        System.out.println("Username and password ok");
 
                                         String accountType = user.getAccountType();
+
+                                        System.out.println("Account Type confirmed: " + accountType);
 
                                         //valid username and password
                                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
@@ -113,4 +118,3 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-

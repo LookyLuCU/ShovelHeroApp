@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,10 +21,12 @@ import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
@@ -37,9 +40,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class UserRegistrationActivity extends AppCompatActivity {
 
@@ -81,7 +86,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         birthdateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerPrompt();
+                showBirthYearPicker();
             }
         });
 
@@ -93,24 +98,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void showDatePickerPrompt() {
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-       // Should create a custom DatePicker to make selecting year easier.
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                UserRegistrationActivity.this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Date formatting
-                    selectedBirthdate =  (selectedMonth + 1) + "-" + selectedDay + "-" + selectedYear;
-                    birthdateText.setText(selectedBirthdate);
-                },
-                year, month, day);
-        datePickerDialog.show();
     }
 
     public void createUser(View view) {
@@ -130,9 +117,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String birthdate = selectedBirthdate;
+        List<Address> addresses = new ArrayList<>();
 
         //create new user
-        User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);
+        User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone, addresses);
 
         //add to shovelHeroDB
         userReference.child(userId).setValue(newUser)
@@ -175,6 +163,40 @@ public class UserRegistrationActivity extends AppCompatActivity {
                         Toast.makeText(UserRegistrationActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+    public void showBirthYearPicker() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        NumberPicker birthYearPicker = new NumberPicker(this);
+        birthYearPicker.setMinValue(1903);
+        birthYearPicker.setMaxValue(year);
+        birthYearPicker.setValue(year);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Select Year")
+                .setView(birthYearPicker)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    int selectedYear = birthYearPicker.getValue();
+                    // show date picker after birth year selected
+                    showDatePickerWithBirthYear(selectedYear);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+    private void showDatePickerWithBirthYear(int year) {
+        final Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                UserRegistrationActivity.this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+
+                    selectedBirthdate =  (selectedMonth + 1) + "-" + selectedDay + "-" + selectedYear;
+                    birthdateText.setText(selectedBirthdate);
+                },
+                year, month, day);
+        datePickerDialog.show();
     }
 
     private void selectImage(){

@@ -2,6 +2,7 @@ package com.example.shovelheroapp.Controllers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,38 +16,40 @@ import android.widget.Toast;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuardianProfileActivity extends AppCompatActivity {
     private static final String TAG = "GuardianProfileActivity";
 
     //initialize ShovelHeroDB (Firebase)
-    DatabaseReference shovelHeroDatabase;
+    DatabaseReference userTable;
 
 
     private TextView usernameTV;
-    private TextView passwordTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
     private TextView emailTV;
     private TextView phoneTV;
-    private String userId;
-    private String shovellerId;
+
+    private User currentUser;
+    private String currentGuardianId;
 
     //address list
 
     private ListView addressListView;
     private ArrayAdapter<String> addressAdapter;
     private List<String> addressList;
-    // private TextView addressTV;
+    private RecyclerView addressRecyclerView;
+    AddressAdapter adapter;
 
+    private TextView addressTV;
     //private Address cityTV;
     //private Address provinceTV;
     //private Address postalCodeTV;
@@ -57,6 +60,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
     Button btnViewJobs;
     Button btnManagePaymentInfo;
     Button btnManageProfileInfo;
+    Button btnAddAddress;
     Button btnEditPassword;
     Button btnViewRatings;
     Button btnLogout;
@@ -66,10 +70,9 @@ public class GuardianProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_guardian);
 
-        shovelHeroDatabase = FirebaseDatabase.getInstance().getReference("users");
+        userTable = FirebaseDatabase.getInstance().getReference("users");
 
         usernameTV = findViewById(R.id.tvUsername);
-        passwordTV = findViewById(R.id.tvPassword);
         firstNameTV = findViewById(R.id.tvFirstName);
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
@@ -80,36 +83,64 @@ public class GuardianProfileActivity extends AppCompatActivity {
         btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewYouthRatings);
-
         btnLogout = findViewById(R.id.btnLogout);
+        addressTV = findViewById(R.id.tvAddress);
+
+        /**
+        //instantiate addressList + adapter
+        btnAddAddress = findViewById(R.id.btnAddAddress);
+        //addressRecyclerView = findViewById(R.id.addressRecyclerView);
+        addressList = new ArrayList<>();
+        //adapter = new AddressAdapter(addressList);
+        addressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        addressRecyclerView.setAdapter(adapter);
+         **/
+
+
+
+
         //addressTV = findViewById(R.id.tvAddress);
 
+        /**
         //ADDRESS LIST
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
         addressListView.setAdapter(addressAdapter);
+         **/
 
         //get Username from registration page or or UserID from Login
+        //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
-        if (intent.hasExtra("USER_ID")) {
-            String currentGuardianId = intent.getStringExtra("USER_ID");
-            if (currentGuardianId != null) {
-                final String guardianId = currentGuardianId;
-
-                //get and display user data
-                retrieveGuardianProfile(guardianId);
-            } else {
-                Toast.makeText(GuardianProfileActivity.this, "Temp msg: GuardianID is null", Toast.LENGTH_SHORT).show();
+        if (intent != null) {
+            String currentUserId = intent.getStringExtra("USER_ID");
+            if (currentUserId != null) {
+                retrieveGuardianProfile(currentUserId);
             }
-        } else {
-            Toast.makeText(GuardianProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
+
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewGuardian);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_workorders:
+                    startActivity(new Intent(GuardianProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                    return true;
+                case R.id.menu_orderhistory:
+                    startActivity(new Intent(GuardianProfileActivity.this, OrderHistoryActivity.class));
+                    return true;
+                case R.id.menu_logout:
+                    startActivity(new Intent(GuardianProfileActivity.this, MainActivity.class));
+                    finish();
+                    return true;
+            }
+            return false;
+        });
     }
 
 
-    private void retrieveGuardianProfile(String guardianId) {
-        shovelHeroDatabase.child(guardianId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveGuardianProfile(String currentUserId) {
+        userTable.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -118,11 +149,14 @@ public class GuardianProfileActivity extends AppCompatActivity {
                     if (user != null) {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
-                        passwordTV.setText("Password: " + user.getPassword());
                         firstNameTV.setText("First Name: " + user.getFirstName());
                         lastNameTV.setText("Last Name: " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
+
+
+                        //readAddressesFromFirebase();
+                        //retrieveAddressesFromFirebase();
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address");
@@ -130,8 +164,10 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         }
                         else {
                             //ANOTHER TRY AT LISTING ADDRESS
-                            displayAddresses(user.getAddresses());
+                            //displayAddresses(user.getAddresses());
                         }
+
+
 
                         //BUTTON: ADD A LINKED YOUTH ACCOUNT (by username)
 
@@ -150,18 +186,15 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             }
                         });
 
-
                         //MANAGE PAYMENT BUTTON
                         btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                /**
-                                 Intent intentManageYouthPayment = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
+                                 Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthPayment);
-                                 **/
                             }
                         });
 
@@ -170,29 +203,22 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage user profile under construction", Toast.LENGTH_SHORT).show();
-
-                                /**
-                                 Intent intentManageYouthProfile = new Intent(YouthShovelerProfileActivity.this, EditUserProfileActivity.class);
+                                 Intent intentManageYouthProfile = new Intent(GuardianProfileActivity.this, EditUserProfileActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthProfile.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthProfile);
-                                 **/
                             }
                         });
 
                         //EDIT PASSWORD BUTTON
                         btnEditPassword.setOnClickListener(new View.OnClickListener() {
-
                             @Override
                             public void onClick(View view) {
-                                /**
                                 Intent intentEditPassword = new Intent(GuardianProfileActivity.this, EditPasswordActivity.class);
                                 String youthId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", youthId);
                                 startActivity(intentEditPassword);
-                                 **/
                             }
-
                         });
 
                         //VIEW RATINGS BUTTON

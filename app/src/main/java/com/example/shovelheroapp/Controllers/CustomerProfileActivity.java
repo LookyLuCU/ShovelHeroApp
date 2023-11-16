@@ -2,14 +2,13 @@ package com.example.shovelheroapp.Controllers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +16,7 @@ import android.widget.Toast;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,29 +30,36 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "CustomerProfileActivity";
 
-    //initialize ShovelHeroDB (Firebase)
-    DatabaseReference shovelHeroDatabase;
+    //initialize ShovelHeroDB userTable(Firebase)
+    DatabaseReference userTable;
 
 
     private TextView usernameTV;
-    private TextView passwordTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
     private DatePicker birthdateDatePicker;
     private TextView emailTV;
     private TextView phoneTV;
-    private int userId;
+    private User currentUser;
+    private String currentCustomerId;
 
     //address list
-    private ListView addressListView;
-    private ArrayAdapter<String> addressAdapter;
-    private List<String> addressList;
+    //private ListView addressListView;
+    //private ArrayAdapter<String> addressAdapter;
+    //private List<String> addressList;
+    private TextView tvAddress;
+
+    //AddressList setup
+    private RecyclerView addressRecyclerView;
+
+    AddressAdapter adapter;
+    List<Address> addressList;
 
 
     //buttons
+    Button btnAddAddress;
     Button btnOrderShoveling;
     Button btnManagePaymentInfo;
-    Button btnAddAddress;
     Button btnEditPassword;
     Button btnViewMyRatings;
     Button btnLogout;
@@ -63,77 +70,93 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_customer);
 
-        shovelHeroDatabase = FirebaseDatabase.getInstance().getReference("users");
+        //Instantiate userTable to current listing
+        userTable = FirebaseDatabase.getInstance().getReference("users");
 
         usernameTV = findViewById(R.id.tvUsername);
-        passwordTV = findViewById(R.id.tvPassword);
         firstNameTV = findViewById(R.id.tvFirstName);
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        tvAddress = findViewById(R.id.tvAddress);
+
+        /**
+        //instantiate addressList + adapter
+        btnAddAddress = findViewById(R.id.btnAddAddress);
+        addressRecyclerView = findViewById(R.id.addressRecyclerView);
+        addressList = new ArrayList<>();
+        adapter = new AddressAdapter(addressList);
+        addressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        addressRecyclerView.setAdapter(adapter);
+         **/
+
         btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
         btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
-        btnAddAddress = findViewById(R.id.btnAddAddress);
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewMyRatings = findViewById(R.id.btnViewMyRatings);
         btnLogout = findViewById(R.id.btnLogout);
 
-        addressListView = findViewById(R.id.listMyAddresses);
-        addressList = new ArrayList<>();
-        addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
-        addressListView.setAdapter(addressAdapter);
 
-        //get username from registration or UserId from Login
+        //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
         if (intent != null) {
-            String currentCustomerId = intent.getStringExtra("USER_ID");
+            currentCustomerId = intent.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
+                System.out.println("customer ID recieved: " + currentCustomerId);  //WORKING
 
-                final String customerId = currentCustomerId;
-
-                //get and display user data
-                retrieveCustomerProfile(customerId);
+                retrieveCustomerProfileData(currentCustomerId);
             }
-            else {
-                Toast.makeText(CustomerProfileActivity.this, "Temp msg: CustomerID is null", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(CustomerProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
+
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewCustomer);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_workorders:
+                    startActivity(new Intent(CustomerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                    return true;
+                case R.id.menu_orderhistory:
+                    startActivity(new Intent(CustomerProfileActivity.this, OrderHistoryActivity.class));
+                    return true;
+                case R.id.menu_logout:
+                    startActivity(new Intent(CustomerProfileActivity.this, MainActivity.class));
+                    finish();
+                    return true;
+            }
+            return false;
+        });
     }
 
-    private void retrieveCustomerProfile(String customerId) {
-        shovelHeroDatabase.child(customerId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveCustomerProfileData(String currentCustomerId) {
+        System.out.println("customer ID recieved tp retrieve cx profile: " + currentCustomerId);  //WORKING
+
+        userTable.child(currentCustomerId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    User user = snapshot.getValue(User.class);
-                    //Address address = snapshot.getValue(Address.class);
+                    currentUser = snapshot.getValue(User.class);
 
-                    if (user != null) {
+                    if (currentUser != null) {
                         //display customer profile data
-                        usernameTV.setText(user.getUsername());
-                        passwordTV.setText(user.getPassword());
-                        firstNameTV.setText(user.getFirstName());
-                        lastNameTV.setText(user.getLastName());
-                        emailTV.setText(user.getEmail());
-                        phoneTV.setText(user.getPhoneNo());
+                        usernameTV.setText("Username: " + currentUser.getUsername());
+                        firstNameTV.setText("Name: " + currentUser.getFirstName());
+                        lastNameTV.setText(currentUser.getLastName());
+                        emailTV.setText("Email: " + currentUser.getEmail());
+                        phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
 
-                        if(user.getAddresses() == null){
-                            System.out.println("Please add your address to place an order");
-                            Toast.makeText(CustomerProfileActivity.this, "Please add your address to place an order", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            displayAddresses(user.getAddresses());
-                        }
+                        //readAddressesFromFirebase();
+                        //retrieveAddressesFromFirebase();
 
+                        //*******
+                        //CUSTOMER BUTTONS
+                        //*******
 
-                            //ORDER SHOVELLING BUTTON
+                        //ORDER SHOVELLING BUTTON
                         btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                                String customerId = user.getUserId();
+                                String customerId = currentUser.getUserId();
                                 intentNewWO.putExtra("USER_ID", customerId);
                                 startActivity(intentNewWO);
                             }
@@ -145,10 +168,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
                             public void onClick(View view) {
                                 /**
-                                Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
-                                String customerId = user.getUserId();
-                                intentManagePayment.putExtra("USER_ID", customerId);
-                                startActivity(intentManagePayment);
+                                 Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
+                                 String customerId = currentUser.getUserId();
+                                 intentManagePayment.putExtra("USER_ID", customerId);
+                                 startActivity(intentManagePayment);
                                  **/
                             }
                         });
@@ -158,7 +181,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
-                                String customerId = user.getUserId();
+                                String customerId = currentUser.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
                             }
@@ -169,12 +192,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
 
                             public void onClick(View view) {
-                                /**
                                  Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
-                                 String customerId = user.getUserId();
+                                 String customerId = currentUser.getUserId();
                                  intentEditPassword.putExtra("USER_ID", customerId);
                                  startActivity(intentEditPassword);
-                                 **/
                             }
                         });
 
@@ -185,7 +206,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 /**
                                  Intent intentViewRatings = new Intent(CustomerProfileActivity.this, ViewRatingsActivity.class);
-                                 String customerId = user.getUserId();
+                                 String customerId = currentUser.getUserId();
                                  intentViewRatings.putExtra("USER_ID", customerId);
                                  startActivity(intentViewRatings);
                                  **/
@@ -215,23 +236,88 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 Toast.makeText(CustomerProfileActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-        private void displayAddresses(List<Address> addresses) {
-            addressList.clear();
-            for (Address address : addresses) {
-                String addressString = address.getAddress() +
-                        ", " + address.getCity() +
-                        ", " + address.getProvince() +
-                        ", " + address.getPostalCode() +
-                        ", " + address.getCountry();
-                addressList.add(addressString);
+
+
+    private void readAddressesFromFirebase() {
+        userTable.child("addresses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                addressList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Address address = snapshot.getValue(Address.class);
+                    if (address != null) {
+                        addressList.add(address);
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
-            addressAdapter.notifyDataSetChanged();
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+
     }
 
 
+    private void retrieveAddressesFromFirebase() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("addresses");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Check if the data is a list
+                if (dataSnapshot.exists() && dataSnapshot.hasChildren() && dataSnapshot.getChildrenCount() > 1) {
+                    List<Address> addressList = new ArrayList<>();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Address address = snapshot.getValue(Address.class);
+                        if (address != null) {
+                            addressList.add(address);
+                        }
+                    }
+                    // Handle the list of addresses
+                    handleAddressList(addressList);
+                } else if (dataSnapshot.exists() && dataSnapshot.hasChildren() && dataSnapshot.getChildrenCount() == 1) {
+                    // Check if the data is a single item (HashMap)
+                    Address address = dataSnapshot.child("uniqueKey").getValue(Address.class);
+                    if (address != null) {
+                        // Handle the single address
+                        handleSingleAddress(address);
+                    }
+                } else {
+                    // Handle the case when there is no data
+                    handleNoData();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+    }
+
+    private void handleAddressList(List<Address> addressList) {
+        // Your logic for handling a list of addresses
+        System.out.println("I guess there is a list of addresses here");
+    }
+
+    private void handleSingleAddress(Address address) {
+        // Your logic for handling a single address
+        System.out.println("I guess there is only 1 address here");
+    }
+
+    private void handleNoData() {
+        // Your logic for handling the case when there is no data
+        System.out.println("I guess there were no addresses listed here");
+    }
+
+    // Other methods and code in your activity...
+}
 
 
 

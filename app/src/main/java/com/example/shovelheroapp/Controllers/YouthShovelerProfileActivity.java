@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +32,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     private static final String TAG = "YouthShovelerProfileActivity";
 
     //initialize ShovelHeroDB (Firebase)
-    DatabaseReference shovelHeroDatabase;
+    DatabaseReference userTable;
 
 
     private TextView usernameTV;
@@ -48,7 +49,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     private ListView addressListView;
     private ArrayAdapter<String> addressAdapter;
     private List<String> addressList;
-   // private TextView addressTV;
+   private TextView addressTV;
 
     //private Address cityTV;
     //private Address provinceTV;
@@ -69,10 +70,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_youth_shoveler);
 
-        shovelHeroDatabase = FirebaseDatabase.getInstance().getReference("users");
+        userTable = FirebaseDatabase.getInstance().getReference("users");
 
         usernameTV = findViewById(R.id.tvUsername);
-        passwordTV = findViewById(R.id.tvPassword);
         firstNameTV = findViewById(R.id.tvFirstName);
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
@@ -83,35 +83,47 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewRatings);
         btnLogout = findViewById(R.id.btnLogout);
-        //addressTV = findViewById(R.id.tvAddress);
+        addressTV = findViewById(R.id.tvAddress);
 
+        /**
         //ADDRESS LIST
         addressListView = findViewById(R.id.listMyAddresses);
         addressList = new ArrayList<>();
         addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
         addressListView.setAdapter(addressAdapter);
+         **/
 
-        //get Username from registration page or or UserID from Login
+        //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
-        if (intent.hasExtra("USER_ID")) {
-            String currentYouthId = intent.getStringExtra("USER_ID");
-            if (currentYouthId != null) {
-                final String youthId = currentYouthId;
-
-                //get and display user data
-                retrieveYouthProfile(youthId);
-            } else {
-                Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: YouthID is null", Toast.LENGTH_SHORT).show();
+        if (intent != null) {
+            String currentUserId = intent.getStringExtra("USER_ID");
+            if (currentUserId != null) {
+                retrieveYouthProfile(currentUserId);
             }
-        } else {
-            Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: No intent passed", Toast.LENGTH_SHORT).show();
         }
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_workorders:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                    return true;
+                case R.id.menu_orderhistory:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
+                    return true;
+                case R.id.menu_logout:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
+                    finish();
+                    return true;
+            }
+            return false;
+        });
     }
 
 
 
-    private void retrieveYouthProfile(String youthId) {
-        shovelHeroDatabase.child(youthId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveYouthProfile(String currentUserId) {
+        userTable.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -120,11 +132,14 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     if (user != null) {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
-                        passwordTV.setText("Password: " + user.getPassword());
                         firstNameTV.setText("First Name: " + user.getFirstName());
                         lastNameTV.setText("Last Name: " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
+
+
+                        //readAddressesFromFirebase();
+                        //retrieveAddressesFromFirebase();
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address to view local job listings");
@@ -132,8 +147,13 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         }
                         else {
                             //ANOTHER TRY AT LISTING ADDRESS
-                            displayAddresses(user.getAddresses());
+                            //displayAddresses(user.getAddresses());
                         }
+
+
+                        //*******
+                        //YOUTH SHOVELLER BUTTONS
+                        //*******
 
                         //VIEW JOBS BUTTON
                         btnViewJobs.setOnClickListener(new View.OnClickListener() {
@@ -147,18 +167,16 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             }
                         });
 
-
                         //MANAGE PAYMENT BUTTON
                         btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(YouthShovelerProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                /**
+
                                  Intent intentManageYouthPayment = new Intent(YouthShovelerProfileActivity.this, ManagePaymentActivity.class);
                                  String youthId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", youthId);
                                  startActivity(intentManageYouthPayment);
-                                 **/
                             }
                         });
 
@@ -178,7 +196,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         btnEditPassword.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intentEditPassword = new Intent(YouthShovelerProfileActivity.this, CreateWorkOrderActivity.class);
+                                Intent intentEditPassword = new Intent(YouthShovelerProfileActivity.this, EditPasswordActivity.class);
                                 String youthId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", youthId);
                                 startActivity(intentEditPassword);
