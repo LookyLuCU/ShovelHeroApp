@@ -25,7 +25,7 @@ public class User {
     //private int paymentId;  // -->Foreign key - to choose from List of properties
     //private int addressId; //-->Foreign key - to choose from list of properties
     private String  guardianIdUrl; //on Guardian view only
-    private CheckBox guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
+    private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
     private int shovellerRadius; // --> how far is shoveller willing to walk
 
 
@@ -142,11 +142,11 @@ public class User {
         this.guardianIdUrl = guardianIdUrl;
     }
 
-    public CheckBox getGuardianIdValidated() {
+    public boolean getGuardianIdValidated() {
         return guardianIdValidated;
     }
 
-    public void setGuardianIdValidated(CheckBox guardianIdValidated) {
+    public void setGuardianIdValidated(boolean guardianIdValidated) {
         this.guardianIdValidated = guardianIdValidated;
     }
 

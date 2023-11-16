@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -127,74 +128,79 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="382dp"
+        android:layout_marginTop="5dp"
         android:gravity="center"
-        android:layout_marginTop="5dp">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btnViewJobs"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="View New Shovelling Jobs"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="View New Shovelling Jobs"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnManagePaymentInfo"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Manage Payment Info"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="Manage Payment Info"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnManageProfileInfo"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Manage Profile Info"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="Manage Profile Info"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnEditPassword"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Edit Password"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="Edit Password"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnViewRatings"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="View Ratings"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="View Ratings"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnViewGuardian"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="View Guardian"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="View Guardian"
+            android:textColor="@color/black" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Logout"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:text="Logout"
+            android:textColor="@color/black" />
 
     </LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewYouthShoveler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/navmenu"/>
 
 </LinearLayout>

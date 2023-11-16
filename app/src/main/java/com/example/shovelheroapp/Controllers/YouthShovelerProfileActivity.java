@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -100,6 +101,23 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                 retrieveYouthProfile(currentUserId);
             }
         }
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_workorders:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                    return true;
+                case R.id.menu_orderhistory:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
+                    return true;
+                case R.id.menu_logout:
+                    startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
+                    finish();
+                    return true;
+            }
+            return false;
+        });
     }
 
 

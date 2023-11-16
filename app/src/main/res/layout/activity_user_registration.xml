@@ -42,9 +42,9 @@
         android:layout_height="20dp"
         android:clickable="true"
         android:contentDescription="Customer Profile Picture"
-        android:focusable="true"
         android:gravity="center"
-        android:onClick="onUploadProfilePictureClick" />
+        android:onClick="onUploadProfilePictureClick"
+        android:focusable="true" />
 
 
     <!--Account Selection-->

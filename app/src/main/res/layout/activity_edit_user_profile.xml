@@ -25,22 +25,12 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
-
-    <EditText
-        android:id="@+id/etEditPassword"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:hint="Password"/>
-
-    <EditText
-        android:id="@+id/etConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:hint="Confirm Password"/>
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="First Name"/>
 
     <EditText
         android:id="@+id/etEditFirstname"
@@ -49,6 +39,13 @@
         android:minHeight="48dp"
         android:hint="First Name"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Last Name"/>
+
     <EditText
         android:id="@+id/etEditLastname"
         android:layout_width="match_parent"
@@ -56,12 +53,25 @@
         android:minHeight="48dp"
         android:hint="Last Name"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Birthdate"/>
+
     <EditText
         android:id="@+id/etEditBirthdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:hint="Birthdate"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Email"/>
 
     <EditText
         android:id="@+id/etEditEmail"
@@ -69,6 +79,13 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:hint="Email"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Phone Number"/>
 
     <EditText
         android:id="@+id/etEditPhoneNumber"
