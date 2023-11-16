@@ -23,7 +23,6 @@ public class EditPasswordActivity extends AppCompatActivity {
 
     private EditText newPasswordEditText;
     private EditText confirmPasswordEditText;
-    private Button btnEditPassword;
 
     String currentUserId;
 
@@ -36,7 +35,7 @@ public class EditPasswordActivity extends AppCompatActivity {
 
         newPasswordEditText = findViewById(R.id.etNewPass);
         confirmPasswordEditText = findViewById(R.id.etConfirmPass);
-        btnEditPassword = findViewById(R.id.btnEditPassword);
+        Button btnEditPassword = findViewById(R.id.btnEditPassword);
 
         currentUserId = getIntent().getStringExtra("USER_ID");
         if (currentUserId == null) {
@@ -47,32 +46,31 @@ public class EditPasswordActivity extends AppCompatActivity {
         userTable = FirebaseDatabase.getInstance().getReference().child("users");
 
 
-        btnEditPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePassword();
-            }
-        });
+        btnEditPassword.setOnClickListener(v -> updatePassword());
 
     }
 
     public void updatePassword(){
-        String newPassword = newPasswordEditText.getText().toString();
+        String newPassword = newPasswordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString();
 
         // Check if the new password meets the criteria
-        if (newPassword.length() < 8 || !newPassword.matches(".*\\d.*") || !newPassword.matches(".*[a-zA-Z].*")) {
-            Toast.makeText(EditPasswordActivity.this, "New password must be at least 8 characters long and contain at least one letter and one digit", Toast.LENGTH_SHORT).show();
-            if (!newPassword.equals(confirmPassword)) {
-                Toast.makeText(EditPasswordActivity.this, "New password and confirm password do not match", Toast.LENGTH_SHORT).show();
-            } else{
-                    userTable.child(currentUserId).child("password").setValue(newPassword);
-                    System.out.println("New password should now be listed as: " + newPassword);
-                    Toast.makeText(EditPasswordActivity.this, "Password updated successfully", Toast.LENGTH_SHORT).show();
-                    saveAndReturnToProfile(currentUserId);
-                }
-            }
+        if(!isPasswordValid(newPassword)){
+            Toast.makeText(EditPasswordActivity.this, "Password must contain at least 8 characters and one letter and one digit", Toast.LENGTH_SHORT).show();
+            return;
+        } if (!newPassword.equals(confirmPassword)) {
+            Toast.makeText(EditPasswordActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
         }
+        userTable.child(currentUserId).child("password").setValue(newPassword);
+        Toast.makeText(EditPasswordActivity.this, "Password successfully updated", Toast.LENGTH_SHORT).show();
+        saveAndReturnToProfile(currentUserId);
+
+        }
+
+    private boolean isPasswordValid(String password){
+        return password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*");
+    }
 
 
     private void saveAndReturnToProfile(String currentUserId){
@@ -81,6 +79,7 @@ public class EditPasswordActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User currentUser = snapshot.getValue(User.class);
+                assert currentUser != null;
                 String accountType = currentUser.getAccountType();
 
                 //**todo** ADD ADULT SHOEVLLER AND GUARDIAN
