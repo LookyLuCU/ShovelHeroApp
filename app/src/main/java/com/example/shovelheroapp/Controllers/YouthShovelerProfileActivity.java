@@ -104,17 +104,17 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_workorders:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
-                    return true;
-                case R.id.menu_orderhistory:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
-                    return true;
-                case R.id.menu_logout:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
-                    finish();
-                    return true;
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_workorders) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_orderhistory) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_logout) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
+                finish();
+                return true;
             }
             return false;
         });
