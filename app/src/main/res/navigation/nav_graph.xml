@@ -55,4 +55,14 @@
         android:name="com.example.shovelheroapp_ui.TenthFragment"
         android:label="fragment_tenth"
         tools:layout="@layout/fragment_tenth" />
+    <fragment
+        android:id="@+id/elevenFragment"
+        android:name="com.example.shovelheroapp_ui.ElevenFragment"
+        android:label="fragment_eleven"
+        tools:layout="@layout/fragment_eleven" />
+    <fragment
+        android:id="@+id/twelfthFragment"
+        android:name="com.example.shovelheroapp_ui.TwelfthFragment"
+        android:label="fragment_twelfth"
+        tools:layout="@layout/fragment_twelfth" />
 </navigation>
