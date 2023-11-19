@@ -1,5 +1,6 @@
 package com.example.shovelheroapp.Controllers;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.HashMap;
@@ -12,12 +13,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.net.Uri;
 
@@ -48,6 +51,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
     private ImageButton changeProfilePicture;
     private Uri userProfileImageUri;
+
+    private ImageView profileImageView;
     private ActivityResultLauncher<Intent> profileImageLauncher;
 
 
@@ -64,26 +69,25 @@ public class EditUserProfileActivity extends AppCompatActivity {
         editPhoneNumber = findViewById(R.id.etEditPhoneNumber);
         updateProfile = findViewById(R.id.btnUpdateProfile);
         changeProfilePicture = findViewById(R.id.btnChangeProfilePicture);
+        profileImageView = findViewById(R.id.ivProfileImageView);
 
-        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectProfileImage();
-            }
-        });
+        changeProfilePicture.setOnClickListener(v -> selectProfileImage());
 
-        editBirthdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBirthYearPicker();
-            }
-        });
+        editBirthdate.setOnClickListener(v -> showBirthYearPicker());
 
         profileImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         userProfileImageUri = result.getData().getData();
+
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), userProfileImageUri);
+                            profileImageView.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(EditUserProfileActivity.this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );

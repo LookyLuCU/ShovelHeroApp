@@ -30,17 +30,34 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:layout_marginBottom="16dp"/>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnChangeProfilePicture"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/add_image"
-            android:contentDescription="Change Profile Picture"
-            android:padding="8dp"
-            android:scaleType="fitXY"
-            android:background="?android:selectableItemBackground"
-            android:onClick="onUploadProfilePictureClick"/>
+            <ImageButton
+                android:id="@+id/btnChangeProfilePicture"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/add_image"
+                android:contentDescription="Change Profile Picture"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:background="?android:selectableItemBackground"
+                android:onClick="onUploadProfilePictureClick"/>
+            
+            <ImageView
+                android:id="@+id/ivProfileImageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="Profile Picture"
+                android:src="@drawable/shovel_hero_logo"
+                android:layout_marginRight="8dp"/>
+
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="match_parent"
@@ -130,6 +147,5 @@
         android:backgroundTint="@color/blue"
         android:textColor="@color/black"
         android:layout_marginBottom="16dp" />
-
     </LinearLayout>
 </ScrollView>
