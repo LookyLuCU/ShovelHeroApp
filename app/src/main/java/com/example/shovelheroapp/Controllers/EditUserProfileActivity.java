@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.net.Uri;
+import com.bumptech.glide.Glide;
 
 import android.widget.Toast;
 
@@ -70,6 +71,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         updateProfile = findViewById(R.id.btnUpdateProfile);
         changeProfilePicture = findViewById(R.id.btnChangeProfilePicture);
         profileImageView = findViewById(R.id.ivProfileImageView);
+
 
         changeProfilePicture.setOnClickListener(v -> selectProfileImage());
 
@@ -161,6 +163,16 @@ public class EditUserProfileActivity extends AppCompatActivity {
                         editBirthdate.setText(user.getBirthdate());
                         editEmail.setText(user.getEmail());
                         editPhoneNumber.setText(user.getPhoneNo());
+
+                        // Load Profile Picture
+
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(EditUserProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+
+                        }
+
                     } else {
                         Toast.makeText(EditUserProfileActivity.this, "User data cannot be found", Toast.LENGTH_SHORT).show();
                     }

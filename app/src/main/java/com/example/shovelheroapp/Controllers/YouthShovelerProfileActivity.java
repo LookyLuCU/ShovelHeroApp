@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,6 +139,13 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
+                        // Load profile Image
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        ImageView profileImageView = findViewById(R.id.ivProfilePicture);
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(YouthShovelerProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+                        }
 
                         //readAddressesFromFirebase();
                         //retrieveAddressesFromFirebase();
