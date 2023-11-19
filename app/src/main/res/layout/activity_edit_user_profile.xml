@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#BDEDFB"
     tools:context=".Controllers.EditUserProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
 
     <ImageView
         android:layout_width="150dp"
@@ -16,20 +21,40 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Update Profile Information"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Profile Information"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <ImageButton
+            android:id="@+id/btnChangeProfilePicture"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/add_image"
+            android:contentDescription="Change Profile Picture"
+            android:padding="8dp"
+            android:scaleType="fitXY"
+            android:background="?android:selectableItemBackground"
+            android:onClick="onUploadProfilePictureClick"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change Profile Picture"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="8dp"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="First Name"/>
 
     <EditText
@@ -102,6 +127,9 @@
         android:onClick="UpdateAccount"
         android:layout_marginTop="16dp"
         android:layout_gravity="center"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/black"
         android:layout_marginBottom="16dp" />
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

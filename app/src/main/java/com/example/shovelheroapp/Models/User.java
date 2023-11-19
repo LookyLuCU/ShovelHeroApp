@@ -20,10 +20,10 @@ public class User {
     private String phoneNo;
 
 
-
     //NON-CONSTRUCTOR FIELDS
     //private int paymentId;  // -->Foreign key - to choose from List of properties
     //private int addressId; //-->Foreign key - to choose from list of properties
+    private String profilePictureUrl;
     private String  guardianIdUrl; //on Guardian view only
     private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
     private int shovellerRadius; // --> how far is shoveller willing to walk
@@ -180,5 +180,13 @@ public class User {
 
     public void setLinkedGuardianId(List<String> linkedGuardianId) {
         this.linkedGuardianId = linkedGuardianId;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }

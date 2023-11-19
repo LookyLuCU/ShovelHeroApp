@@ -176,16 +176,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             }
                         });
 
-                        //ADD ADDRESS BUTTON
-                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
-                                String customerId = currentUser.getUserId();
-                                intentNewAddress.putExtra("USER_ID", customerId);
-                                startActivity(intentNewAddress);
-                            }
-                        });
+//                        //ADD ADDRESS BUTTON
+//                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
+//                                String customerId = currentUser.getUserId();
+//                                intentNewAddress.putExtra("USER_ID", customerId);
+//                                startActivity(intentNewAddress);
+//                            }
+//                        });
 
                         //EDIT PASSWORD BUTTON
                         btnEditPassword.setOnClickListener(new View.OnClickListener() {
