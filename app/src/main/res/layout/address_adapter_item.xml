@@ -5,23 +5,42 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvAddress"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Address"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="City"/>
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"/>
 
-    <TextView
-        android:id="@+id/tvProvince"
-        android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Province"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City"/>
+
+        <TextView
+            android:id="@+id/tvProvince"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Province"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvPostalCode"
@@ -35,17 +54,27 @@
         android:layout_height="wrap_content"
         android:text="Country"/>
 
-    <TextView
-        android:id="@+id/tvAddressNotes"
-        android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Address Notes"/>
+        android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvSquareFootage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Square Footage"/>
+
+    <TextView
+        android:id="@+id/tvAddressNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address Notes"/>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvAccessible"

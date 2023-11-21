@@ -1,8 +1,5 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.shovelheroapp.Controllers.AsyncTasks.AddToAddressDatabaseTask;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -81,7 +80,7 @@ public class CreateAddressActivity extends AppCompatActivity {
 
         btnCreateAddress = findViewById(R.id.btnCreateAddress);
 
-        //get username from customer profile intent
+        //get userID
 
         currentUserId = getIntent().getStringExtra("USER_ID");
         if (currentUserId == null) {
