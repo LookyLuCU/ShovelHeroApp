@@ -26,8 +26,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -245,13 +247,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
         userTable.child(customer.getUserId()).child("addresses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                customer.getAddresses().clear();
+                // Clear the addresses field in the User class
+                currentUser.setAddresses(new HashMap<String, Address>());
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    // Manually deserialize the HashMap
+                    //manually deserialize the HashMap
                     Map<String, Object> addressMap = (Map<String, Object>) snapshot.getValue();
 
-                    // Extract values from the HashMap
+                    // retrieve values from the Hashmap
                     String addressId = (String) addressMap.get("addressId");
                     String address = (String) addressMap.get("address");
                     String city = (String) addressMap.get("city");
@@ -263,16 +266,17 @@ public class CustomerProfileActivity extends AppCompatActivity {
                     String accessible = (String) addressMap.get("accessible");
                     String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
-                    // Create Address object
+                    // Create new Address object
                     Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
 
-                    //Address address = snapshot.getValue(Address.class);
-                    customer.addAddress(addressObject);
+                    // Add the Address object to the addresses HashMap in User model
+                    currentUser.addAddress(addressId, addressObject);
                 }
-                //updateAddressSpinner(customer.getAddresses());
+
+                // Retrieve list of addresses from Hashmap
+                List<Address> addresses = new ArrayList<>(currentUser.getAddresses().values());
 
                 // Update the Spinner with addresses
-                List<Address> addresses = customer.getAddresses();
                 ArrayAdapter<Address> addressAdapter = new ArrayAdapter<>(CustomerProfileActivity.this, android.R.layout.simple_spinner_item, addresses);
                 addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 addressSpinner.setAdapter(addressAdapter);
@@ -285,9 +289,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 // Handle error
             }
         });
+
     }
-
-
 
     public void createWorkOrder(String customerId, Address address) {
         if (address.getAddress() == null) {
