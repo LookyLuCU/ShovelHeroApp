@@ -1,6 +1,7 @@
 package com.example.shovelheroapp.Models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class User {
@@ -28,7 +29,8 @@ public class User {
 
 
     //PROFILE LISTS
-    private List<Address> addresses;
+    //private List<Address> addresses;
+    private HashMap<String, Address> addresses;
     //private Map<String, Map<String, Object>> addresses;
     private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
     private List<String> linkedGuardianId; // --> on YouthShoveller view only
@@ -37,7 +39,7 @@ public class User {
 
     public User(){
         //addresses = new ArrayList<>();
-        addresses = new ArrayList<>();
+        addresses = new HashMap<>();
     }
 
     //CONSTRUCTOR
@@ -52,7 +54,7 @@ public class User {
         this.email = email;
         this.phoneNo = phoneNo;
         //addresses = new ArrayList<>();
-        this.addresses = new ArrayList<>();
+        this.addresses = new HashMap<>();
     }
 
 
@@ -162,21 +164,29 @@ public class User {
     }
 
 
+//
+//    public List<Address> getAddresses()
+//    {
+//        return addresses;
+//    }
+//
+//    public void setAddresses(List<Address> addresses) {
+//        this.addresses = addresses;
+//    }
 
-    public List<Address> getAddresses()
-    {
+
+    public void addAddress(String id, Address address) {
+        addresses.put(id, address);
+    }
+
+
+    public HashMap<String, Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(HashMap<String, Address> addresses) {
         this.addresses = addresses;
     }
-
-
-    public void addAddress(Address address) {
-        addresses.add(address);
-    }
-
 
     public void setLinkedShovellerId(List<String> linkedShovellerId) {
         this.linkedShovellerId = linkedShovellerId;
