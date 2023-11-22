@@ -36,18 +36,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageButton
+
+            <ImageView
+                android:id="@+id/ivProfilePicture"
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
+
+            <!--ImageButton
                 android:id="@+id/imgProfilePicture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:clickable="true"
                 android:contentDescription="Profile Picture"
-                android:focusable="true"
-                android:onClick="onUploadProfilePicture"
-                android:src="@drawable/shovel_hero_logo"
-                android:scaleType="fitXY"
-                android:background="@color/white"/>
+                android:src="@drawable/shovel_hero_logo"/-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/imgProfilePicture"-->
+<!--                android:layout_width="190dp"-->
+<!--                android:layout_height="190dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:clickable="true"-->
+<!--                android:contentDescription="Profile Picture"-->
+<!--                android:focusable="true"-->
+<!--                android:onClick="onUploadProfilePicture"-->
+<!--                android:src="@drawable/shovel_hero_logo"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:background="@color/white"/>-->
 
         </LinearLayout>
 

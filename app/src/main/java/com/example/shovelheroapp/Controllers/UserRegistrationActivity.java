@@ -1,10 +1,5 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -13,12 +8,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
@@ -26,24 +17,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
-import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class UserRegistrationActivity extends AppCompatActivity {
@@ -120,7 +109,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         List<Address> addresses = new ArrayList<>();
 
         //create new user
-        User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone, addresses);
+        User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);
 
         //add to shovelHeroDB
         userReference.child(userId).setValue(newUser)

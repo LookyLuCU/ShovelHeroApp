@@ -1,8 +1,5 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +12,14 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
-import com.example.shovelheroapp.R;
 import com.example.shovelheroapp.Models.WorkOrder;
+import com.example.shovelheroapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -87,9 +86,9 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         SimpleDateFormat simpleDateFormat;
 
         //bring over customer username
-        Intent intent = getIntent();
-        if (intent != null) {
-            String currentCustomerId = intent.getStringExtra("USER_ID");
+        Intent intentNewWO = getIntent();
+        if (intentNewWO != null) {
+            String currentCustomerId = intentNewWO.getStringExtra("USER_ID");
             if (currentCustomerId != null) {
 
                 final String customerId = currentCustomerId;

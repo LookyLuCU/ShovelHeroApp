@@ -1,18 +1,30 @@
 package com.example.shovelheroapp.Controllers;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.HashMap;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.net.Uri;
+import com.bumptech.glide.Glide;
+
 import android.widget.Toast;
 
 import com.example.shovelheroapp.Models.User;
@@ -27,17 +39,23 @@ import androidx.annotation.NonNull;
 
 
 import com.example.shovelheroapp.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class EditUserProfileActivity extends AppCompatActivity {
-
-    // Tested and works.
-    // However, the Date Picker will not load if there isn't navigation to the view.
 
     private EditText  editFirstname, editLastname, editBirthdate, editEmail, editPhoneNumber;
     private Button updateProfile;
     private String userId;
 
     private String selectedBirthdate;
+
+    private ImageButton changeProfilePicture;
+    private Uri userProfileImageUri;
+
+    private ImageView profileImageView;
+    private ActivityResultLauncher<Intent> profileImageLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +69,30 @@ public class EditUserProfileActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.etEditEmail);
         editPhoneNumber = findViewById(R.id.etEditPhoneNumber);
         updateProfile = findViewById(R.id.btnUpdateProfile);
+        changeProfilePicture = findViewById(R.id.btnChangeProfilePicture);
+        profileImageView = findViewById(R.id.ivProfileImageView);
 
-        editBirthdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBirthYearPicker();
-            }
-        });
+
+        changeProfilePicture.setOnClickListener(v -> selectProfileImage());
+
+        editBirthdate.setOnClickListener(v -> showBirthYearPicker());
+
+        profileImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        userProfileImageUri = result.getData().getData();
+
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), userProfileImageUri);
+                            profileImageView.setImageBitmap(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(EditUserProfileActivity.this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
 
         //Retrieve User ID
         userId = getIntent().getStringExtra("USER_ID");
@@ -74,6 +109,10 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 updateUserProfile();
             }
         });
+    }
+    private void selectProfileImage(){
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        profileImageLauncher.launch(intent);
     }
 
     public void showBirthYearPicker() {
@@ -124,6 +163,16 @@ public class EditUserProfileActivity extends AppCompatActivity {
                         editBirthdate.setText(user.getBirthdate());
                         editEmail.setText(user.getEmail());
                         editPhoneNumber.setText(user.getPhoneNo());
+
+                        // Load Profile Picture
+
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(EditUserProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+
+                        }
+
                     } else {
                         Toast.makeText(EditUserProfileActivity.this, "User data cannot be found", Toast.LENGTH_SHORT).show();
                     }
@@ -140,31 +189,43 @@ public class EditUserProfileActivity extends AppCompatActivity {
     private void updateUserProfile() {
         // TODO: input field validation
 
+        if (userProfileImageUri != null) {
+            StorageReference fileReference = FirebaseStorage.getInstance().getReference().child("profilePictures/" + userId + ".jpg");
+            fileReference.putFile(userProfileImageUri)
+                    .addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl()
+                            .addOnSuccessListener(uri -> {
+                                String imageUrl = uri.toString();
+
+                                updateFirebaseUserProfile(imageUrl);
+                            })
+                    )
+                    .addOnFailureListener(e -> Toast.makeText(EditUserProfileActivity.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        } else {
+            // Upload profile information if no image is selected
+            updateFirebaseUserProfile(null);
+        }
+    }
+
+    private void updateFirebaseUserProfile(String imageUrl) {
         String newFirstname = editFirstname.getText().toString();
         String newLastname = editLastname.getText().toString();
         String newBirthdate = editBirthdate.getText().toString();
         String newEmail = editEmail.getText().toString();
         String newPhoneNumber = editPhoneNumber.getText().toString();
 
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
         Map<String, Object> updateProfileData = new HashMap<>();
         updateProfileData.put("firstName", newFirstname);
         updateProfileData.put("lastName", newLastname);
         updateProfileData.put("birthdate", newBirthdate);
         updateProfileData.put("email", newEmail);
         updateProfileData.put("phoneNo", newPhoneNumber);
+        if (imageUrl != null) {
+            updateProfileData.put("profilePictureUrl", imageUrl);
+        }
 
-        // Update in Firebase
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
-        userReference.updateChildren(updateProfileData).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(EditUserProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditUserProfileActivity.this, "Profile update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        userReference.updateChildren(updateProfileData)
+                .addOnSuccessListener(aVoid -> Toast.makeText(EditUserProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(EditUserProfileActivity.this, "Profile update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

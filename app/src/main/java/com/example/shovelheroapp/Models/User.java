@@ -1,7 +1,5 @@
 package com.example.shovelheroapp.Models;
 
-import android.widget.CheckBox;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +18,10 @@ public class User {
     private String phoneNo;
 
 
-
     //NON-CONSTRUCTOR FIELDS
     //private int paymentId;  // -->Foreign key - to choose from List of properties
     //private int addressId; //-->Foreign key - to choose from list of properties
+    private String profilePictureUrl;
     private String  guardianIdUrl; //on Guardian view only
     private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
     private int shovellerRadius; // --> how far is shoveller willing to walk
@@ -31,15 +29,19 @@ public class User {
 
     //PROFILE LISTS
     private List<Address> addresses;
+    //private Map<String, Map<String, Object>> addresses;
     private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
     private List<String> linkedGuardianId; // --> on YouthShoveller view only
 
 
 
-    public User(){}
+    public User(){
+        //addresses = new ArrayList<>();
+        addresses = new ArrayList<>();
+    }
 
     //CONSTRUCTOR
-    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo, List<Address> addresses) {
+    public User(String userId, String accountType, String username, String password, String firstName, String lastName, String birthdate, String email, String phoneNo) {
         this.userId = userId;
         this.accountType = accountType;
         this.username = username;
@@ -49,6 +51,7 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
         this.phoneNo = phoneNo;
+        //addresses = new ArrayList<>();
         this.addresses = new ArrayList<>();
     }
 
@@ -158,7 +161,10 @@ public class User {
         this.shovellerRadius = shovellerRadius;
     }
 
-    public List<Address> getAddresses() {
+
+
+    public List<Address> getAddresses()
+    {
         return addresses;
     }
 
@@ -166,13 +172,16 @@ public class User {
         this.addresses = addresses;
     }
 
-    public List<String> getLinkedShovellerId() {
-        return linkedShovellerId;
+
+    public void addAddress(Address address) {
+        addresses.add(address);
     }
+
 
     public void setLinkedShovellerId(List<String> linkedShovellerId) {
         this.linkedShovellerId = linkedShovellerId;
     }
+
 
     public List<String> getLinkedGuardianId() {
         return linkedGuardianId;
@@ -180,5 +189,13 @@ public class User {
 
     public void setLinkedGuardianId(List<String> linkedGuardianId) {
         this.linkedGuardianId = linkedGuardianId;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }

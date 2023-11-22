@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,17 +106,17 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_workorders:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
-                    return true;
-                case R.id.menu_orderhistory:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
-                    return true;
-                case R.id.menu_logout:
-                    startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
-                    finish();
-                    return true;
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_workorders) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_orderhistory) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, OrderHistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_logout) {
+                startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
+                finish();
+                return true;
             }
             return false;
         });
@@ -137,6 +139,13 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
+                        // Load profile Image
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        ImageView profileImageView = findViewById(R.id.ivProfilePicture);
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(YouthShovelerProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+                        }
 
                         //readAddressesFromFirebase();
                         //retrieveAddressesFromFirebase();

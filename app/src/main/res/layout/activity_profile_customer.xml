@@ -110,13 +110,24 @@
                 android:layout_height="50dp"
                 android:text="Profile Information"/-->
 
-            <TextView
+            <!--androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/addressRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"/-->
+
+            <Spinner
+                android:id="@+id/spinnerAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--TextView
                 android:id="@+id/tvAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="123 Address Avenue"
                 android:textAlignment="center"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"/-->
 
         <TextView
             android:id="@+id/tvBirthdate"

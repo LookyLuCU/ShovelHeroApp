@@ -17,8 +17,6 @@ public class Address {
     public Address() {}
 
     //CONSTRUCTOR
-
-
     public Address(String addressId, String address, String city, String province, String postalCode, String country, String addressNotes, int drivewaySquareFootage, String accessible, String shovelAvailable) {
         this.addressId = addressId;
         this.address = address;
@@ -112,5 +110,10 @@ public class Address {
 
     public void setShovelAvailable(String shovelAvailable) {
         this.shovelAvailable = shovelAvailable;
+    }
+
+    @Override
+    public String toString(){
+        return address + ", " + city + ", " + province;
     }
 }

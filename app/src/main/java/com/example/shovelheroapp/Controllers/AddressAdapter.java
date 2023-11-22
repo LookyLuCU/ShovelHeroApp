@@ -1,20 +1,62 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.example.shovelheroapp.Models.Address;
-import com.example.shovelheroapp.R;
 
 import java.util.List;
 
+public class AddressAdapter extends ArrayAdapter<Address> implements SpinnerAdapter {
+
+    public AddressAdapter(Context context, List<Address> addresses) {
+        super(context, 0, addresses);
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_item, parent, false);
+        }
+
+        TextView textView = convertView.findViewById(android.R.id.text1);
+        Address address = getItem(position);
+        if (address != null) {
+            textView.setText(address.toString());
+        }
+
+        return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+        }
+
+        TextView textView = convertView.findViewById(android.R.id.text1);
+        Address address = getItem(position);
+        if (address != null) {
+            textView.setText(address.toString());
+        }
+
+        return convertView;
+    }
+}
+
+
+
+//MY TRY EARLIER
+/**
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
     private List<Address> addressList;
 
@@ -41,6 +83,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.tvSquareFootage.setText(address.getDrivewaySquareFootage());
         holder.tvAccessible.setText(address.getAccessible());
         holder.tvShovelAvailable.setText(address.getShovelAvailable());
+
     }
 
     @Override
@@ -74,3 +117,4 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         }
     }
 }
+ **/
