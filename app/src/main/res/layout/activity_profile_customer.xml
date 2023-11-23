@@ -9,8 +9,8 @@
     android:background="#BDEDFB">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
@@ -39,8 +39,8 @@
             <!--TO add: android:src=""-->
             <ImageButton
                 android:id="@+id/imgProfilePicture"
-                android:layout_width="190dp"
-                android:layout_height="190dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:contentDescription="Profile Picture"
@@ -49,7 +49,6 @@
                 android:src="@drawable/shovel_hero_logo"
                 android:scaleType="fitXY"
                 android:background="@color/white"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -58,34 +57,31 @@
             android:orientation="vertical"
             android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="left">
 
                 <TextView
                     android:id="@+id/tvFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="First Name"
-                    android:textAlignment="center"
+                    android:layout_gravity="left"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvLastname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Name"
-                    android:textAlignment="center"
-                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="left"
                     android:textColor="@color/black"/>
 
             </LinearLayout>
@@ -94,19 +90,19 @@
                 android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:layout_gravity="left"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tvPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
+                android:layout_gravity="left"
                 android:textColor="@color/black"/>
 
             <Spinner
                 android:id="@+id/spinnerAddress"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -121,45 +117,64 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnOrderShoveling"
-            android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:text="Request Shovelling Service"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnAddAddress"
-            android:layout_width="250dp"
+            <Button
+                android:id="@+id/btnOrderShoveling"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:text="Request Shovelling"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btnAddAddress"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:text="Add Address"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:text="Add Address"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnManagePaymentInfo"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:text="Manage Payment Info"
+            android:text="Edit Payment Info"
             android:textColor="@color/black" />
 
         <Button
-            android:id="@+id/btnEditPassword"
-            android:layout_width="250dp"
+            android:id="@+id/btnEditUserInfo"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:text="Edit Password"
+            android:text="Edit User Info"
             android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnViewMyRatings"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
@@ -167,13 +182,16 @@
             android:textColor="@color/black" />
 
         <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="250dp"
+            android:id="@+id/btnEditPassword"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
-            android:text="Logout"
+            android:text="Edit Password"
             android:textColor="@color/black" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
@@ -49,17 +51,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private DatePicker birthdateDatePicker;
     private TextView emailTV;
     private TextView phoneTV;
-    private User currentUser;
-    private String currentCustomerId;
-
-
     private Spinner addressSpinner;
-    private ArrayAdapter<String> addressAdapter;
+    private User user;
+    private String userId;
+
 
 
     //buttons
     Button btnAddAddress;
     Button btnOrderShoveling;
+    Button btnEditProfile;
     Button btnManagePaymentInfo;
     Button btnEditPassword;
     Button btnViewMyRatings;
@@ -84,18 +85,18 @@ public class CustomerProfileActivity extends AppCompatActivity {
         btnOrderShoveling = findViewById(R.id.btnOrderShoveling);
         btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
         btnAddAddress = findViewById(R.id.btnAddAddress);
+        btnEditProfile = findViewById(R.id.btnEditUserInfo);
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewMyRatings = findViewById(R.id.btnViewMyRatings);
-        btnLogout = findViewById(R.id.btnLogout);
 
 
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
         if (intent != null) {
-            currentCustomerId = intent.getStringExtra("USER_ID");
-            if (currentCustomerId != null) {
-                System.out.println("customer ID recieved: " + currentCustomerId);  //WORKING
-                retrieveCustomerProfileData(currentCustomerId);
+            userId = intent.getStringExtra("USER_ID");
+            if (userId != null) {
+                System.out.println("customer ID recieved: " + userId);  //WORKING
+                retrieveCustomerProfileData(userId);
             }
         }
 
@@ -119,27 +120,35 @@ public class CustomerProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void retrieveCustomerProfileData(String currentCustomerId) {
-        System.out.println("customer ID recieved to retrieve cx profile: " + currentCustomerId);  //WORKING
+    private void retrieveCustomerProfileData(String userId) {
+        System.out.println("customer ID recieved to retrieve cx profile: " + userId);  //WORKING
 
-        userTable.child(currentCustomerId).addListenerForSingleValueEvent(new ValueEventListener() {
+        userTable.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    currentUser = snapshot.getValue(User.class);
+                    user = snapshot.getValue(User.class);
 
-                    if (currentUser != null) {
-                        //display customer profile data
-                        usernameTV.setText("Username: " + currentUser.getUsername());
-                        firstNameTV.setText("Name: " + currentUser.getFirstName());
-                        lastNameTV.setText(currentUser.getLastName());
-                        emailTV.setText("Email: " + currentUser.getEmail());
-                        phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
+                    if (user != null) {
+                        //display user profile data
+                        usernameTV.setText("Username: " + user.getUsername());
+                        firstNameTV.setText("Name: " + user.getFirstName());
+                        lastNameTV.setText(user.getLastName());
+                        emailTV.setText("Email: " + user.getEmail());
+                        phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
-                        System.out.println("User data loaded: " + currentUser.getUsername());
-                        System.out.println("Sending userid to read addresses: " + currentUser);
+                        System.out.println("User data loaded: " + user.getUsername());
+                        System.out.println("Sending userid to read addresses: " + user);
 
-                        readAddressesFromFirebase(currentUser);
+                        // Load profile Image
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        ImageView profileImageView = findViewById(R.id.imgProfilePicture);
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(CustomerProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+                        }
+
+                        readAddressesFromFirebase(user);
 
 
                         //*******
@@ -151,7 +160,18 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v){
                                 Address selectedAddress = (Address) addressSpinner.getSelectedItem();
-                                createWorkOrder(currentUser.getUserId(), selectedAddress);
+                                createWorkOrder(user.getUserId(), selectedAddress);
+                            }
+                        });
+
+                        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(CustomerProfileActivity.this, "Temp msg: Manage Youth activity under construction", Toast.LENGTH_SHORT).show();
+                                Intent intentManageCustomerProfile = new Intent(CustomerProfileActivity.this, EditUserProfileActivity.class);
+                                String youthId = user.getUserId();
+                                intentManageCustomerProfile.putExtra("USER_ID", youthId);
+                                startActivity(intentManageCustomerProfile);
                             }
                         });
 
@@ -162,7 +182,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 /**
                                  Intent intentManagePayment = new Intent(CustomerProfileActivity.this, ManagePayemntActivity.class);
-                                 String customerId = currentUser.getUserId();
+                                 String customerId = user.getUserId();
                                  intentManagePayment.putExtra("USER_ID", customerId);
                                  startActivity(intentManagePayment);
                                  **/
@@ -174,7 +194,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewAddress = new Intent(CustomerProfileActivity.this, CreateAddressActivity.class);
-                                String customerId = currentUser.getUserId();
+                                String customerId = user.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
                             }
@@ -186,7 +206,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
                             public void onClick(View view) {
                                 Intent intentEditPassword = new Intent(CustomerProfileActivity.this, EditPasswordActivity.class);
-                                String customerId = currentUser.getUserId();
+                                String customerId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", customerId);
                                 startActivity(intentEditPassword);
                             }
@@ -199,22 +219,12 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 /**
                                  Intent intentViewRatings = new Intent(CustomerProfileActivity.this, ViewRatingsActivity.class);
-                                 String customerId = currentUser.getUserId();
+                                 String customerId = user.getUserId();
                                  intentViewRatings.putExtra("USER_ID", customerId);
                                  startActivity(intentViewRatings);
                                  **/
                             }
                         });
-
-                        //Logout BUTTON
-                        btnLogout.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intentLogout = new Intent(CustomerProfileActivity.this, MainActivity.class);
-                                startActivity(intentLogout);
-                            }
-                        });
-
                     } else {
                         //handle no user data
                     }
@@ -230,14 +240,14 @@ public class CustomerProfileActivity extends AppCompatActivity {
     }
 
 
-    private void readAddressesFromFirebase(User customer) {
-        System.out.println("userid received by read database: " + customer);
+    private void readAddressesFromFirebase(User user) {
+        System.out.println("userid received by read database: " + user);
 
-        userTable.child(customer.getUserId()).child("addresses").addValueEventListener(new ValueEventListener() {
+        userTable.child(user.getUserId()).child("addresses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clear the addresses field in the User class
-                currentUser.setAddresses(new HashMap<String, Address>());
+                user.setAddresses(new HashMap<String, Address>());
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     //manually deserialize the HashMap
@@ -259,11 +269,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
                     Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
 
                     // Add the Address object to the addresses HashMap in User model
-                    currentUser.addAddress(addressId, addressObject);
+                    user.addAddress(addressId, addressObject);
                 }
 
                 // Retrieve list of addresses from Hashmap
-                List<Address> addresses = new ArrayList<>(currentUser.getAddresses().values());
+                List<Address> addresses = new ArrayList<>(user.getAddresses().values());
 
                 // Update the Spinner with addresses
                 ArrayAdapter<Address> addressAdapter = new ArrayAdapter<>(CustomerProfileActivity.this, android.R.layout.simple_spinner_item, addresses);
@@ -281,7 +291,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
     }
 
-    public void createWorkOrder(String customerId, Address address) {
+    public void createWorkOrder(String userId, Address address) {
         if (address.getAddress() == null) {
             Toast.makeText(this, "Please select a valid address from your list", Toast.LENGTH_SHORT).show();
         } else {
@@ -299,7 +309,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
             String addressId = address.getAddressId();
 
             //create new work order
-            WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, itemsRequested, customerId, addressId);
+            WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, itemsRequested, userId, addressId);
 
             workOrderReference.child(workOrderID).setValue(newWO)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

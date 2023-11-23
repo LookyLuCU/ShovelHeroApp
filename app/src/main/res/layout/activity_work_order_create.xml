@@ -63,8 +63,7 @@
             android:layout_height="wrap_content"
             android:text="Special Requests"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:textSize="18sp"
             android:layout_marginBottom="10dp"/>
 
     <LinearLayout
@@ -160,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Work Order Price: "
-            android:textSize="20sp"/>
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

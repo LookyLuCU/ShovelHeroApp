@@ -9,12 +9,12 @@
     android:background="#BDEDFB">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="6dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:text="Guardian Profile"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="6dp"
         android:textColor="@color/black"/>
 
     <LinearLayout
@@ -53,37 +53,36 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/tvUsername"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
+            android:layout_gravity="left"
             android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="left">
 
                 <TextView
                     android:id="@+id/tvFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
+                    android:layout_gravity="left"
                     android:textColor="@color/black"/>
 
                 <TextView
                     android:id="@+id/tvLastname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="left"
                     android:textColor="@color/black"/>
             </LinearLayout>
 
@@ -91,108 +90,119 @@
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:textAlignment="center"
+            android:layout_gravity="left"
             android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tvPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile Information"
-            android:textAlignment="center"
+            android:layout_gravity="left"
             android:textColor="@color/black"/>
 
-            <TextView
-                android:id="@+id/tvAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="123 Address Avenue"
-                android:textAlignment="center"
-                android:textColor="@color/black"/>
+            <Spinner
+                android:id="@+id/spinnerAddress"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="335dp"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_marginTop="5dp">
 
-        <Button
-            android:id="@+id/btnLinkedYouths"
-            android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Linked Youths"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnManageYouthInfo"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="Manage Youth Info"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            <Button
+                android:id="@+id/btnLinkedYouths"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Linked Youths"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
 
-        <Button
-            android:id="@+id/btnAddAddress"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="Edit Password"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            <Button
+                android:id="@+id/btnManageYouthInfo"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Manage Youth Info"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
 
-        <Button
-            android:id="@+id/btnManagePaymentInfo"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="Manage Payment Info"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnManageProfileInfo"
-            android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Manage Profile Info and Location"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnEditPassword"
-            android:layout_width="250dp"
+            <Button
+                android:id="@+id/btnManageProfileInfo"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile Info"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/btnAddAddress"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Add Address"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Password"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnManagePaymentInfo"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Manage Payment Info"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/btnEditPassword"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Edit Password"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnViewYouthRatings"
-            android:layout_width="250dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="View Youth Ratings"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/btnLogout"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="Logout"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/blue"
             android:textColor="@color/black"/>
 
-    </LinearLayout>
+           </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationViewGuardian"
         android:layout_width="match_parent"

@@ -1,18 +1,19 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -23,7 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GuardianProfileActivity extends AppCompatActivity {
     private static final String TAG = "GuardianProfileActivity";
@@ -37,26 +41,15 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private TextView lastNameTV;
     private TextView emailTV;
     private TextView phoneTV;
+    private Spinner addressSpinner;
 
     private User currentUser;
-    private String currentGuardianId;
+    private String userId;
 
-    //address list
 
-    private ListView addressListView;
-    private ArrayAdapter<String> addressAdapter;
-    private List<String> addressList;
-    private RecyclerView addressRecyclerView;
-    AddressAdapter adapter;
-
-    private TextView addressTV;
-    //private Address cityTV;
-    //private Address provinceTV;
-    //private Address postalCodeTV;
-    //private Address countryTV;
-    //private List<Address> addressList;
 
     //buttons
+    Button btnLinkedYouths;
     Button btnViewJobs;
     Button btnManagePaymentInfo;
     Button btnManageProfileInfo;
@@ -77,45 +70,24 @@ public class GuardianProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        addressSpinner = findViewById(R.id.spinnerAddress);
+
+        btnLinkedYouths = findViewById(R.id.btnLinkedYouths);
         btnViewRatings = findViewById(R.id.btnLinkedYouths);
         btnViewJobs = findViewById(R.id.btnManageYouthInfo);
         btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
         btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewYouthRatings);
-        btnLogout = findViewById(R.id.btnLogout);
-        addressTV = findViewById(R.id.tvAddress);
 
-        /**
-        //instantiate addressList + adapter
-        btnAddAddress = findViewById(R.id.btnAddAddress);
-        //addressRecyclerView = findViewById(R.id.addressRecyclerView);
-        addressList = new ArrayList<>();
-        //adapter = new AddressAdapter(addressList);
-        addressRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        addressRecyclerView.setAdapter(adapter);
-         **/
-
-
-
-
-        //addressTV = findViewById(R.id.tvAddress);
-
-        /**
-        //ADDRESS LIST
-        addressListView = findViewById(R.id.listMyAddresses);
-        addressList = new ArrayList<>();
-        addressAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, addressList);
-        addressListView.setAdapter(addressAdapter);
-         **/
 
         //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
         if (intent != null) {
-            String currentUserId = intent.getStringExtra("USER_ID");
-            if (currentUserId != null) {
-                retrieveGuardianProfile(currentUserId);
+            userId = intent.getStringExtra("USER_ID");
+            if (userId != null) {
+                retrieveGuardianProfile(userId);
             }
         }
 
@@ -139,8 +111,8 @@ public class GuardianProfileActivity extends AppCompatActivity {
     }
 
 
-    private void retrieveGuardianProfile(String currentUserId) {
-        userTable.child(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void retrieveGuardianProfile(String userId) {
+        userTable.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -155,8 +127,15 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
 
-                        //readAddressesFromFirebase();
-                        //retrieveAddressesFromFirebase();
+                        // Load profile Image
+                        String profileImageUrl = user.getProfilePictureUrl();
+                        ImageView profileImageView = findViewById(R.id.imgProfilePicture);
+                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                            Glide.with(GuardianProfileActivity.this)
+                                    .load(profileImageUrl).into(profileImageView);
+                        }
+
+                        readAddressesFromFirebase(user);
 
                         if(user.getAddresses() == null){
                             System.out.println("Please add your address");
@@ -174,7 +153,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         //IMAGE: ADD ID - once dropped by user, to notify app team for verification (only app team can verify)
 
                         //VIEW MY YOUTHS BUTTON - **todo**an Array list like addresses?
-                        btnViewJobs.setOnClickListener(new View.OnClickListener() {
+                        btnLinkedYouths.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 /**
@@ -210,6 +189,17 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             }
                         });
 
+                        //ADD ADDRESS BUTTON
+                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentNewAddress = new Intent(GuardianProfileActivity.this, CreateAddressActivity.class);
+                                String customerId = user.getUserId();
+                                intentNewAddress.putExtra("USER_ID", customerId);
+                                startActivity(intentNewAddress);
+                            }
+                        });
+
                         //EDIT PASSWORD BUTTON
                         btnEditPassword.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -235,15 +225,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                  **/
                             }
                         });
-
-                        //Logout BUTTON
-                        btnLogout.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intentLogout = new Intent(GuardianProfileActivity.this, MainActivity.class);
-                                startActivity(intentLogout);
-                            }
-                        });
                     } else {
                         //handle no user data error
                     }
@@ -259,16 +240,53 @@ public class GuardianProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void displayAddresses(List<Address> addresses) {
-        addressList.clear();
-        for (Address address : addresses) {
-            String addressString = address.getAddress() +
-                    ", " + address.getCity() +
-                    ", " + address.getProvince() +
-                    ", " + address.getPostalCode() +
-                    ", " + address.getCountry();
-            addressList.add(addressString);
-        }
-        addressAdapter.notifyDataSetChanged();
+    private void readAddressesFromFirebase(User user) {
+        System.out.println("userid received by read database: " + user);
+
+        userTable.child(user.getUserId()).child("addresses").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clear the addresses field in the User class
+                user.setAddresses(new HashMap<String, Address>());
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    //manually deserialize the HashMap
+                    Map<String, Object> addressMap = (Map<String, Object>) snapshot.getValue();
+
+                    // retrieve values from the Hashmap
+                    String addressId = (String) addressMap.get("addressId");
+                    String address = (String) addressMap.get("address");
+                    String city = (String) addressMap.get("city");
+                    String province = (String) addressMap.get("province");
+                    String postalCode = (String) addressMap.get("postalCode");
+                    String country = (String) addressMap.get("country");
+                    String addressNotes = (String) addressMap.get("addressNotes");
+                    int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
+                    String accessible = (String) addressMap.get("accessible");
+                    String shovelAvailable = (String) addressMap.get("shovelAvailable");
+
+                    // Create new Address object
+                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
+
+                    // Add the Address object to the addresses HashMap in User model
+                    user.addAddress(addressId, addressObject);
+                }
+
+                // Retrieve list of addresses from Hashmap
+                List<Address> addresses = new ArrayList<>(user.getAddresses().values());
+
+                // Update the Spinner with addresses
+                ArrayAdapter<Address> addressAdapter = new ArrayAdapter<>(GuardianProfileActivity.this, android.R.layout.simple_spinner_item, addresses);
+                addressAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                addressSpinner.setAdapter(addressAdapter);
+
+                // Enable or disable the "Create Work Order" button based on the presence of addresses
+                //btnOrderShoveling.setEnabled(!addresses.isEmpty());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
     }
 }
