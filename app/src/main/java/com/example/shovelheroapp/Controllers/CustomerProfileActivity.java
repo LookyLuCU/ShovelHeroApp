@@ -52,17 +52,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     private User currentUser;
     private String currentCustomerId;
 
-    //address list
-    //private ListView addressListView;
-    //private ArrayAdapter<String> addressAdapter;
-    //private List<String> addressList;
-    //private TextView tvAddress;
 
-    //AddressList setup
-    //private RecyclerView addressRecyclerView;
-
-    //AddressAdapter adapter;
-    //List<Address> addressList;
     private Spinner addressSpinner;
     private ArrayAdapter<String> addressAdapter;
 
@@ -110,7 +100,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         }
 
 
-
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewCustomer);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -148,16 +137,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
 
                         System.out.println("User data loaded: " + currentUser.getUsername());
-
                         System.out.println("Sending userid to read addresses: " + currentUser);
 
                         readAddressesFromFirebase(currentUser);
+
 
                         //*******
                         //CUSTOMER BUTTONS
                         //*******
 
-                        //ORDER SHOVELLING BUTTON - DIRECTLY FROM PROFILE
+                        //ORDER SHOVELLING BUTTON
                         btnOrderShoveling.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v){
@@ -304,7 +293,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
             //work order elements
             String workOrderID = workOrderReference.push().getKey();
             Date requestDate = Calendar.getInstance().getTime();
-            String status = "New";
+            String status = "Started";
             int squareFootage = address.getDrivewaySquareFootage();
             List<String> itemsRequested = null;
             String addressId = address.getAddressId();

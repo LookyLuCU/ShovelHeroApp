@@ -1,6 +1,5 @@
 package com.example.shovelheroapp.Models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,7 +37,6 @@ public class User {
 
 
     public User(){
-        //addresses = new ArrayList<>();
         addresses = new HashMap<>();
     }
 

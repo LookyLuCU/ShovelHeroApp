@@ -29,6 +29,25 @@
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
 
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginBottom="18dp"/>
+
+        <TextView
+            android:id="@+id/tvSquareFootage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/tvRequestDate"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,20 +84,20 @@
             android:textSize="16sp"
             android:layout_marginBottom="18dp"/>
 
-        <Spinner
+        <!--Spinner
             android:id="@+id/spinnerAddress"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:layout_marginBottom="18dp"/>
+            android:layout_marginBottom="18dp"/-->
 
-        <EditText
+        <!--EditText
             android:id="@+id/etSquareFootage"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:hint="Square Footage"
             android:minHeight="48dp"
-            android:inputType="number"/>
+            android:inputType="number"/-->
     </LinearLayout>
 
 
@@ -92,7 +111,7 @@
             android:id="@+id/etCustomShoveller"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="Request by Username"
+            android:hint="Request Username"
             android:minHeight="48dp"
             android:inputType="text"/>
 
@@ -135,7 +154,7 @@
 
 
         <EditText
-            android:id="@+id/etSpecialInstructions"
+            android:id="@+id/etAddressNotes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Special Instructions (Optional)"
@@ -161,7 +180,7 @@
             android:layout_marginBottom="16dp">
 
             <Button
-                android:id="@+id/btnCreateOrder"
+                android:id="@+id/btnOrderShovelling"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

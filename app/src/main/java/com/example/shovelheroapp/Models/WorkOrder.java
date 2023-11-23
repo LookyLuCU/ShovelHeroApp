@@ -2,11 +2,9 @@ package com.example.shovelheroapp.Models;
 
 import android.media.Image;
 import android.widget.CalendarView;
-
 import android.widget.TextClock;
 
-
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +38,7 @@ public class WorkOrder {
 
 
     public WorkOrder(){
+        itemsRequested = new ArrayList<>();
     }
 
 
