@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -42,21 +43,27 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private TextView emailTV;
     private TextView phoneTV;
     private Spinner addressSpinner;
+    private Spinner youthsSpinner;
 
     private User currentUser;
     private String userId;
 
+    EditText addYouthET;
+
 
 
     //buttons
-    Button btnLinkedYouths;
+    Button btnAddYouth;
+    Button btnViewYouthProfile;
+    Button btnViewRatings;
+
     Button btnViewJobs;
     Button btnManagePaymentInfo;
     Button btnManageProfileInfo;
     Button btnAddAddress;
     Button btnEditPassword;
-    Button btnViewRatings;
-    Button btnLogout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +77,18 @@ public class GuardianProfileActivity extends AppCompatActivity {
         lastNameTV = findViewById(R.id.tvLastname);
         emailTV = findViewById(R.id.tvEmail);
         phoneTV = findViewById(R.id.tvPhone);
+        addYouthET = findViewById(R.id.etAddYouth);
         addressSpinner = findViewById(R.id.spinnerAddress);
 
-        btnLinkedYouths = findViewById(R.id.btnLinkedYouths);
-        btnViewRatings = findViewById(R.id.btnLinkedYouths);
-        btnViewJobs = findViewById(R.id.btnManageYouthInfo);
+        btnAddYouth = findViewById(R.id.btnAddYouth);
+        youthsSpinner = findViewById(R.id.spinnerYouths);
+        btnViewYouthProfile = findViewById(R.id.btnViewYouthProfile);
+        btnViewRatings = findViewById(R.id.btnViewRatings);
         btnManagePaymentInfo = findViewById(R.id.btnManagePaymentInfo);
         btnManageProfileInfo = findViewById(R.id.btnManageProfileInfo);
+        btnAddAddress = findViewById(R.id.btnAddAddress);
         btnEditPassword = findViewById(R.id.btnEditPassword);
-        btnViewRatings = findViewById(R.id.btnViewYouthRatings);
+
 
 
         //get Username from registration page or or UserID from Login
@@ -122,7 +132,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
                         firstNameTV.setText("First Name: " + user.getFirstName());
-                        lastNameTV.setText("Last Name: " + user.getLastName());
+                        lastNameTV.setText(user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 
@@ -152,62 +162,29 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
                         //IMAGE: ADD ID - once dropped by user, to notify app team for verification (only app team can verify)
 
-                        //VIEW MY YOUTHS BUTTON - **todo**an Array list like addresses?
-                        btnLinkedYouths.setOnClickListener(new View.OnClickListener() {
+                        //ADD YOUTH BUTTON
+                        btnAddYouth.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 /**
-                                Intent intentViewYouthJobs = new Intent(GuardianProfileActivity.this, YouthShovelerProfileActivity.class);
-                                String youthId = user.getUserId();
-                                intentViewYouthJobs.putExtra("USER_ID", youthId);
-                                startActivity(intentViewYouthJobs);
+                                 Intent intentViewYouthJobs = new Intent(GuardianProfileActivity.this, YouthShovelerProfileActivity.class);
+                                 String guardianId = user.getUserId();
+                                 intentViewYouthJobs.putExtra("USER_ID", guardianId);
+                                 startActivity(intentViewYouthJobs);
                                  **/
                             }
                         });
 
-                        //MANAGE PAYMENT BUTTON
-                        btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
+                        //VIEW MY YOUTHS BUTTON - **todo**an Array list like addresses?
+                        btnViewYouthProfile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                 Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
-                                 String youthId = user.getUserId();
-                                 intentManageYouthPayment.putExtra("USER_ID", youthId);
-                                 startActivity(intentManageYouthPayment);
-                            }
-                        });
-
-                        //MANAGE PROFILE BUTTON
-                        btnManageProfileInfo.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage user profile under construction", Toast.LENGTH_SHORT).show();
-                                 Intent intentManageYouthProfile = new Intent(GuardianProfileActivity.this, EditUserProfileActivity.class);
-                                 String youthId = user.getUserId();
-                                 intentManageYouthProfile.putExtra("USER_ID", youthId);
-                                 startActivity(intentManageYouthProfile);
-                            }
-                        });
-
-                        //ADD ADDRESS BUTTON
-                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intentNewAddress = new Intent(GuardianProfileActivity.this, CreateAddressActivity.class);
-                                String customerId = user.getUserId();
-                                intentNewAddress.putExtra("USER_ID", customerId);
-                                startActivity(intentNewAddress);
-                            }
-                        });
-
-                        //EDIT PASSWORD BUTTON
-                        btnEditPassword.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intentEditPassword = new Intent(GuardianProfileActivity.this, EditPasswordActivity.class);
-                                String youthId = user.getUserId();
-                                intentEditPassword.putExtra("USER_ID", youthId);
-                                startActivity(intentEditPassword);
+                                /**
+                                Intent intentViewYouthJobs = new Intent(GuardianProfileActivity.this, YouthShovelerProfileActivity.class);
+                                String guardianId = user.getUserId();
+                                intentViewYouthJobs.putExtra("USER_ID", guardianId);
+                                startActivity(intentViewYouthJobs);
+                                 **/
                             }
                         });
 
@@ -219,10 +196,56 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
                                 /**
                                  Intent intentViewRatings = new Intent(YouthShovelerProfileActivity.this, ViewRatingsActivity.class);
-                                 String youthId = user.getUserId();
-                                 intentViewRatings.putExtra("USER_ID", youthId);
+                                 String guardianId = user.getUserId();
+                                 intentViewRatings.putExtra("USER_ID", guardianId);
                                  startActivity(intentViewRatings);
                                  **/
+                            }
+                        });
+
+                        //MANAGE PROFILE BUTTON
+                        btnManageProfileInfo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage user profile under construction", Toast.LENGTH_SHORT).show();
+                                Intent intentManageYouthProfile = new Intent(GuardianProfileActivity.this, EditUserProfileActivity.class);
+                                String guardianId = user.getUserId();
+                                intentManageYouthProfile.putExtra("USER_ID", guardianId);
+                                startActivity(intentManageYouthProfile);
+                            }
+                        });
+
+                        //MANAGE PAYMENT BUTTON
+                        btnManagePaymentInfo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
+                                 Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
+                                 String guardianId = user.getUserId();
+                                 intentManageYouthPayment.putExtra("USER_ID", guardianId);
+                                 startActivity(intentManageYouthPayment);
+                            }
+                        });
+
+                        //ADD ADDRESS BUTTON
+                        btnAddAddress.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentNewAddress = new Intent(GuardianProfileActivity.this, CreateAddressActivity.class);
+                                String guardianId = user.getUserId();
+                                intentNewAddress.putExtra("USER_ID", guardianId);
+                                startActivity(intentNewAddress);
+                            }
+                        });
+
+                        //EDIT PASSWORD BUTTON
+                        btnEditPassword.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intentEditPassword = new Intent(GuardianProfileActivity.this, EditPasswordActivity.class);
+                                String guardianId = user.getUserId();
+                                intentEditPassword.putExtra("USER_ID", guardianId);
+                                startActivity(intentEditPassword);
                             }
                         });
                     } else {

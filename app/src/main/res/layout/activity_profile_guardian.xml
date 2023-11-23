@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:src="@drawable/shovel_hero_logo"
         android:contentDescription="Shovel Hero Logo"
-        android:layout_marginBottom="6dp"/>
+        android:layout_marginBottom="1dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -23,32 +23,34 @@
         android:text="Guardian Profile"
         android:textSize="24sp"
         android:textStyle="italic"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="10dp"
         android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="3dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        <!--TO add: android:src=""-->
-        <ImageView
-            android:id="@+id/imgProfilePicture"
-            android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:contentDescription="Guardian Profile Picture"
-            android:focusable="true"
-            android:onClick="onUploadProfilePicture"
-            android:src="@drawable/shovel_hero_logo"
-            android:scaleType="fitXY"
-            android:background="@color/white"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
+
+            <!--TO add: android:src=""-->
+            <ImageView
+                android:id="@+id/imgProfilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contentDescription="Guardian Profile Picture"
+                android:focusable="true"
+                android:onClick="onUploadProfilePicture"
+                android:src="@drawable/shovel_hero_logo"
+                android:scaleType="fitXY"
+                android:background="@color/white"/>
 
         </LinearLayout>
 
@@ -56,14 +58,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="3dp">
 
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@color/black"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -84,21 +88,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:textColor="@color/black"/>
+
             </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:textColor="@color/black"/>
 
             <Spinner
                 android:id="@+id/spinnerAddress"
@@ -107,101 +112,190 @@
 
         </LinearLayout>
 
+
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="335dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="2dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:id="@+id/lblPendingApproval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="Jobs Awaiting Approval"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="5dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPendingApproval"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="3dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="15dp">
+
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/lblYouthManagement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="Youth Management"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnLinkedYouths"
-                android:layout_width="200dp"
+            <EditText
+                android:id="@+id/etAddYouth"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
-                android:text="Linked Youths"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/blue"
-                android:textColor="@color/black"/>
+                android:hint="Add Youth Username"/>
 
             <Button
-                android:id="@+id/btnManageYouthInfo"
-                android:layout_width="200dp"
+                android:id="@+id/btnAddYouth"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="Manage Youth Info"
+                android:text="Add Youth"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/blue"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/tvLinkedYouths"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Youths: "
+                android:textSize="15dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerYouths"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"/>
 
             <Button
-                android:id="@+id/btnManageProfileInfo"
-                android:layout_width="200dp"
+                android:id="@+id/btnViewYouthProfile"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Edit Profile Info"
-                android:layout_marginBottom="8dp"
+                android:text="Profile"
                 android:backgroundTint="@color/blue"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:layout_marginLeft="3dp"/>
 
             <Button
-                android:id="@+id/btnAddAddress"
-                android:layout_width="200dp"
+                android:id="@+id/btnViewRatings"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Add Address"
-                android:layout_marginBottom="8dp"
+                android:text="Ratings"
                 android:backgroundTint="@color/blue"
                 android:textColor="@color/black"/>
 
         </LinearLayout>
+
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnManagePaymentInfo"
-                android:layout_width="200dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Manage Payment Info"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/blue"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="35dp">
 
-            <Button
-                android:id="@+id/btnEditPassword"
-                android:layout_width="200dp"
+                <Button
+                    android:id="@+id/btnManageProfileInfo"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Update Profile and ID"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@color/black"/>
+
+                <Button
+                    android:id="@+id/btnAddAddress"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add Address"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit Password"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/blue"
-                android:textColor="@color/black"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnManagePaymentInfo"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Payment Info"
+                    android:layout_marginBottom="4dp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@color/black"/>
+
+                <Button
+                    android:id="@+id/btnEditPassword"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Password"
+                    android:layout_marginBottom="4dp"
+                    android:backgroundTint="@color/blue"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnViewYouthRatings"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="View Youth Ratings"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/blue"
-            android:textColor="@color/black"/>
+    </LinearLayout>
 
-           </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationViewGuardian"
