@@ -111,20 +111,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"/>
 
-            <!--TextView
-                android:id="@+id/lblAddresses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Addresses"
-                android:textAlignment="center"
-                android:textColor="@color/black"/-->
-
-            <!--androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/addressRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"/-->
-
         </LinearLayout>
 
     </LinearLayout>

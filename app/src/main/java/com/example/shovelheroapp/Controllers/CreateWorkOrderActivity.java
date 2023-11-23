@@ -14,9 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.Enums.Status;
-import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -68,19 +67,17 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     private TextClock requestedTime;  //time customer has requested in the future
 
 
+    //WO Items and pricing
     private List<String> itemsRequested;
+    private List<CheckBox> itemCheckBoxList;
     private CheckBox drivewayCheckBox;
     private CheckBox walkwayCheckBox;
     private CheckBox sidewalkCheckBox;
+    private Double wOPrice = 2.00;  //app overhead cost - maybe more with stripe fee
 
     private EditText addressNotesEditText;
-    private String status;
     TextView dateTimeInLongTextView;
 
-
-    //Pricing
-    private Double wOPrice = 0.0;
-    private String currentWOId;
 
 
     //Buttons
@@ -90,8 +87,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     //instantiated Objects
     private WorkOrder currentWorkOrder;
-    private User currentUser;
-    private Address currentAddress;
+    private String currentWOId;
 
 
     @Override
@@ -110,31 +106,23 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         addressNotesEditText = findViewById(R.id.etAddressNotes);
         workOrderPriceTextView = findViewById(R.id.tvWorkOrderPrice);
 
-        drivewayCheckBox = findViewById(R.id.cbDriveway);
-        walkwayCheckBox = findViewById(R.id.cbWalkway);
-        sidewalkCheckBox = findViewById(R.id.cbSidewalk);
-
         requestedDate = findViewById(R.id.etCustomDate);
         requestedTime = findViewById(R.id.tpCustomTime);
 
         calendar = Calendar.getInstance();
-        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
+        //simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm aaa z");
         dateTime = simpleDateFormat.format(calendar.getTime()).toString();
-        requestedDate.setText(dateTime);
+        //requestedDate.setText(dateTime);
+
+        itemCheckBoxList = new ArrayList<>();
+        itemCheckBoxList.add(findViewById(R.id.cbDriveway));
+        itemCheckBoxList.add(findViewById(R.id.cbSidewalk));
+        itemCheckBoxList.add(findViewById(R.id.cbWalkway));
 
         btnOrderShovelling = findViewById(R.id.btnOrderShovelling);
         btnCancelOrder = findViewById(R.id.btnCancel);
 
-        /**
-         addressTextView = findViewById(R.id.tvAddress);
-
-         //spinner adapter
-         addressSpinner = findViewById(R.id.spinnerAddress);
-         spinnerItemList = new ArrayList<>();
-         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
-         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-         addressSpinner.setAdapter(spinnerAdapter);
-         **/
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -145,34 +133,22 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             }
         }
 
-        System.out.println("Work order id intent ok fro profile: " + currentWOId);
-
+        System.out.println("Work order id intent ok from profile: " + currentWOId);
 
         //initialize Firebase
         userTable = FirebaseDatabase.getInstance().getReference("users");
 
-        //System.out.println("work order reference: " + workOrderTable.getKey());
+        updateBill();
 
-        drivewayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                updatePrice(currentWOId);
-            }
-        });
-
-        walkwayCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                updatePrice(currentWOId);
-            }
-        });
-
-        sidewalkCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                updatePrice(currentWOId);
-            }
-        });
+        //Add checkbox listeners
+        for (final CheckBox checkbox : itemCheckBoxList) {
+            checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    updateBill();
+                }
+            });
+        }
     }
 
 
@@ -190,13 +166,13 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                         //display inital WO information
                         System.out.println("Reading address from Firebase");
                         readAddressFromFirebase(currentWorkOrder);
-                        //System.out.println("Work order address added to WO info: " + currentAddress.getAddress());
 
-                        workOrderPriceTextView.setText("0");
-                        sqFootageTextView.setText("Square Feet: " + currentWorkOrder.getSquareFootage());
+                        workOrderPriceTextView.setText("Shovelling Price: $2.00");
+                        sqFootageTextView.setText("Job Size: " + currentWorkOrder.getSquareFootage() + " square feet");
                         requestDate.setText("Request Date: " + currentWorkOrder.getRequestDate().toString());
 
                         System.out.println("Work order data loaded");
+
 
                         //*******
                         //WORK ORDER CREATE BUTTONS
@@ -230,11 +206,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         System.out.println("workOrderId received to retrieve address: " + workOrder);
 
         DatabaseReference addressReference = userTable.child(workOrder.getCustomerId()).child("addresses").child(workOrder.getCustomerAddressId());
-
-        //DatabaseReference addressReference = FirebaseDatabase.getInstance().getReference("users").child(workOrder.getCustomerId()).child("addresses").child(workOrder.getCustomerAddressId());
         System.out.println("addressed referenced for address, ID: " + addressReference.getKey()); //RETRIEVES OK
-
-        //***TODO**THIS IS WHERE IT BREAKS***
 
         addressReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -262,6 +234,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     }
 
 
+    //**TODO** - to get into updated form
     private void updatePrice(String currentWOId) {
 
         System.out.println("Price to be updated");
@@ -279,12 +252,14 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     if (currentWorkOrder != null) {
                         squareFootage = currentWorkOrder.getSquareFootage();
 
+                        //if statements
                         if (drivewayCheckBox.isChecked()) {
                             //itemsRequested.add("Driveway");
                             if (squareFootage <= 600) {
                                 wOPrice = wOPrice + 20.00;
                             } else {
                                 double pricePerSquareFoot = 0.06;
+
                                 wOPrice = squareFootage * pricePerSquareFoot;
                                 System.out.println("Driveway price added, total: " + wOPrice);
                             }
@@ -292,16 +267,17 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
                         if (sidewalkCheckBox.isChecked()) {
                             //itemsRequested.add("Sidewalk");
-                            wOPrice = wOPrice + 10.00;
+                            wOPrice= wOPrice + 10.00;
                             System.out.println("Sidewalk price added, total: " + wOPrice);
                         }
 
                         if (walkwayCheckBox.isChecked()) {
                             //itemsRequested.add("Walkway");
+                            //updatedPrice = wOPrice + walkwayPrice
                             wOPrice = wOPrice + 10.00;
                             System.out.println("Walkway price added, total: " + wOPrice);
                         }
-                        workOrderPriceTextView.setText("$" + wOPrice);
+                        workOrderPriceTextView.setText("Shovelling Price $" + wOPrice);
                     }
                 }
             }
@@ -310,6 +286,30 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 //handle error
             }
         });
+    }
+
+    private void updateBill(){
+        double totalPrice = wOPrice;
+
+        //iterate through checkboxes
+        for (CheckBox checkBox : itemCheckBoxList) {
+            if(checkBox.isChecked()){
+                totalPrice += getPriceForCheckBoxes(checkBox);
+            }
+        }
+        workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+    }
+
+
+    private Double getPriceForCheckBoxes(CheckBox checkBox){
+        if(checkBox.getId() == R.id.cbDriveway) {
+            return 20.00;
+        } else if (checkBox.getId() == R.id.cbSidewalk) {
+            return 10.00;
+        } else if (checkBox.getId() == R.id.cbWalkway) {
+            return 10.00;
+        }
+        return 0.00;
     }
 
 
@@ -395,144 +395,3 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 });
     }
 }
-
-
-
-/**
-
-        //Handle Spinner address selection - address already selected from profile (for now at least)
-        /**
-        addressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle the selected address item
-                currentAddress = spinnerItemList.get(position);
-                // You can use 'selectedAddress' for further processing or adding to the work order.
-                Toast.makeText(CreateWorkOrderActivity.this, "Selected Address: " + currentAddress.getAddress() + ", " + currentAddress.getCity() + ", " + currentAddress.getCity(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
-            }
-        });
-
-        }
-
-
-
-        //create WO object and save to DB
-        WorkOrder newWorkOrder = new WorkOrder(workOrderID, requestDate, status, sqrFootage, itemsRequested, currentUser.getUserId(), addressId);
-        workOrderReference.child(workOrderId).setValue(newWorkOrder)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        String accountType = currentUser.getAccountType().toString();
-                        String currentCustomerId = currentUser.getUserId();
-                        Toast.makeText(CreateWorkOrderActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
-
-                        //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATIONS
-
-                        switch (accountType) {
-                            case "Youth Shoveller":
-                                Intent intentYouth = new Intent(CreateWorkOrderActivity.this, YouthShovelerProfileActivity.class);
-                                String youthID = currentCustomerId;
-                                intentYouth.putExtra("USER_ID", youthID);
-                                startActivity(intentYouth);
-                                break;
-                            case "Customer":
-                                Intent intentCustomer = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
-                                String customerId = currentCustomerId;
-                                intentCustomer.putExtra("USER_ID", customerId);
-                                startActivity(intentCustomer);
-                                break;
-                            case "Guardian":
-                                Intent intentGuardian = new Intent(CreateWorkOrderActivity.this, GuardianProfileActivity.class);
-                                String guardianId = currentCustomerId;
-                                intentGuardian.putExtra("USER_ID", guardianId);
-                                startActivity(intentGuardian);
-                            default:
-                                Intent intent = new Intent(CreateWorkOrderActivity.this, UserRegistrationActivity.class);
-                                startActivity(intent);
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateWorkOrderActivity.this, "Could not create user. Please try again", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-    //get address from selection
-    private void retrieveAddresses() {
-        addressTable.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot addressSnapshot : dataSnapshot.getChildren()) {
-                    Address spinnerItem = addressSnapshot.getValue(Address.class);
-                    if (spinnerItem != null) {
-                        spinnerItemList.add(spinnerItem);
-                        spinnerAdapter.add(spinnerItem.getAddress() + ", " + spinnerItem.getCity() + ", " + spinnerItem.getProvince()); // Display the street in the Spinner
-                    }
-                }
-                spinnerAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle error
-            }
-        });
-    }
-
-
-        //FROM NEW ADDRESS LOGIC - to return to profile after creating work order
-        private void saveAndReturnToProfile (String customerId){
-            DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(customerId);
-            userTable.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    currentUser = snapshot.getValue(User.class);
-                    String accountType = currentUser.getAccountType();
-
-                    //**todo** ADD ADULT SHOEVLLER AND GUARDIAN
-                    if (accountType != null) {
-                        switch (accountType) {
-                            case "Youth Shoveller":
-                                Intent intentYouth = new Intent(CreateWorkOrderActivity.this, YouthShovelerProfileActivity.class);
-                                String youthID = currentUser.getUserId();
-                                intentYouth.putExtra("USER_ID", youthID);
-                                startActivity(intentYouth);
-                                break;
-                            case "Customer":
-                                Intent intentCustomer = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
-                                String customerId = currentUser.getUserId();
-                                intentCustomer.putExtra("USER_ID", customerId);
-                                startActivity(intentCustomer);
-                                break;
-                            case "Guardian":
-                                Intent intentGuardian = new Intent(CreateWorkOrderActivity.this, GuardianProfileActivity.class);
-                                String guardianId = currentUser.getUserId();
-                                intentGuardian.putExtra("USER_ID", guardianId);
-                                startActivity(intentGuardian);
-                                break;
-                            default:
-                                Intent intent = new Intent(CreateWorkOrderActivity.this, UserRegistrationActivity.class);
-                                startActivity(intent);
-                                break;
-                        }
-                    } else {
-                        System.out.println("Account Type is Null");
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-        }
-    }
-    **/
-
-

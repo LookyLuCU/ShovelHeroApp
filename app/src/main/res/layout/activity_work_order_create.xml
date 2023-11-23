@@ -23,7 +23,7 @@
             android:id="@+id/lblCreateWO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create a Work Order"
+            android:text="Request Shovelling"
             android:gravity="center"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -31,22 +31,41 @@
 
         <TextView
             android:id="@+id/tvAddress"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginBottom="18dp"/>
+            android:textSize="15sp"
+            android:minHeight="30dp" />
 
         <TextView
             android:id="@+id/tvSquareFootage"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:textSize="15sp"
+            android:minHeight="30dp" />
 
         <TextView
             android:id="@+id/tvRequestDate"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:textSize="15sp"
+            android:minHeight="30dp"
+            android:layout_marginBottom="3dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/lblSpecialRequests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Special Requests"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,48 +75,18 @@
 
         <EditText
             android:id="@+id/etCustomDate"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="Select Specific Date Request" />
+            android:layout_marginBottom="3dp"
+            android:hint="Specific Date" />
 
         <TextClock
             android:id="@+id/tpCustomTime"
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="Select Specific Time Request" />
+            android:layout_marginBottom="3dp"
+            android:hint="Specific Time" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Address"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:layout_marginBottom="18dp"/>
-
-        <!--Spinner
-            android:id="@+id/spinnerAddress"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginBottom="18dp"/-->
-
-        <!--EditText
-            android:id="@+id/etSquareFootage"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:hint="Square Footage"
-            android:minHeight="48dp"
-            android:inputType="number"/-->
     </LinearLayout>
 
 
@@ -109,19 +98,20 @@
 
         <EditText
             android:id="@+id/etCustomShoveller"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Request Username"
+            android:hint="Request User By Username"
             android:minHeight="48dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:outlineAmbientShadowColor="@color/black"/>
 
-        <Button
+        <!--Button
             android:id="@+id/btnValidateShoveller"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="Validate Username" />
+            android:text="Validate Username" /-->
 
     </LinearLayout>
 
