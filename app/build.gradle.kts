@@ -36,6 +36,7 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
     implementation("androidx.appcompat:appcompat:1.6.1")

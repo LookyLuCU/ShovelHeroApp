@@ -1,7 +1,6 @@
 package com.example.shovelheroapp.Models;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class User {
 
@@ -20,7 +19,7 @@ public class User {
 
     //NON-CONSTRUCTOR FIELDS
     //private int paymentId;  // -->Foreign key - to choose from List of properties
-    //private int addressId; //-->Foreign key - to choose from list of properties
+
     private String profilePictureUrl;
     private String  guardianIdUrl; //on Guardian view only
     private boolean guardianIdValidated; // --> only available to app team // I don't think Firebase works with complex Android UI (boolean)?
@@ -31,13 +30,13 @@ public class User {
     //private List<Address> addresses;
     private HashMap<String, Address> addresses;
     //private Map<String, Map<String, Object>> addresses;
-    private List<String> linkedShovellerId; // --> on Guardian view only  List<String> ? Is this correct?
-    private List<String> linkedGuardianId; // --> on YouthShoveller view only
+    private HashMap<String, User> linkedUsers; // --> on Guardian view only  List<String> ? Is this correct?
 
 
 
     public User(){
         addresses = new HashMap<>();
+        linkedUsers = new HashMap<>();
     }
 
     //CONSTRUCTOR
@@ -51,8 +50,8 @@ public class User {
         this.birthdate = birthdate;
         this.email = email;
         this.phoneNo = phoneNo;
-        //addresses = new ArrayList<>();
         this.addresses = new HashMap<>();
+        this.linkedUsers = new HashMap<>();
     }
 
 
@@ -137,6 +136,7 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
+
     public String getGuardianIdUrl() {
         return guardianIdUrl;
     }
@@ -161,18 +161,6 @@ public class User {
         this.shovellerRadius = shovellerRadius;
     }
 
-
-//
-//    public List<Address> getAddresses()
-//    {
-//        return addresses;
-//    }
-//
-//    public void setAddresses(List<Address> addresses) {
-//        this.addresses = addresses;
-//    }
-
-
     public void addAddress(String id, Address address) {
         addresses.put(id, address);
     }
@@ -186,18 +174,19 @@ public class User {
         this.addresses = addresses;
     }
 
-    public void setLinkedShovellerId(List<String> linkedShovellerId) {
-        this.linkedShovellerId = linkedShovellerId;
+
+    public void addLinkedUser(String id, User user) {
+        linkedUsers.put(id, user);
     }
 
-
-    public List<String> getLinkedGuardianId() {
-        return linkedGuardianId;
+    public HashMap<String, User> getLinkedUsers() {
+        return linkedUsers;
     }
 
-    public void setLinkedGuardianId(List<String> linkedGuardianId) {
-        this.linkedGuardianId = linkedGuardianId;
+    public void setLinkedUsers(HashMap<String, User> linkedUsers) {
+        this.linkedUsers = linkedUsers;
     }
+
 
     public String getProfilePictureUrl() {
         return profilePictureUrl;
