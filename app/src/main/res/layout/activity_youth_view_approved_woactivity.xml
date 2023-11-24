@@ -23,7 +23,7 @@
         android:id="@+id/textView3"
         android:layout_width="255dp"
         android:layout_height="32dp"
-        android:text="View Approved Work Orders"
+        android:text="Approved Work Order"
         android:textAlignment="center"
         android:textColor="#2991C8"
         android:textSize="20sp"
