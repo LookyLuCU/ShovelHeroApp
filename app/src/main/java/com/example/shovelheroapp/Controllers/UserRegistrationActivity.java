@@ -30,6 +30,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private EditText phoneEditText;
     private ImageButton uploadIdImage;
     private TextView uploadIdCardTextView;
-    private Uri selectedImageUri;
+    private Uri selectedIdUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +118,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public void createUser(View view) {
@@ -151,6 +151,10 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
 
                         Toast.makeText(UserRegistrationActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+
+                        if ("Guardian".equals(accountType) && selectedIdUri != null) {
+                            uploadIdImage();
+                        }
 
                         //TO ADD FUNDRAISER AND ADULT SHOVELLER IN LATER ITERATION
                         switch (accountType) {
@@ -231,9 +235,9 @@ public class UserRegistrationActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    selectedImageUri = data.getData();
-                    setImageButtonBackground(selectedImageUri);
-                    saveImageToDatabase(selectedImageUri);
+                    assert data != null;
+                    selectedIdUri = data.getData();
+                    setImageButtonBackground(selectedIdUri);
                 }
             });
 
@@ -248,9 +252,18 @@ public class UserRegistrationActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
         }
     }
+    private void uploadIdImage(){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference idReference = storageReference.child("guardianIds/" + userId + ".jpg");
 
-    private void saveImageToDatabase(Uri imageBytes) {
-        //***TO DO
+        idReference.putFile(selectedIdUri).addOnSuccessListener(taskSnapshot -> {
+            Toast.makeText(UserRegistrationActivity.this, "ID Card Uploaded", Toast.LENGTH_SHORT).show();
+            // get the download URL
+            idReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                // Set up with email? Might require backend
+                String downloadUrl = uri.toString();
+
+            });
+        }).addOnFailureListener(e -> Toast.makeText(UserRegistrationActivity.this,"Failed to upload ID" + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
-
