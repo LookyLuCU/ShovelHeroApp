@@ -101,15 +101,14 @@
         android:id="@+id/btnConfirm"
         android:layout_width="110dp"
         android:layout_height="49dp"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="85dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="159dp"
+        android:layout_marginEnd="216dp"
         android:backgroundTint="#2991C8"
         android:text="Confirm"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/btnViewWO"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtApprovalStatus"
         app:layout_constraintVertical_bias="1.0" />
@@ -128,5 +127,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnConfirm" />
+
+    <Button
+        android:id="@+id/btnCancelYouth"
+        android:layout_width="110dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="91dp"
+        android:layout_marginBottom="2dp"
+        android:backgroundTint="#2991C8"
+        android:text="Cancel"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnViewWO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnConfirm"
+        app:layout_constraintTop_toBottomOf="@+id/txtApprovalStatus" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

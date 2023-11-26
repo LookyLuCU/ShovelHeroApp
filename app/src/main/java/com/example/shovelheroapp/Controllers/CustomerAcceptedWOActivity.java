@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.content.DialogInterface;
+import androidx.appcompat.app.AlertDialog;
 
 public class CustomerAcceptedWOActivity extends AppCompatActivity {
 
@@ -59,6 +62,42 @@ public class CustomerAcceptedWOActivity extends AppCompatActivity {
                 retrieveShovellerProfile(userId);
             }
         }
+
+        Button buttonCancelOrder = findViewById(R.id.btnCancelCustomer);
+
+        buttonCancelOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCancelOrderDialog();
+            }
+        });
+
+    }
+    private void showCancelOrderDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Cancel Order");
+        builder.setMessage("Please provide a reason for cancellation:");
+
+        // Add an input field to the dialog
+        final EditText input = new EditText(this);
+        builder.setView(input);
+
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Get the reason entered by the user
+                String reason = input.getText().toString();
+                dialog.dismiss(); //For now, we are just the dialog box because we haven't implemented our report compliant yet
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
     private void retrieveShovellerProfile(String userId) {
         userTable.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {

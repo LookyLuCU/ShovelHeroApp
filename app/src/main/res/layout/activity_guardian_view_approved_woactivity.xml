@@ -86,9 +86,9 @@
         android:id="@+id/btnConfirm"
         android:layout_width="110dp"
         android:layout_height="49dp"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="93dp"
         android:layout_marginTop="31dp"
-        android:layout_marginEnd="151dp"
+        android:layout_marginEnd="208dp"
         android:backgroundTint="#2991C8"
         android:text="Confirm"
         android:textSize="12sp"
@@ -154,5 +154,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnGPS"
         app:layout_constraintVertical_bias="0.323" />
+
+    <Button
+        android:id="@+id/btnCancelGuardian"
+        android:layout_width="110dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="91dp"
+        android:backgroundTint="#2991C8"
+        android:text="Cancel"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnViewWO"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnConfirm"
+        app:layout_constraintTop_toBottomOf="@+id/imgbtnChat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
