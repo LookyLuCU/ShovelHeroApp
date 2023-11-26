@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -48,7 +49,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
     private String selectedBirthdate;
     private EditText emailEditText;
     private EditText phoneEditText;
-    private ImageButton profileChangeImage;
+    private ImageButton uploadIdImage;
+    private TextView uploadIdCardTextView;
     private Uri selectedImageUri;
 
     @Override
@@ -70,7 +72,13 @@ public class UserRegistrationActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.etEmail);
         phoneEditText = findViewById(R.id.etPhone);
         birthdateText = findViewById(R.id.btnBirthdate);
-        profileChangeImage = findViewById(R.id.imgProfilePicture);
+        uploadIdCardTextView = findViewById(R.id.tvUploadIdCard);
+        uploadIdImage = findViewById(R.id.imgUploadIdCard);
+
+        // Set visibility of ID card button and add ID text to hidden
+        uploadIdImage.setVisibility(View.GONE);
+        uploadIdCardTextView.setVisibility(View.GONE);
+
 
         birthdateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,18 +88,41 @@ public class UserRegistrationActivity extends AppCompatActivity {
         });
 
         //image button listener
-        profileChangeImage.setOnClickListener(new View.OnClickListener() {
+        uploadIdImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage();
             }
         });
 
+        // Method for displaying the ID functionality just for the Guardian
+        spinnerAccountType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedUser = spinnerAccountType.getSelectedItem().toString();
+                if(selectedUser.equals("Guardian")){
+                    uploadIdImage.setVisibility(View.VISIBLE);
+                    uploadIdCardTextView.setVisibility(View.VISIBLE);
+
+                } else {
+                    uploadIdImage.setVisibility(View.GONE);
+                    uploadIdCardTextView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Required method. No implementation required for now
+
+            }
+        });
+
+
     }
 
     public void createUser(View view) {
 
-        //intialize ShovelHeroDB
+        //initialize ShovelHeroDB
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference userReference = database.getReference("users");
 
@@ -106,7 +137,8 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String birthdate = selectedBirthdate;
-        List<Address> addresses = new ArrayList<>();
+        //List<Address> addresses = new ArrayList<>();
+
 
         //create new user
         User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);
@@ -153,6 +185,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public void showBirthYearPicker() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -209,7 +242,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
             // Load the selected image from the URI
             Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
             // Set the image as the background of the ImageButton
-            profileChangeImage.setImageBitmap(image);
+            uploadIdImage.setImageBitmap(image);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
