@@ -177,7 +177,7 @@ public class CreateAddressActivity extends AppCompatActivity {
                 currentUser = snapshot.getValue(User.class);
                 String accountType = currentUser.getAccountType();
 
-                //**todo** ADD ADULT SHOEVLLER AND GUARDIAN
+                //**todo** ADD ADULT SHOVELLER AND GUARDIAN
                 if(accountType != null) {
                     switch (accountType) {
                         case "Youth Shoveller":

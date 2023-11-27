@@ -124,7 +124,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                 }
         );
 
-
         addressSpinner = findViewById(R.id.spinnerAddress);
 
         addYouthET = findViewById(R.id.etAddYouth);
@@ -214,6 +213,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 //if(user.getGuardianIdValidated()){
+                                System.out.println("this is the guardian being sent to link the youth: " + user.getUsername());
                                     linkYouthProfile(user);
                                 //} else {
                                   //  Toast.makeText(GuardianProfileActivity.this, "Please ensure your ID has been uploaded and validated", Toast.LENGTH_SHORT).show();
@@ -419,6 +419,8 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private void linkYouthProfile(User guardian){
         String youthUsername = addYouthET.getText().toString();
 
+        System.out.println("The youth username to link to the guardian, from edit text: " + youthUsername);
+
         //CHECK IF USERNAME EXISTS
         userTable.orderByChild("username").equalTo(youthUsername)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -427,6 +429,10 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         if (snapshot.exists()){
                             for (DataSnapshot userSnapShot : snapshot.getChildren()) {
                                 User youthUser = userSnapShot.getValue(User.class);
+
+                                System.out.println("The youthId linking to the guardian profile: " + youthUser.getUserId());
+
+                                System.out.println("The youth account type: " + youthUser.getAccountType());
 
                                 //CHECK THAT USERNAME = YOUTH ACCT
                                 if (youthUser.getAccountType() == "Youth Shoveller") {
@@ -485,6 +491,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
                     linkedUserReference.updateChildren(updateGuardianInfo)
                             .addOnSuccessListener(aVoid -> Toast.makeText(GuardianProfileActivity.this, "Guardian Validation and Profile Pic added to youth profile successfully", Toast.LENGTH_SHORT).show())
+                            //.addOnSuccessListener(addYouthToGuardianAccount(youthUser, guardianUser)
                             //.addOnFailureListener(e -> updateGuardianInfo.clear())
                             .addOnFailureListener(e -> Toast.makeText(GuardianProfileActivity.this, "Unable to add validated : " + e.getMessage(), Toast.LENGTH_SHORT).show());
                 }

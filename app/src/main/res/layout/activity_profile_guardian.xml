@@ -41,7 +41,7 @@
             <!--TO add: android:src=""-->
             <ImageView
                 android:id="@+id/imgProfilePicture"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:layout_weight="1"
                 android:clickable="true"
@@ -118,13 +118,13 @@
 
                 <ImageButton
                     android:id="@+id/btnAddIDPicture"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/add_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="Change Profile Picture"
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     android:background="?android:selectableItemBackground"
+                    android:src="@drawable/add_image"
                     android:onClick="onUploadIDPictureClick"
                     android:layout_marginLeft="5dp"/>
 
@@ -275,7 +275,7 @@
                     android:id="@+id/btnManageProfileInfo"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Update Profile and ID"
+                    android:text="Update Profile"
                     android:layout_marginBottom="8dp"
                     android:backgroundTint="@color/blue"
                     android:textColor="@color/black"/>

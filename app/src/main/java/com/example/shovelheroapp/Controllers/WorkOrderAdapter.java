@@ -1,5 +1,7 @@
 package com.example.shovelheroapp.Controllers;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +17,52 @@ import java.util.List;
 
 public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.ViewHolder> {
     private List<WorkOrder> workOrders;
+    private Context context;
 
-    public WorkOrderAdapter(List<WorkOrder> workOrders) {
+    public WorkOrderAdapter(Context context, List<WorkOrder> workOrders) {
+        this.context = context;
         this.workOrders = workOrders;
     }
 
-    @NonNull
+    //ViewHolder class
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        //public ImageView addressImage;
+        public TextView requestDateTV;
+        //public TextView distanceTV;
+        public TextView sqFootageTV;
+        public TextView statusTV;
+
+        public ViewHolder(View view) {
+            super(view);
+            //addressImage = view.findViewById(R.id.imgPropertyImage);
+            requestDateTV = view.findViewById(R.id.tvRequestDate);
+            //distanceTV = view.findViewById(R.id.tvDistance);
+            sqFootageTV = view.findViewById(R.id.tvSquareFootage);
+            statusTV = view.findViewById(R.id.tvStatus);
+        }
+    }
+
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.work_order_item, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.work_order_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WorkOrder workOrder = workOrders.get(position);
-        //holder.orderTypeTextView.setText(workOrder.);
-        holder.statusTextView.setText(workOrder.getStatus());
+
+        Log.d("WorkOrderAdapter", "onBindViewHolder: " + workOrder.getStatus());
+
+        //TODO: get initial property address (from Address)
+        //holder.addressImage.setImageBitmap(workOrder.getAddressImage);
+        holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestedDateTime()));
+        //TODO: calculate distance from shoveller address and add here
+        //holder.distanceTV.setText(workOrder.getDistance);
+
+        holder.sqFootageTV.setText("Job size: " + String.valueOf(workOrder.getSquareFootage()) + "square feet");
+        holder.statusTV.setText("Job Status: " + workOrder.getStatus());
     }
 
     @Override
@@ -39,15 +70,10 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.View
         return workOrders.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView orderTypeTextView;
-        TextView statusTextView;
-
-        public ViewHolder(View view) {
-            super(view);
-            orderTypeTextView = view.findViewById(R.id.orderTypeTextView);
-            statusTextView = view.findViewById(R.id.statusTextView);
-        }
+    public void updateData(List<WorkOrder> newWorkOrders) {
+        workOrders.clear();
+        workOrders.addAll(newWorkOrders);
+        notifyDataSetChanged();
     }
 }
 
