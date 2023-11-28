@@ -44,16 +44,10 @@ public class CreateAddressActivity extends AppCompatActivity {
     private CheckBox shovelAvailableOnsiteCB;
     private String accessible;
     private String shovelAvailable;
-
-
     private User currentUser;
     private String currentUserId;
-
     private Button btnCreateAddress;
-
-
     private DatabaseReference userTable;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +87,27 @@ public class CreateAddressActivity extends AppCompatActivity {
         btnCreateAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAddress();
-                saveAndReturnToProfile(currentUserId);
-                Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
+                String address = addressEditText.getText().toString();
+                String city = cityEditText.getText().toString();
+                String province = provinceEditText.getText().toString();
+                String postalCode = postalCodeEditText.getText().toString();
+                String drivewaySquareFootage = drivewaySquareFootageEditText.getText().toString();
+
+                if (address.isEmpty() || city.isEmpty() || province.isEmpty() || postalCode.isEmpty() || drivewaySquareFootage.isEmpty()){
+                    Toast.makeText(CreateAddressActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
+                }else if (!postalCode.matches("^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$")){
+                    Toast.makeText(CreateAddressActivity.this, "Please enter valid postal code", Toast.LENGTH_SHORT).show();
+                }else if (!city.matches("^[a-zA-Z]+$")){
+                    Toast.makeText(CreateAddressActivity.this, "Please enter valid city", Toast.LENGTH_SHORT).show();
+                }else if (!province.matches("^[a-zA-Z]+$")){
+                    Toast.makeText(CreateAddressActivity.this, "Please enter valid province", Toast.LENGTH_SHORT).show();
+                }else if (!drivewaySquareFootage.matches("^[0-9]+$")){
+                    Toast.makeText(CreateAddressActivity.this, "Please enter valid square footage", Toast.LENGTH_SHORT).show();
+                }else{
+                    createAddress();
+                    saveAndReturnToProfile(currentUserId);
+                    Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

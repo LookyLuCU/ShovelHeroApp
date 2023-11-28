@@ -25,11 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -132,7 +134,24 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 retrieveWOInfo(currentWOId);
             }
         }
+        btnOrderShovelling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String date = requestedDate.getText().toString();
+                String time = requestedTime.getFormat12Hour().toString();
+                String userName = customShovelerEditText.getText().toString();
 
+                if (!isValidDate(date)) {
+                    Toast.makeText(CreateWorkOrderActivity.this, "Please enter valid date in yyyy-MM-dd format", Toast.LENGTH_SHORT).show();
+                }
+                if (!isValidTime(time)) {
+                    Toast.makeText(CreateWorkOrderActivity.this, "Please enter valid time in h:mm format", Toast.LENGTH_SHORT).show();
+                }
+                if (!isValidUserName(userName)) {
+                    Toast.makeText(CreateWorkOrderActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         System.out.println("Work order id intent ok from profile: " + currentWOId);
 
         //initialize Firebase
@@ -149,6 +168,34 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    // Validation function for Date
+    private boolean isValidDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            sdf.setLenient(false);
+            sdf.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    // Validation function for Time
+    private boolean isValidTime(String time) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            sdf.setLenient(false);
+            sdf.parse(time);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    // Validation function for UserName
+    private boolean isValidUserName(String userName) {
+        return userName.length() >= 5 && userName.length() <= 20;
     }
 
 

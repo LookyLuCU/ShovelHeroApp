@@ -97,8 +97,8 @@
             android:id="@+id/etAddressNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Address Notes"
-            android:inputType="text"/>
+            android:hint="Address Notes (Optional)"
+            android:inputType="text" />
 
         <LinearLayout
             android:layout_width="match_parent"

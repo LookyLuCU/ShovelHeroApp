@@ -67,7 +67,25 @@ public class EditUserProfileActivity extends AppCompatActivity {
         changeProfilePicture = findViewById(R.id.btnChangeProfilePicture);
         profileImageView = findViewById(R.id.ivProfileImageView);
 
+        updateProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String firstName = editFirstname.getText().toString();
+                String lastName = editLastname.getText().toString();
+                String email = editEmail.getText().toString();
+                String phone = editPhoneNumber.getText().toString();
 
+                if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()){
+                    Toast.makeText(EditUserProfileActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
+                }
+                if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+                    Toast.makeText(EditUserProfileActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+                }
+                if(!(android.util.Patterns.PHONE.matcher(phone).matches())){
+                    Toast.makeText(EditUserProfileActivity.this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         changeProfilePicture.setOnClickListener(v -> selectProfileImage());
 
         editBirthdate.setOnClickListener(v -> showBirthYearPicker());
