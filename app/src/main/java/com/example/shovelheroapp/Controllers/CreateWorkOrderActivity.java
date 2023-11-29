@@ -56,9 +56,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     private String workOrderId;
     private TextView addressTextView;
     private TextView sqFootageTextView;
-    //private EditText squareFootageEditText; //-->This should be from AddressId
     private EditText customShovelerEditText;
-
     private TextView workOrderPriceTextView;
 
 
@@ -71,6 +69,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     private EditText requestedDate; //date customer has requested in the future
     //private TextClock requestedTime;  //time customer has requested in the future
     private EditText requestedTime;
+
 
     //WO Items and pricing
     private Set<String> itemsRequested;
@@ -154,7 +153,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
         updateBill(currentWOId);
 
-        //Add checkbox listeners
+        //Add checkbox listeners - DONE
         for (final CheckBox checkbox : itemCheckBoxList) {
             checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -296,19 +295,21 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         //iterate through checkboxes
         for (CheckBox checkBox : itemCheckBoxList) {
             if (checkBox.isChecked()) {
-            totalPrice += getPriceForCheckBoxes(checkBox);
-            double finalTotalPrice = totalPrice;
+                totalPrice += getPriceForCheckBoxes(checkBox);
+            }
 
             workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrderID);
             Map<String, Object> updateWorkOrder = new HashMap<>();
-            updateWorkOrder.put("price", finalTotalPrice);
+            updateWorkOrder.put("price", totalPrice);
+
+            workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
 
             workOrderReference.updateChildren(updateWorkOrder)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        workOrderPriceTextView.setText("Shovelling Price: $" + finalTotalPrice);
-                        System.out.println("Price updated in Firebase to: " + finalTotalPrice);
+                        //workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+                        System.out.println("Price updated in Firebase to");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -319,7 +320,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 });
             }
         }
-    }
+
 
 
     //AUTOMATIC PRICING FROM CHECKBOXES - ADD PRICING - DONE
