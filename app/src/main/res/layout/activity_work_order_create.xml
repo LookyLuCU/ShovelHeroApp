@@ -80,12 +80,6 @@
             android:layout_marginBottom="1dp"
             android:hint="Specific Date" />
 
-        <!--TextClock
-            android:id="@+id/tpCustomTime"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:hint="Specific Time" /-->
 
         <EditText
             android:id="@+id/etCustomTime"
@@ -95,7 +89,6 @@
             android:hint="Requested Time" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
