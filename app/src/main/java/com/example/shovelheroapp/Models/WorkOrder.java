@@ -3,10 +3,10 @@ package com.example.shovelheroapp.Models;
 import android.media.Image;
 import android.widget.CalendarView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WorkOrder {
 
@@ -22,7 +22,7 @@ public class WorkOrder {
     private boolean isDrivewayChecked;
     private boolean isWalkwayChecked;
     private boolean isSidewalkChecked;
-    private List<String> itemsRequested;
+    private Set<String> itemsRequested;
     private String specialInstructions;
     private Image arrivalImage;
     private Image completedImage;
@@ -40,19 +40,21 @@ public class WorkOrder {
 
 
     public WorkOrder(){
-        itemsRequested = new ArrayList<>();
+        itemsRequested = new HashSet<>();
+        transaction = new HashMap<>();
     }
 
 
     //CONSTRUCTOR
-    public WorkOrder(String workOrderId, Date requestDate, String status, int squareFootage, List<String> itemsRequested, String customerId, String customerAddressId) {
+    public WorkOrder(String workOrderId, Date requestDate, String status, int squareFootage, String customerId, String customerAddressId) {
         this.workOrderId = workOrderId;
         this.requestDate = requestDate;
         this.status = status;
         this.squareFootage = squareFootage;
-        this.itemsRequested = itemsRequested;
+        this.itemsRequested = new HashSet<>();
         this.customerId = customerId;
         this.customerAddressId = customerAddressId;
+        this.transaction = new HashMap<>();
     }
 
 
@@ -158,12 +160,16 @@ public class WorkOrder {
         isSidewalkChecked = sidewalkChecked;
     }
 
-    public List<String> getItemsRequested() {
-        return itemsRequested;
+    public void setItemsRequested(Set<String> itemsRequested) {
+        this.itemsRequested = itemsRequested;
     }
 
-    public void setItemsRequested(List<String> itemsRequested) {
-        this.itemsRequested = itemsRequested;
+    public HashMap<String, Transaction> getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(HashMap<String, Transaction> transaction) {
+        this.transaction = transaction;
     }
 
     public String getSpecialInstructions() {

@@ -305,11 +305,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
             Date requestDate = Calendar.getInstance().getTime();
             String status = "Started";
             int squareFootage = address.getDrivewaySquareFootage();
-            List<String> itemsRequested = null;
             String addressId = address.getAddressId();
 
+
             //create new work order
-            WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, itemsRequested, userId, addressId);
+            WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, userId, addressId);
 
             workOrderReference.child(workOrderID).setValue(newWO)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
