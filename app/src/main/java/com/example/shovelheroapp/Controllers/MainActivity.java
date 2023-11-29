@@ -3,13 +3,12 @@ package com.example.shovelheroapp.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -19,14 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-//THIS IS A TEST
-
-import android.widget.Spinner;
-
 
 public class MainActivity extends AppCompatActivity {
 
-    private DatabaseReference shovelHeroDatabaseReference;
+    private DatabaseReference userReference;
     private EditText usernameEditText, passwordEditText;
 
     private static final String TAG = "MainActivity";
@@ -37,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shovelHeroDatabaseReference = FirebaseDatabase.getInstance().getReference("users");
+        userReference = FirebaseDatabase.getInstance().getReference("users");
         System.out.println("Firebase connected");
 
         usernameEditText = findViewById(R.id.etUsername);
@@ -50,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             //final String accountType = accountTypeSpinner.getSelectedItem().toString();
 
             //Check if username exists
-            shovelHeroDatabaseReference.orderByChild("username").equalTo(username)
+            userReference.orderByChild("username").equalTo(username)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

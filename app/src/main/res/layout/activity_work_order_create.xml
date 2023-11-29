@@ -70,22 +70,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etCustomDate"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="1dp"
             android:hint="Specific Date" />
 
-        <TextClock
+        <!--TextClock
             android:id="@+id/tpCustomTime"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
-            android:hint="Specific Time" />
+            android:layout_marginBottom="1dp"
+            android:hint="Specific Time" /-->
+
+        <EditText
+            android:id="@+id/etCustomTime"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:hint="Requested Time" />
 
     </LinearLayout>
 
@@ -93,25 +100,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/etCustomShoveller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Request User By Username"
+            android:hint="Request Shoveller By Username"
             android:minHeight="48dp"
             android:inputType="text"
             android:outlineAmbientShadowColor="@color/black"/>
-
-        <!--Button
-            android:id="@+id/btnValidateShoveller"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="Validate Username" /-->
 
     </LinearLayout>
 
@@ -153,7 +152,9 @@
             android:minLines="3"
             android:maxLines="6"
             android:scrollbars="vertical"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_outline"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/tvWorkOrderPrice"

@@ -2,10 +2,10 @@ package com.example.shovelheroapp.Models;
 
 import android.media.Image;
 import android.widget.CalendarView;
-import android.widget.TextClock;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class WorkOrder {
@@ -16,8 +16,9 @@ public class WorkOrder {
     private double price;
     private Date requestDate;
     private CalendarView requestDatePicker;
-    private TextClock requestTimePicker;
-    private String requestedDateTime;
+    //private TextClock requestTimePicker;
+    private String requestedTime;
+    private String requestedDate;
     private boolean isDrivewayChecked;
     private boolean isWalkwayChecked;
     private boolean isSidewalkChecked;
@@ -27,9 +28,10 @@ public class WorkOrder {
     private Image completedImage;
     private Image issueImage;
 
-
     private String customerId; //to be foreign key
     private String customerAddressId; //to be foreign key
+    private String shovellerId;
+    private HashMap<String, Transaction> transaction;
 
 
     //private Invoice invoiceId; --> is this how we do it? with foreign key?
@@ -104,6 +106,7 @@ public class WorkOrder {
         this.requestDatePicker = requestDatePicker;
     }
 
+    /**
     public TextClock getRequestTimePicker() {
         return requestTimePicker;
     }
@@ -111,13 +114,24 @@ public class WorkOrder {
     public void setRequestTimePicker(TextClock requestTimePicker) {
         this.requestTimePicker = requestTimePicker;
     }
+     */
 
-    public String getRequestedDateTime() {
-        return requestedDateTime;
+    public String getRequestedTime() {
+        return requestedTime;
     }
 
-    public void setRequestedDateTime(String requestedDateTime) {
-        this.requestedDateTime = requestedDateTime;
+    public void setRequestedTime(String requestedDate) {
+        this.requestedTime = requestedTime;
+    }
+
+
+
+    public String getRequestedDate() {
+        return requestedDate;
+    }
+
+    public void setRequestedDate(String requestedDate) {
+        this.requestedDate = requestedDate;
     }
 
     public boolean isDrivewayChecked() {
@@ -197,6 +211,14 @@ public class WorkOrder {
     }
 
     public void setCustomerAddressId(String customerAddressId) {
+        this.customerAddressId = customerAddressId;
+    }
+
+    public String getShovellerId() {
+        return shovellerId;
+    }
+
+    public void setShovellerId(String shovellerId) {
         this.customerAddressId = customerAddressId;
     }
 }

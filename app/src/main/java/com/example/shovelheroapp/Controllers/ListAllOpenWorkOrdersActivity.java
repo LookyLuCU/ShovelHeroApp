@@ -22,7 +22,7 @@ import java.util.List;
 public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
 
     private RecyclerView workOrderRecyclerView;
-    private WorkOrderAdapter adapter;
+    private WorkOrderAdapterForShoveler adapter;
     private List<WorkOrder> workOrders;
 
     @Override
@@ -34,7 +34,7 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
         workOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         workOrders = new ArrayList<>();
-        adapter = new WorkOrderAdapter(this, workOrders);
+        adapter = new WorkOrderAdapterForShoveler(this, workOrders);
         workOrderRecyclerView.setAdapter(adapter);
         Log.d("ListAllOpenWorkOrders", "onCreate: Started");
 

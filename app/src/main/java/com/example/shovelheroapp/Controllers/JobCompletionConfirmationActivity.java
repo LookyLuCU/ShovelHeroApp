@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.shovelheroapp.R;
-import com.example.shovelheroapp.RateShovellerActivity;
 
 public class JobCompletionConfirmationActivity extends AppCompatActivity {
 

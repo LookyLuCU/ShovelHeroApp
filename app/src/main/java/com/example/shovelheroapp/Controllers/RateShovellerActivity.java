@@ -1,8 +1,10 @@
-package com.example.shovelheroapp;
+package com.example.shovelheroapp.Controllers;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.shovelheroapp.R;
 
 public class RateShovellerActivity extends AppCompatActivity {
 

@@ -15,11 +15,11 @@ import com.example.shovelheroapp.R;
 
 import java.util.List;
 
-public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.ViewHolder> {
+public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderAdapterForShoveler.ViewHolder> {
     private List<WorkOrder> workOrders;
     private Context context;
 
-    public WorkOrderAdapter(Context context, List<WorkOrder> workOrders) {
+    public WorkOrderAdapterForShoveler(Context context, List<WorkOrder> workOrders) {
         this.context = context;
         this.workOrders = workOrders;
     }
@@ -45,7 +45,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.work_order_item, parent, false);
+                .inflate(R.layout.work_order_item_customer_profile, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,7 +57,7 @@ public class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.View
 
         //TODO: get initial property address (from Address)
         //holder.addressImage.setImageBitmap(workOrder.getAddressImage);
-        holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestedDateTime()));
+        holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestedDate()));
         //TODO: calculate distance from shoveller address and add here
         //holder.distanceTV.setText(workOrder.getDistance);
 
