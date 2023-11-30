@@ -29,7 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -315,30 +314,34 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         for (CheckBox checkBox : itemCheckBoxList) {
             if (checkBox.isChecked()) {
                 totalPrice += getPriceForCheckBoxes(checkBox);
-            }
 
-            workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrderID);
-            Map<String, Object> updateWorkOrder = new HashMap<>();
-            updateWorkOrder.put("price", totalPrice);
 
-            workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+                workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrderID);
 
-            workOrderReference.updateChildren(updateWorkOrder)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        //workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
-                        System.out.println("Price updated in Firebase to");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateWorkOrderActivity.this, "Could not Update Price", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                Map<String, Object> updateWorkOrder = new HashMap<>();
+                updateWorkOrder.put("price", totalPrice);
+                System.out.println("put this price in firebase: " + totalPrice);
+
+                workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+                System.out.println("set ui price text to: " + totalPrice);
+
+                workOrderReference.updateChildren(updateWorkOrder)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                //workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+                                System.out.println("Price updated in Firebase");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(CreateWorkOrderActivity.this, "Could not Update Price", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         }
+    }
 
 
 
@@ -586,4 +589,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 }
             });
     }
+
+
+    public void validateShovellerType(){
 }
