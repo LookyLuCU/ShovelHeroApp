@@ -47,17 +47,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
     //initialized database tables
-    private DatabaseReference workOrderTable;
     private DatabaseReference workOrderReference;
     private DatabaseReference userTable;
 
-    //address spinner
-    //private Spinner addressSpinner;
-    //private List<Address> spinnerItemList;
-    //private ArrayAdapter<String> spinnerAdapter;
 
-
-    private String workOrderId;
     private TextView addressTextView;
     private TextView sqFootageTextView;
     private EditText customShovelerEditText;
@@ -203,15 +196,13 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     currentWorkOrder = snapshot.getValue(WorkOrder.class);
 
                     if (currentWorkOrder != null) {
+
                         //display inital WO information
-                        System.out.println("Work order found to Read address from Firebase: in retrieveWOInfo - line 190");
                         readAddressFromFirebase(currentWorkOrder);
 
                         workOrderPriceTextView.setText("Shovelling Price: $2.00");
                         sqFootageTextView.setText("Job Size: " + currentWorkOrder.getSquareFootage() + " square feet");
                         requestDate.setText("Request Date: " + currentWorkOrder.getRequestDate().toString());
-
-                        System.out.println("Work order data loaded into retrieve WO info - line 197");
 
 
                         //*******
@@ -256,7 +247,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                         btnCancelOrder.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                System.out.println("Button clicked for customer to cancel order before release - line 240");
                                 cancelWorkOrder(currentWorkOrder);
                             }
                         });
@@ -290,14 +280,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     String city = (String) addressMap.get("city");
                     String province = (String) addressMap.get("province");
 
-                    //currentAddress = snapshot.getValue(Address.class);
-                    System.out.println("address object recieved from snapshot reading address from firebase: " + address);
-
                     addressTextView.setText(address + ", " + city + ", " + province);
                     System.out.println("Address retrieved from Firebase: " + address);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //handle error
@@ -316,30 +302,26 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             if (checkBox.isChecked()) {
                 totalPrice += getPriceForCheckBoxes(checkBox);
 
+                workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
 
                 workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrderID);
-
                 Map<String, Object> updateWorkOrder = new HashMap<>();
                 updateWorkOrder.put("price", totalPrice);
                 System.out.println("put this price in firebase: " + totalPrice);
 
-                workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
-                System.out.println("set ui price text to: " + totalPrice);
-
                 workOrderReference.updateChildren(updateWorkOrder)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                //workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
-                                System.out.println("Price updated in Firebase");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(CreateWorkOrderActivity.this, "Could not Update Price", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            System.out.println("Price updated in Firebase");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CreateWorkOrderActivity.this, "Could not Update Price", Toast.LENGTH_SHORT).show();
+                        }
+                    });
             }
         }
     }
@@ -347,7 +329,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     //AUTOMATIC PRICING FROM CHECKBOXES - ADD PRICING - DONE
     private Double getPriceForCheckBoxes(CheckBox checkBox) {
-        System.out.println("getPriceForCheckboxes Called - line 306");
         if (checkBox.getId() == R.id.cbDriveway) {
             return 20.00;
         } else if (checkBox.getId() == R.id.cbSidewalk) {
@@ -360,11 +341,8 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
 
     public void releaseWorkOrder(WorkOrder currentWorkOrder) {
-        System.out.println("Release WO now being called with WO - line 318: " + currentWorkOrder);
+        System.out.println("Release WO now being called with WO#: " + currentWorkOrder);
         if (drivewayCheckBox.isChecked() || sidewalkCheckBox.isChecked() || walkwayCheckBox.isChecked()) {
-            //if (!itemCheckBoxList.isEmpty()) {
-
-            System.out.println("Which job types are selected? line 318 : " + drivewayCheckBox.getText().toString());
             addWorkOrderDetails(currentWorkOrder);
         } else {
             Toast.makeText(CreateWorkOrderActivity.this, "Please add shovelling area", Toast.LENGTH_SHORT).show();
@@ -382,7 +360,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
         //String customerRequestedTime = requestedTime.getFormat12Hour().toString();
         String status = Status.Open.toString();
-        System.out.println("Updated WO Price added from UI TV in addWODetails - line 338: " + currentWorkOrder.getPrice());
 
         System.out.println("Test if itemsRequestedList being populated - addWODetails - line 351: ");
         for (String item : itemsRequested) {
@@ -433,8 +410,9 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
     //CANCEL WORK ORDER UPON CUSTOMER BUTTON CLICK - DONE
     public void cancelWorkOrder(WorkOrder workOrder) {
-        workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(workOrder.getWorkOrderId());
         System.out.println("Deleting Work order: " + workOrder + ". Confirm in Firebase");
+
+        workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(workOrder.getWorkOrderId());
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -536,9 +514,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         }
     }
 
+
     // Validation function for UserName
     private void validateUserName(String customShovelerUsername, WorkOrder currentWorkOrder) {
-        System.out.println("Validating username - line 538: " + customShovelerUsername + " for wo: " + currentWorkOrder);
+        System.out.println("Validating username: " + customShovelerUsername + " for wo: " + currentWorkOrder);
         userTable = FirebaseDatabase.getInstance().getReference("users");
         userTable.orderByChild("username").equalTo(customShovelerUsername)
         .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -570,8 +549,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     public void addCustomShovelerToWorkOrder(String shovellerId, WorkOrder currentWorkOrder) {
         System.out.println("Adding Shoveller ID to WO: " + shovellerId);
 
-        //String shovellerID = customShovelerEditText.getText().toString();
-
         workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
         Map<String, Object> addShoveller = new HashMap<>();
         addShoveller.put("shovelerId", shovellerId);
@@ -592,5 +569,3 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             });
     }
 }
-
-
