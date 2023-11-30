@@ -123,7 +123,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 requestedDate.setText("");
                 requestedTime.setText("");
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault());
                 requestDate.setText(simpleDateFormat.format(new Date()));
 
             }
@@ -323,7 +323,9 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             if (checkBox.isChecked()) {
                 totalPrice += getPriceForCheckBoxes(checkBox);
 
-                workOrderPriceTextView.setText("Shovelling Price: $" + totalPrice);
+                String formattedPrice = String.format(Locale.getDefault(), "$%.2f", totalPrice);
+
+                workOrderPriceTextView.setText("Shovelling Price: " + formattedPrice);
 
                 workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrderID);
                 Map<String, Object> updateWorkOrder = new HashMap<>();
@@ -369,6 +371,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             Toast.makeText(CreateWorkOrderActivity.this, "Please add shovelling area", Toast.LENGTH_SHORT).show();
         }
     }
+
     public void addWorkOrderDetails(WorkOrder currentWorkOrder) {
         System.out.println("Add workOrderDetails method started - line 328 - WO rec'd: " + currentWorkOrder);
 
@@ -377,6 +380,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         String specialInstructions = addressNotesEditText.getText().toString();
         System.out.println("Date and Time retrieved from UI if they exist in addWorkOrderDetails - line 332: " + customerRequestedDate + " " + customerRequestedTime);
 
+        //String customerRequestedTime = requestedTime.getFormat12Hour().toString();
         String status = Status.Open.toString();
 
         System.out.println("Test if itemsRequestedList being populated - addWODetails - line 351: ");
@@ -384,27 +388,30 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             System.out.println(item);
         }
 
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault());
         String formattedDateTime = "";
 
-        // Determine to schedule now or custom date and time
+        // Determine which date/time to save
         if (!customerRequestedDate.isEmpty() && !customerRequestedTime.isEmpty()) {
-            // Combine and format date and time
+            // Combine and format custom date and time
             try {
                 Date customDateTime = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault()).parse(customerRequestedDate + " " + customerRequestedTime);
                 formattedDateTime = outputDateFormat.format(customDateTime);
             } catch (ParseException e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Handle parse exception
             }
         } else {
-            // Use Schedule now.
-            formattedDateTime = requestDate.getText().toString();
+            // Use the 'Schedule Now' date/time
+            formattedDateTime = outputDateFormat.format(new Date());
         }
 
         Map<String, Object> updateWorkOrder = new HashMap<>();
         updateWorkOrder.put("specialinstructions", specialInstructions);
         updateWorkOrder.put("status", status);
-        updateWorkOrder.put("requestDate", formattedDateTime); // Save in readable form
+        updateWorkOrder.put("requestedDateTime", formattedDateTime); // Save the determined date/time
+
+        // Set the requestDate to the current date/time
+        updateWorkOrder.put("requestDate", outputDateFormat.format(new Date()));
 
         workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
         workOrderReference.updateChildren(updateWorkOrder)
