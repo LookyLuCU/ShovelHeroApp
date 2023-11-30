@@ -391,24 +391,30 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault());
         String formattedDateTime = "";
 
-        // Determine which date/time to save
+        //
         if (!customerRequestedDate.isEmpty() && !customerRequestedTime.isEmpty()) {
             // Combine and format custom date and time
             try {
                 Date customDateTime = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault()).parse(customerRequestedDate + " " + customerRequestedTime);
                 formattedDateTime = outputDateFormat.format(customDateTime);
             } catch (ParseException e) {
-                e.printStackTrace(); // Handle parse exception
+                e.printStackTrace();
             }
         } else {
-            // Use the 'Schedule Now' date/time
+            // Use the Schedule now
             formattedDateTime = outputDateFormat.format(new Date());
         }
 
         Map<String, Object> updateWorkOrder = new HashMap<>();
+        // Check and Add Status for work items
+        updateWorkOrder.put("drivewayChecked", drivewayCheckBox.isChecked());
+        updateWorkOrder.put("sidewalkChecked", sidewalkCheckBox.isChecked());
+        updateWorkOrder.put("walkwayChecked", walkwayCheckBox.isChecked());
+
+        // Other work order details
         updateWorkOrder.put("specialinstructions", specialInstructions);
         updateWorkOrder.put("status", status);
-        updateWorkOrder.put("requestedDateTime", formattedDateTime); // Save the determined date/time
+        updateWorkOrder.put("requestedDateTime", formattedDateTime);
 
         // Set the requestDate to the current date/time
         updateWorkOrder.put("requestDate", outputDateFormat.format(new Date()));
