@@ -223,7 +223,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 System.out.println("Order Shovelling button clicked");
                                 if (drivewayCheckBox.isChecked() ||
-                                sidewalkCheckBox.isChecked() || walkwayCheckBox.isChecked()) {
+                                        sidewalkCheckBox.isChecked() || walkwayCheckBox.isChecked()) {
                                     String date = requestedDate.getText().toString();
                                     String time = requestedTime.getText().toString();
                                     //String time = requestedTime.getFormat12Hour().toString();
@@ -246,8 +246,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                                         System.out.println("Custom Shoveller Username deemed NOT null, username being sent for validation - line 230: " + customShovelerUsername);
                                         validateUserName(customShovelerUsername, currentWorkOrder);
                                     }
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(CreateWorkOrderActivity.this, "Please add shovelling area", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -264,6 +263,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //handle error
@@ -297,6 +297,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     System.out.println("Address retrieved from Firebase: " + address);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //handle error
@@ -344,7 +345,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     }
 
 
-
     //AUTOMATIC PRICING FROM CHECKBOXES - ADD PRICING - DONE
     private Double getPriceForCheckBoxes(CheckBox checkBox) {
         System.out.println("getPriceForCheckboxes Called - line 306");
@@ -362,7 +362,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     public void releaseWorkOrder(WorkOrder currentWorkOrder) {
         System.out.println("Release WO now being called with WO - line 318: " + currentWorkOrder);
         if (drivewayCheckBox.isChecked() || sidewalkCheckBox.isChecked() || walkwayCheckBox.isChecked()) {
-        //if (!itemCheckBoxList.isEmpty()) {
+            //if (!itemCheckBoxList.isEmpty()) {
 
             System.out.println("Which job types are selected? line 318 : " + drivewayCheckBox.getText().toString());
             addWorkOrderDetails(currentWorkOrder);
@@ -389,46 +389,46 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             System.out.println(item);
         }
 
-          Map<String, Object> updateWorkOrder = new HashMap<>();
+        Map<String, Object> updateWorkOrder = new HashMap<>();
 
-          //update status to "Open"
-          updateWorkOrder.put("specialinstructions", specialInstructions);
-          updateWorkOrder.put("status", status);
+        //update status to "Open"
+        updateWorkOrder.put("specialinstructions", specialInstructions);
+        updateWorkOrder.put("status", status);
 
-          //Specific Date/Time Requests
-          if (customerRequestedDate.isEmpty()) {
-              customerRequestedDate.isEmpty();
-          } else {
-              updateWorkOrder.put("requestedDate", requestedDate);
-          }
+        //Specific Date/Time Requests
+        if (customerRequestedDate.isEmpty()) {
+            customerRequestedDate.isEmpty();
+        } else {
+            updateWorkOrder.put("requestedDate", requestedDate);
+        }
 
-          if (customerRequestedTime.isEmpty()) {
-              customerRequestedTime.isEmpty();
-          } else {
-              updateWorkOrder.put("requestedTime", requestedTime);
-          }
+        if (customerRequestedTime.isEmpty()) {
+            customerRequestedTime.isEmpty();
+        } else {
+            updateWorkOrder.put("requestedTime", requestedTime);
+        }
 
-          workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
-          workOrderReference.updateChildren(updateWorkOrder)
-              .addOnSuccessListener(new OnSuccessListener<Void>() {
-                  @Override
-                  public void onSuccess(Void unused) {
+        workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
+        workOrderReference.updateChildren(updateWorkOrder)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
 
-                      Toast.makeText(CreateWorkOrderActivity.this, "Shovelling Request is now active", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateWorkOrderActivity.this, "Shovelling Request is now active", Toast.LENGTH_SHORT).show();
 
-                      Intent intentCreateWO = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
-                      String customerId = currentWorkOrder.getCustomerId();
-                      intentCreateWO.putExtra("USER_ID", customerId);
-                      startActivity(intentCreateWO);
-                  }
-              })
-              .addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                      Toast.makeText(CreateWorkOrderActivity.this, "Could not create Shovelling Job", Toast.LENGTH_SHORT).show();
-                  }
-              });
-              }
+                        Intent intentCreateWO = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
+                        String customerId = currentWorkOrder.getCustomerId();
+                        intentCreateWO.putExtra("USER_ID", customerId);
+                        startActivity(intentCreateWO);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(CreateWorkOrderActivity.this, "Could not create Shovelling Job", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
     //CANCEL WORK ORDER UPON CUSTOMER BUTTON CLICK - DONE
@@ -451,6 +451,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     startActivity(intentCancelWO);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(CreateWorkOrderActivity.this, "Unable to cancel shovelling request", Toast.LENGTH_SHORT).show();
@@ -458,7 +459,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         });
     }
 
-    private void displayRequestedDate(){
+    private void displayRequestedDate() {
         // Retrieve current date
         final Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
@@ -540,56 +541,56 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         System.out.println("Validating username - line 538: " + customShovelerUsername + " for wo: " + currentWorkOrder);
         userTable = FirebaseDatabase.getInstance().getReference("users");
         userTable.orderByChild("username").equalTo(customShovelerUsername)
-            .addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot userSnapShot : snapshot.getChildren()) {
-                            User user = userSnapShot.getValue(User.class);
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapShot : snapshot.getChildren()) {
+                        User user = userSnapShot.getValue(User.class);
+
+                        if (user.getAccountType().equals("Youth Shoveller") || user.getAccountType().equals("Adult Shoveller"))
 
                             Toast.makeText(CreateWorkOrderActivity.this, "Username " + customShovelerUsername + " will be notified of your request if they are online.", Toast.LENGTH_SHORT).show();
-                            System.out.println("Username: " + customShovelerUsername + " has been requested by customer");
+                        System.out.println("Username: " + customShovelerUsername + " has been requested by customer");
 
-                            String shovellerId = user.getUserId();
-                            addCustomShovelerToWorkOrder(shovellerId, currentWorkOrder);
-                        }
-                    } else {
-                        Toast.makeText(CreateWorkOrderActivity.this, "Username not found. Please try again or leave empty.", Toast.LENGTH_SHORT).show();
+                        String shovellerId = user.getUserId();
+                        addCustomShovelerToWorkOrder(user.getUserId(), currentWorkOrder);
                     }
+                } else {
+                    Toast.makeText(CreateWorkOrderActivity.this, "Username not found. Please try again or leave empty.", Toast.LENGTH_SHORT).show();
                 }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    //handle error
-                }
-            });
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //handle error
+            }
+        });
     }
 
-    public void addCustomShovelerToWorkOrder(String shovellerId, WorkOrder currentWorkOrder){
-        System.out.println("Adding validated customer shoveller to WO - line 566: " + shovellerId);
+    public void addCustomShovelerToWorkOrder(String shovellerId, WorkOrder currentWorkOrder) {
+        System.out.println("Adding Shoveller ID to WO: " + shovellerId);
 
-        String shovellerID = customShovelerEditText.getText().toString();
+        //String shovellerID = customShovelerEditText.getText().toString();
 
-        workOrderReference = FirebaseDatabase.getInstance().getReference("workorder").child(currentWorkOrder.getWorkOrderId());
+        workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
+        Map<String, Object> addShoveller = new HashMap<>();
+        addShoveller.put("shovelerId", shovellerId);
 
-        Map<String, Object> updateWorkOrder = new HashMap<>();
-        updateWorkOrder.put("shovellerid", shovellerID);
-
-        workOrderReference.updateChildren(updateWorkOrder)
+        workOrderReference.updateChildren(addShoveller)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    System.out.println("Successfully added shoveller id: " + shovellerID + " to WO - line 506: "  + currentWorkOrder.getWorkOrderId());
                     releaseWorkOrder(currentWorkOrder);
+                    System.out.println("Shoveller ID added to firebase: " + shovellerId);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(CreateWorkOrderActivity.this, "Could not add username. Please try again or leave blank", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateWorkOrderActivity.this, "Unable to request username. Please try again or leave empty.", Toast.LENGTH_SHORT).show();
                 }
             });
     }
-
-
-    public void validateShovellerType(){
 }
+
+

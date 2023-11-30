@@ -53,6 +53,7 @@ public class WorkOrder {
         this.squareFootage = squareFootage;
         this.itemsRequested = new HashSet<>();
         this.customerId = customerId;
+        this.shovellerId = null;
         this.customerAddressId = customerAddressId;
         this.transaction = new HashMap<>();
     }
