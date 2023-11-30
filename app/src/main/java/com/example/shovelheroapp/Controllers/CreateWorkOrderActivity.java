@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -106,14 +107,33 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         addressNotesEditText = findViewById(R.id.etAddressNotes);
         workOrderPriceTextView = findViewById(R.id.tvWorkOrderPrice);
 
+
         //**TODO: Fix date/time
+
+        // Set requestDate to Hidden by default
+        requestDate.setText("");
         requestedDate = findViewById(R.id.etCustomDate);
         //requestedTime = findViewById(R.id.tpCustomTime);
         requestedTime = findViewById(R.id.etCustomTime);
 
+        Button btnScheduleNow = findViewById(R.id.btnScheduleNow);
+        btnScheduleNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestedDate.setText("");
+                requestedTime.setText("");
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+                requestDate.setText(simpleDateFormat.format(new Date()));
+
+            }
+        });
+
         requestedDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                requestDate.setText("");
+
                 displayRequestedDate();
             }
         });
@@ -121,6 +141,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         requestedTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                requestDate.setText("");
                 displayRequestedTime();
             }
         });
@@ -202,7 +223,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
                         workOrderPriceTextView.setText("Shovelling Price: $2.00");
                         sqFootageTextView.setText("Job Size: " + currentWorkOrder.getSquareFootage() + " square feet");
-                        requestDate.setText("Request Date: " + currentWorkOrder.getRequestDate().toString());
+                       // requestDate.setText(currentWorkOrder.getRequestDate().toString());
 
 
                         //*******
@@ -348,8 +369,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             Toast.makeText(CreateWorkOrderActivity.this, "Please add shovelling area", Toast.LENGTH_SHORT).show();
         }
     }
-
-
     public void addWorkOrderDetails(WorkOrder currentWorkOrder) {
         System.out.println("Add workOrderDetails method started - line 328 - WO rec'd: " + currentWorkOrder);
 
@@ -358,7 +377,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         String specialInstructions = addressNotesEditText.getText().toString();
         System.out.println("Date and Time retrieved from UI if they exist in addWorkOrderDetails - line 332: " + customerRequestedDate + " " + customerRequestedTime);
 
-        //String customerRequestedTime = requestedTime.getFormat12Hour().toString();
         String status = Status.Open.toString();
 
         System.out.println("Test if itemsRequestedList being populated - addWODetails - line 351: ");
@@ -366,31 +384,33 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
             System.out.println(item);
         }
 
-        Map<String, Object> updateWorkOrder = new HashMap<>();
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault());
+        String formattedDateTime = "";
 
-        //update status to "Open"
+        // Determine to schedule now or custom date and time
+        if (!customerRequestedDate.isEmpty() && !customerRequestedTime.isEmpty()) {
+            // Combine and format date and time
+            try {
+                Date customDateTime = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault()).parse(customerRequestedDate + " " + customerRequestedTime);
+                formattedDateTime = outputDateFormat.format(customDateTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Use Schedule now.
+            formattedDateTime = requestDate.getText().toString();
+        }
+
+        Map<String, Object> updateWorkOrder = new HashMap<>();
         updateWorkOrder.put("specialinstructions", specialInstructions);
         updateWorkOrder.put("status", status);
-
-        //Specific Date/Time Requests
-        if (customerRequestedDate.isEmpty()) {
-            customerRequestedDate.isEmpty();
-        } else {
-            updateWorkOrder.put("requestedDate", requestedDate);
-        }
-
-        if (customerRequestedTime.isEmpty()) {
-            customerRequestedTime.isEmpty();
-        } else {
-            updateWorkOrder.put("requestedTime", requestedTime);
-        }
+        updateWorkOrder.put("requestDate", formattedDateTime); // Save in readable form
 
         workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
         workOrderReference.updateChildren(updateWorkOrder)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
                         Toast.makeText(CreateWorkOrderActivity.this, "Shovelling Request is now active", Toast.LENGTH_SHORT).show();
 
                         Intent intentCreateWO = new Intent(CreateWorkOrderActivity.this, CustomerProfileActivity.class);
@@ -406,7 +426,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     //CANCEL WORK ORDER UPON CUSTOMER BUTTON CLICK - DONE
     public void cancelWorkOrder(WorkOrder workOrder) {
