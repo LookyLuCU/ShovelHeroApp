@@ -36,7 +36,7 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
         workOrders = new ArrayList<>();
         adapter = new WorkOrderAdapterForShoveler(this, workOrders);
         workOrderRecyclerView.setAdapter(adapter);
-        Log.d("ListAllOpenWorkOrders", "onCreate: Started");
+        Log.d("ListAllOpenWorkOrders", "onCreate: Open");
 
         DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
@@ -47,7 +47,7 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
                 workOrders.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
-                    if (workOrder.getStatus().equals("Started")) {
+                    if (workOrder.getStatus().equals("Open")) {
                         workOrders.add(workOrder);
                     }
                 }
