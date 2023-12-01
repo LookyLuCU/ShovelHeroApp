@@ -14,7 +14,7 @@ public class WorkOrder {
     private String status;
     private int squareFootage;
     private double price;
-    private Date requestDate;
+    private String requestDate;
     private CalendarView requestDatePicker;
     //private TextClock requestTimePicker;
     private String requestedTime;
@@ -46,7 +46,7 @@ public class WorkOrder {
 
 
     //CONSTRUCTOR
-    public WorkOrder(String workOrderId, Date requestDate, String status, int squareFootage, String customerId, String customerAddressId) {
+    public WorkOrder(String workOrderId, String requestDate, String status, int squareFootage, String customerId, String customerAddressId) {
         this.workOrderId = workOrderId;
         this.requestDate = requestDate;
         this.status = status;
@@ -93,11 +93,11 @@ public class WorkOrder {
         this.price = price;
     }
 
-    public Date getRequestDate() {
+    public String getRequestDate() {
         return requestDate;
     }
 
-    public void setRequestDate(Date requestDate) {
+    public void setRequestDate(String requestDate) {
         this.requestDate = requestDate;
     }
 

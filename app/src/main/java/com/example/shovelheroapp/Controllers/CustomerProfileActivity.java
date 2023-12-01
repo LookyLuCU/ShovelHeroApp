@@ -28,11 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 //THIS IS ANOTHER TEST
@@ -295,40 +297,31 @@ public class CustomerProfileActivity extends AppCompatActivity {
         if (address.getAddress() == null) {
             Toast.makeText(this, "Please select a valid address from your list", Toast.LENGTH_SHORT).show();
         } else {
-
             //create WO item in firebase
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference workOrderReference = database.getReference("workorders");
 
             //work order elements
             String workOrderID = workOrderReference.push().getKey();
-            Date requestDate = Calendar.getInstance().getTime();
+            // Format current date as String for Firebase (avoid data type mismatch)
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String requestDate = dateFormat.format(Calendar.getInstance().getTime());
             String status = "Started";
             int squareFootage = address.getDrivewaySquareFootage();
             String addressId = address.getAddressId();
-
 
             //create new work order
             WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, userId, addressId);
 
             workOrderReference.child(workOrderID).setValue(newWO)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(CustomerProfileActivity.this, "New Shovelling Request Created", Toast.LENGTH_SHORT).show();
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(CustomerProfileActivity.this, "New Shovelling Request Created", Toast.LENGTH_SHORT).show();
 
-                            Intent intentCreateWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
-                            String wOID = workOrderID;
-                            intentCreateWO.putExtra("WORK_ORDER_ID", wOID);
-                            startActivity(intentCreateWO);
-                        }
+                        Intent intentCreateWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
+                        intentCreateWO.putExtra("WORK_ORDER_ID", workOrderID);
+                        startActivity(intentCreateWO);
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CustomerProfileActivity.this, "Could not create Shovelling Job", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(CustomerProfileActivity.this, "Could not create Shovelling Job", Toast.LENGTH_SHORT).show());
         }
     }
 }
