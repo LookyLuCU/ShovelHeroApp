@@ -127,17 +127,20 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                    // if (!workOrder.getStatus().equals("Closed") && workOrder.getShovellerId().equals(userId)) {
                     //if (workOrder.getStatus().equals("Open")) {
 
-                    if ((workOrder.getStatus().equals(Status.Open.toString()) ||
-                            workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
-                            workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
-                            workOrder.getStatus().equals(Status.Accepted.toString()) ||
-                            workOrder.getStatus().equals(Status.Enroute.toString()) ||
-                            workOrder.getStatus().equals(Status.InProgress.toString()) ||
-                            workOrder.getStatus().equals(Status.Issue.toString()) )
-                            && workOrder.getShovellerId().equals(userId)) {
+                    String status = workOrder.getStatus();
+                    String shovellerId = workOrder.getShovellerId();
+
+                    if ((status != null) && (shovellerId != null) &&
+                            (status.equals(Status.Open.toString()) ||
+                                    status.equals(Status.OpenCustom.toString()) ||
+                                    status.equals(Status.PendingGuardianApproval.toString()) ||
+                                    status.equals(Status.Accepted.toString()) ||
+                                    status.equals(Status.Enroute.toString()) ||
+                                    status.equals(Status.InProgress.toString()) ||
+                                    status.equals(Status.Issue.toString())) &&
+                            shovellerId.equals(userId)) {
                         pendingWorkOrderList.add(workOrder);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(YouthShovelerProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
                     }
                 }
