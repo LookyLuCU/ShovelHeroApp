@@ -383,7 +383,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     private void addOpenWorkOrderFromFirebase(String userId) {
         // Replace this with your logic to fetch work orders for the given user ID from Firebase
         workOrderTable = FirebaseDatabase.getInstance().getReference("workorders").child(userId);
-
     }
 }
 
