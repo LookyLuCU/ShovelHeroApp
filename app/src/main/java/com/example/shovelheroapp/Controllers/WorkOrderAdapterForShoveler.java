@@ -72,6 +72,7 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
 
     public void updateData(List<WorkOrder> newWorkOrders) {
         workOrders.clear();
+
         workOrders.addAll(newWorkOrders);
         notifyDataSetChanged();
     }

@@ -341,6 +341,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                 // Enable or disable the "Create Work Order" button based on the presence of addresses
                 //btnOrderShoveling.setEnabled(!addresses.isEmpty());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle error

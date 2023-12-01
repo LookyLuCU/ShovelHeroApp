@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
+import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,12 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
     //initialize ShovelHeroDB (Firebase)
     DatabaseReference userTable;
+    DatabaseReference workOrderTable;
+
+    //listings
+    private RecyclerView recyclerView;
+    private WorkOrderAdapterForShoveler workOrderAdapter;
+    private List<WorkOrder> pendingWorkOrderList;
 
 
     private TextView usernameTV;
@@ -92,6 +101,19 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
             }
         }
 
+        //initialize recyclerview
+        recyclerView = findViewById(R.id.rvPendingWorkOrders);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //initialize list
+        pendingWorkOrderList = new ArrayList<>();
+
+        //initialize adapter
+        //workOrderAdapter = new WorkOrderAdapterForShoveler(pendingWorkOrderList);
+        //recyclerView.setAdapter(workOrderAdapter);
+
+        //add data from DB
+        //addOpenWorkOrderFromFirebase(String userId);
 
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
@@ -145,6 +167,8 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             //ANOTHER TRY AT LISTING ADDRESS
                             //displayAddresses(user.getAddresses());
                         }
+
+
 
 
                         //*******
@@ -286,6 +310,12 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                 // Handle error
             }
         });
+    }
+
+    private void addOpenWorkOrderFromFirebase(String userId) {
+        // Replace this with your logic to fetch work orders for the given user ID from Firebase
+        workOrderTable = FirebaseDatabase.getInstance().getReference("workorders").child(userId);
+
     }
 }
 
