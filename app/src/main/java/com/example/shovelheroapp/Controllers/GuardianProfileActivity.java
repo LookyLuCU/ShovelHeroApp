@@ -474,6 +474,14 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
 
     private void linkYouthProfile(User guardian){
+
+        // Ensure Guardian had valid ID before linking youth
+
+        if (!guardian.getGuardianIdValidated()) {
+            Toast.makeText(GuardianProfileActivity.this, "ID Validation is required before linking a youth", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String youthUsername = addYouthET.getText().toString();
 
         // Query youth in Firebase
