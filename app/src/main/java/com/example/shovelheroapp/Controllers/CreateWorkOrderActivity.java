@@ -242,6 +242,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                                     String customShovelerUsername = customShovelerEditText.getText().toString();
                                     System.out.println("Custom Shoveller Username before null decision:" + customShovelerUsername + ". - line 211");
 
+                                    //**TODO: this is when the payment is confirmed and held (full payment at completion)
                                     /**
                                      if (date != null && !isValidDate(date)) {
                                      Toast.makeText(CreateWorkOrderActivity.this, "Please enter valid date in yyyy-MM-dd format", Toast.LENGTH_SHORT).show();

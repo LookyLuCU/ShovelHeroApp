@@ -15,11 +15,11 @@ import com.example.shovelheroapp.R;
 
 import java.util.List;
 
-public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderAdapterForShoveler.ViewHolder> {
+public class WorkOrderAdapterForGuardian extends RecyclerView.Adapter<WorkOrderAdapterForGuardian.ViewHolder> {
     private List<WorkOrder> workOrders;
     private Context context;
 
-    public WorkOrderAdapterForShoveler(Context context, List<WorkOrder> workOrders) {
+    public WorkOrderAdapterForGuardian(Context context, List<WorkOrder> workOrders) {
         this.context = context;
         this.workOrders = workOrders;
     }
@@ -45,7 +45,7 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.work_order_item_shoveller_profile, parent, false);
+                .inflate(R.layout.work_order_item_guardian_profile, parent, false);
         return new ViewHolder(view);
     }
 

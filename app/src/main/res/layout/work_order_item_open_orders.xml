@@ -2,26 +2,21 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="80dp"
     android:orientation="vertical"
-    android:background="#BDEDFB">
+    android:background="@drawable/rv_item_background">
+    <!--android:background="#BDEDFB"-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/lblNewOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="New Order"
-                android:textSize="16sp" />
 
             <!--ImageView
                 android:id="@+id/imgAddressImage"
@@ -60,20 +55,20 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/btnView"
+                android:id="@+id/btnOpen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Job Details"
-                android:onClick="onViewButtonClick"/>
+                android:text="Open"
+                android:onClick="onOpenButtonClick"/>
 
             <Button
-                android:id="@+id/btnRequestGuardian"
+                android:id="@+id/btnTakeIt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Ask My Guardian"
-                android:onClick="onRequestGuardianButtonClick"/>
+                android:text="Take it"
+                android:onClick="onTakeButtonClick"/>
 
         </LinearLayout>
 

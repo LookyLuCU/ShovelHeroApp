@@ -21,10 +21,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
+import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -44,8 +46,16 @@ import java.util.Map;
 public class GuardianProfileActivity extends AppCompatActivity {
     private static final String TAG = "GuardianProfileActivity";
 
-    //initialize ShovelHeroDB (Firebase)
+    //initialize Firebase
     DatabaseReference userTable;
+
+
+    //Pending Work Order listings
+    private RecyclerView pendingWORecyclerView;
+    private WorkOrderAdapterForShoveler workOrderAdapter;
+    private List<WorkOrder> pendingWorkOrderList;
+
+
     private TextView usernameTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
@@ -138,6 +148,8 @@ public class GuardianProfileActivity extends AppCompatActivity {
         btnAddAddress = findViewById(R.id.btnAddAddress);
         btnEditPassword = findViewById(R.id.btnEditPassword);
 
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
+
 
         //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
@@ -148,6 +160,47 @@ public class GuardianProfileActivity extends AppCompatActivity {
                 retrieveGuardianProfile(userId);
             }
         }
+
+
+        //LIST OF OPEN ORDERS FOR GUARDIAN?
+        /**
+        //initialize recyclerview
+        pendingWORecyclerView = findViewById(R.id.rvPendingWorkOrders);
+        pendingWORecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //initialize Pending Work Order list and Adapter
+        pendingWorkOrderList = new ArrayList<>();
+        workOrderAdapter = new WorkOrderAdapterForGuardian(this, pendingWorkOrderList);
+        pendingWORecyclerView.setAdapter(workOrderAdapter);
+
+        //ADD PENDING WORK ORDERS TO PROFILE
+        workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pendingWorkOrderList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
+                    // if (!workOrder.getStatus().equals("Closed") && workOrder.getShovellerId().equals(userId)) {
+                    if (workOrder.getStatus().equals("Open")) {
+                        pendingWorkOrderList.add(workOrder);
+                    }
+                    else {
+                        Toast.makeText(GuardianProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                Log.d("ListAllOpenWorkOrders", "Data size: " + pendingWorkOrderList.size());
+                workOrderAdapter.notifyDataSetChanged();
+                pendingWORecyclerView.setAdapter(workOrderAdapter);
+                Log.d("ListAllOpenWorkOrders", "Adapter notified of data change");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ListAllOpenWorkOrders", "Error fetching data: " + error.getMessage());
+                error.toException().printStackTrace(); // Print stack trace for detailed error info
+            }
+        });
+
+        **/
 
 
         //Navigation Bar Activity

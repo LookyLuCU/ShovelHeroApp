@@ -2,6 +2,7 @@ package com.example.shovelheroapp.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,14 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +45,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
     //initialize ShovelHeroDB userTable(Firebase)
     DatabaseReference userTable;
+
+    //Pending Work Order listings
+    private RecyclerView pendingWORecyclerView;
+    private WorkOrderAdapterForCustomer workOrderAdapter;
+    private List<WorkOrder> pendingWorkOrderList;
 
 
     private TextView usernameTV;
@@ -91,6 +96,8 @@ public class CustomerProfileActivity extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewMyRatings = findViewById(R.id.btnViewMyRatings);
 
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
+
 
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
@@ -101,6 +108,42 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 retrieveCustomerProfileData(userId);
             }
         }
+
+        //initialize recyclerview
+        pendingWORecyclerView = findViewById(R.id.rvPendingWorkOrders);
+        pendingWORecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //initialize Pending Work Order list and Adapter
+        pendingWorkOrderList = new ArrayList<>();
+        workOrderAdapter = new WorkOrderAdapterForCustomer(this, pendingWorkOrderList);
+        pendingWORecyclerView.setAdapter(workOrderAdapter);
+
+        //ADD PENDING WORK ORDERS TO PROFILE
+        workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pendingWorkOrderList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
+                    //if (!workOrder.getStatus().equals("Closed") && workOrder.getCustomerId().equals(userId)) {
+                    if (workOrder.getStatus().equals("Open")) {
+                        pendingWorkOrderList.add(workOrder);
+                    }
+                    else {
+                        Toast.makeText(CustomerProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                Log.d("ListAllOpenWorkOrders", "Data size: " + pendingWorkOrderList.size());
+                workOrderAdapter.notifyDataSetChanged();
+                pendingWORecyclerView.setAdapter(workOrderAdapter);
+                Log.d("ListAllOpenWorkOrders", "Adapter notified of data change");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ListAllOpenWorkOrders", "Error fetching data: " + error.getMessage());
+                error.toException().printStackTrace(); // Print stack trace for detailed error info
+            }
+        });
 
 
         //Navigation Bar Activity

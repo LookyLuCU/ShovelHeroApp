@@ -24,7 +24,7 @@ import java.util.List;
 public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
 
     private RecyclerView workOrderRecyclerView;
-    private WorkOrderAdapterForShoveler adapter;
+    private WorkOrderAdapterForAllOpenOrders adapter;
     private List<WorkOrder> workOrders;
 
     @Override
@@ -36,31 +36,15 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
         workOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         workOrders = new ArrayList<>();
-        adapter = new WorkOrderAdapterForShoveler(this, workOrders);
+        adapter = new WorkOrderAdapterForAllOpenOrders(this, workOrders);
+        //adapter = new WorkOrderAdapterForAllOpenOrders(this, workOrders);
         workOrderRecyclerView.setAdapter(adapter);
         Log.d("ListAllOpenWorkOrders", "onCreate: Open");
 
         DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
-        //Navigation Bar Activity
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.menu_workorders) {
-                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, ListAllOpenWorkOrdersActivity.class));
-                return true;
-            } else if (itemId == R.id.menu_orderhistory) {
-                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, OrderHistoryActivity.class));
-                return true;
-            } else if (itemId == R.id.menu_logout) {
-                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, MainActivity.class));
-                finish();
-                return true;
-            }
-            return false;
-        });
 
-        //TODO: change to "open" once work orders working properly
+        //WORK ORDER RECYCLER CONDITIONS
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -81,6 +65,25 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
                 Log.e("ListAllOpenWorkOrders", "Error fetching data: " + error.getMessage());
                 error.toException().printStackTrace(); // Print stack trace for detailed error info
             }
+        });
+
+
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_workorders) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, ListAllOpenWorkOrdersActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_orderhistory) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, OrderHistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_logout) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, MainActivity.class));
+                finish();
+                return true;
+            }
+            return false;
         });
     }
 }

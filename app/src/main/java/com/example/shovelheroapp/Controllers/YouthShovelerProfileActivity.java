@@ -2,6 +2,7 @@ package com.example.shovelheroapp.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,8 +42,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     DatabaseReference userTable;
     DatabaseReference workOrderTable;
 
-    //listings
-    private RecyclerView recyclerView;
+
+    //Pending Work Order listings
+    private RecyclerView pendingWORecyclerView;
     private WorkOrderAdapterForShoveler workOrderAdapter;
     private List<WorkOrder> pendingWorkOrderList;
 
@@ -59,6 +61,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
     private Spinner addressSpinner;
     private List<String> addressList;
+
+    //Navigation
+    private BottomNavigationView bottomNavigationView;
 
 
     //buttons
@@ -91,6 +96,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewRatings);
 
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
@@ -102,23 +108,48 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         }
 
         //initialize recyclerview
-        recyclerView = findViewById(R.id.rvPendingWorkOrders);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        pendingWORecyclerView = findViewById(R.id.rvPendingWorkOrders);
+        pendingWORecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //initialize list
+        //initialize Pending Work Order list and Adapter
         pendingWorkOrderList = new ArrayList<>();
+        workOrderAdapter = new WorkOrderAdapterForShoveler(this, pendingWorkOrderList);
+        pendingWORecyclerView.setAdapter(workOrderAdapter);
 
-        //initialize adapter
-        //workOrderAdapter = new WorkOrderAdapterForShoveler(pendingWorkOrderList);
-        //recyclerView.setAdapter(workOrderAdapter);
+        //ADD PENDING WORK ORDERS TO PROFILE
+        workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pendingWorkOrderList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
+                   // if (!workOrder.getStatus().equals("Closed") && workOrder.getShovellerId().equals(userId)) {
+                    if (workOrder.getStatus().equals("Open")) {
+                        pendingWorkOrderList.add(workOrder);
+                    }
+                    else {
+                        Toast.makeText(YouthShovelerProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                Log.d("ListAllOpenWorkOrders", "Data size: " + pendingWorkOrderList.size());
+                workOrderAdapter.notifyDataSetChanged();
+                pendingWORecyclerView.setAdapter(workOrderAdapter);
+                Log.d("ListAllOpenWorkOrders", "Adapter notified of data change");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ListAllOpenWorkOrders", "Error fetching data: " + error.getMessage());
+                error.toException().printStackTrace(); // Print stack trace for detailed error info
+            }
+        });
 
-        //add data from DB
-        //addOpenWorkOrderFromFirebase(String userId);
+        //updateMenuVisibility();
 
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
+
             if (itemId == R.id.menu_workorders) {
                 startActivity(new Intent(YouthShovelerProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
                 return true;
@@ -129,6 +160,19 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(YouthShovelerProfileActivity.this, MainActivity.class));
                 finish();
                 return true;
+
+                //**TODO: FLEXIBLE NAV BAR
+                /**
+                 } else if (itemId == R.id.menu_shovellerprofile) {
+                 startActivity(new Intent(YouthShovelerProfileActivity.this, YouthShovelerProfileActivity.class));
+                 return true;
+                 } else if (itemId == R.id.menu_guardianprofile) {
+                 startActivity(new Intent(YouthShovelerProfileActivity.this, GuardianProfileActivity.class));
+                 return true;
+                 } else if (itemId == R.id.menu_customerprofile) {
+                 startActivity(new Intent(YouthShovelerProfileActivity.this, CustomerProfileActivity.class));
+                 return true;
+                 **/
             }
             return false;
         });
@@ -167,8 +211,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                             //ANOTHER TRY AT LISTING ADDRESS
                             //displayAddresses(user.getAddresses());
                         }
-
-
 
 
                         //*******
@@ -311,6 +353,19 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    // **TODO: FLEXIBLE NAV BARS - Update available navigation menu buttons
+    /**
+    private void updateMenuVisibility() {
+        Menu menu = bottomNavigationView.getMenu();
+            menu.findItem(R.id.menu_shovellerprofile).setVisible(true);
+            menu.findItem(R.id.menu_guardianprofile).setVisible(false);
+            menu.findItem(R.id.menu_customerprofile).setVisible(false);
+            menu.findItem(R.id.menu_workorders).setVisible(false);
+            menu.findItem(R.id.menu_orderhistory).setVisible(true);
+            menu.findItem(R.id.menu_logout).setVisible(true);
+    }
+     **/
 
     private void addOpenWorkOrderFromFirebase(String userId) {
         // Replace this with your logic to fetch work orders for the given user ID from Firebase
