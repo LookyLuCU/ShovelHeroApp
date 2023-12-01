@@ -36,7 +36,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="460dp"
         android:background="#F5FCFF">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,5 +52,11 @@
             android:background="#F5FCFF"/>
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationViewYouthShoveler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/navmenu"/>
 
 </LinearLayout>

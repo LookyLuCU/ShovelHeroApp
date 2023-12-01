@@ -1,5 +1,6 @@
 package com.example.shovelheroapp.Controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,24 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
         Log.d("ListAllOpenWorkOrders", "onCreate: Open");
 
         DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
+
+        //Navigation Bar Activity
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewYouthShoveler);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_workorders) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, ListAllOpenWorkOrdersActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_orderhistory) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, OrderHistoryActivity.class));
+                return true;
+            } else if (itemId == R.id.menu_logout) {
+                startActivity(new Intent(ListAllOpenWorkOrdersActivity.this, MainActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
 
         //TODO: change to "open" once work orders working properly
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
