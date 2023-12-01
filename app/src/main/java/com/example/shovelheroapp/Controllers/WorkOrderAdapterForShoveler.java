@@ -57,7 +57,7 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
 
         //TODO: get initial property address (from Address)
         //holder.addressImage.setImageBitmap(workOrder.getAddressImage);
-        holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestedDate()));
+        holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestDate()));
         //TODO: calculate distance from shoveller address and add here
         //holder.distanceTV.setText(workOrder.getDistance);
 
