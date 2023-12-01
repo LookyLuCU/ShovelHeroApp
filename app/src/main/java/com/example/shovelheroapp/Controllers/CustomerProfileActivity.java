@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
+import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
@@ -125,8 +126,15 @@ public class CustomerProfileActivity extends AppCompatActivity {
                 pendingWorkOrderList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
-                    //if (!workOrder.getStatus().equals("Closed") && workOrder.getCustomerId().equals(userId)) {
-                    if (workOrder.getStatus().equals("Open")) {
+                    if ((workOrder.getStatus().equals(Status.Open.toString()) ||
+                            workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
+                            workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
+                            workOrder.getStatus().equals(Status.Accepted.toString()) ||
+                            workOrder.getStatus().equals(Status.Enroute.toString()) ||
+                            workOrder.getStatus().equals(Status.InProgress.toString()) ||
+                            workOrder.getStatus().equals(Status.Issue.toString()) )
+                        && workOrder.getCustomerId().equals(userId)) {
+                    //if (workOrder.getStatus().equals("Open") ) {
                         pendingWorkOrderList.add(workOrder);
                     }
                     else {
