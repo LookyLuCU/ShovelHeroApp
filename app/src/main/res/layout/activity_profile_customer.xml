@@ -37,15 +37,13 @@
             android:orientation="vertical">
 
             <!--TO add: android:src=""-->
-            <ImageButton
+            <ImageView
                 android:id="@+id/imgProfilePicture"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:contentDescription="Profile Picture"
-                android:focusable="true"
-                android:onClick="onUploadProfilePicture"
                 android:src="@drawable/shovel_hero_logo"
                 android:scaleType="fitXY"
                 android:background="@color/white"/>

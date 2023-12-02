@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,7 +38,9 @@ import com.google.firebase.storage.StorageReference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserRegistrationActivity extends AppCompatActivity {
 
@@ -100,7 +103,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()){
                     Toast.makeText(UserRegistrationActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
                 }
-                if(username.length() <= 3 || username.length() >= 10){
+                if(username.length() <= 3 || username.length() >= 20){
                     Toast.makeText(UserRegistrationActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
                 }
                 if(!(password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*"))){
@@ -116,6 +119,9 @@ public class UserRegistrationActivity extends AppCompatActivity {
                 if(!(android.util.Patterns.PHONE.matcher(phone).matches())){
                     Toast.makeText(UserRegistrationActivity.this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
                 }
+
+                // If validations pass, create user
+                createUser(view);
             }
         });
         birthdateText.setOnClickListener(new View.OnClickListener() {
@@ -288,18 +294,66 @@ public class UserRegistrationActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
         }
     }
-    private void uploadIdImage(){
+    private void uploadIdImage() {
+
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference idReference = storageReference.child("guardianIds/" + userId + ".jpg");
 
         idReference.putFile(selectedIdUri).addOnSuccessListener(taskSnapshot -> {
-            Toast.makeText(UserRegistrationActivity.this, "ID Card Uploaded", Toast.LENGTH_SHORT).show();
-            // get the download URL
+            // get download URL
             idReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                // Set up with email? Might require backend
-                String downloadUrl = uri.toString();
+                String imageUrl = uri.toString();
+                // update user's profile with image url
+                updateUserWithIDUrl(imageUrl);
+            }).addOnFailureListener(e -> {
 
+                Toast.makeText(UserRegistrationActivity.this, "Failed to get ID download URL", Toast.LENGTH_SHORT).show();
             });
-        }).addOnFailureListener(e -> Toast.makeText(UserRegistrationActivity.this,"Failed to upload ID" + e.getMessage(), Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(e -> {
+            Toast.makeText(UserRegistrationActivity.this, "Failed to upload ID" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void updateUserWithIDUrl(String imageUrl) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference userReference = database.getReference("users").child(userId);
+
+        // Create Map with image Url
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("idImageUrl", imageUrl);
+
+        // Update guardian's profile with ID url
+        userReference.updateChildren(updates).addOnSuccessListener(aVoid -> {
+            Toast.makeText(UserRegistrationActivity.this, "ID linked with Guardian profile", Toast.LENGTH_SHORT).show();
+            sendIdForValidation(imageUrl, userId);
+
+        }).addOnFailureListener(e -> {
+            Toast.makeText(UserRegistrationActivity.this, "Failed to link ID with Guardian profile", Toast.LENGTH_SHORT).show();
+        });
+    }
+    private void sendIdForValidation(String guardianIDUrl, String userId){
+        String guardianUrl = guardianIDUrl;
+
+        String emailAddress = "sheshegurl.sd@gmail.com";
+        String subject = "Guardian ID Validation Request";
+        String body = "PLease validate ID for guardian userId: " + userId;
+
+        //Create intent with ACTION_SEND action
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        //set intent type to email
+        emailIntent.setType("message/rfc822");
+
+        //set recipient address
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
+
+        //set subject
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+
+        //set body
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+
+        //start email client activity
+        startActivity(Intent.createChooser(emailIntent, "Send Email"));
     }
 }

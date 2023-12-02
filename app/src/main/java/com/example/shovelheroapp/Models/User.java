@@ -187,12 +187,15 @@ public class User {
         this.linkedUsers = linkedUsers;
     }
 
-
     public String getProfilePictureUrl() {
         return profilePictureUrl;
     }
 
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
+    }
+    @Override
+    public String toString() { // Display username in spinner (Guardian Profile)???
+        return username;
     }
 }
