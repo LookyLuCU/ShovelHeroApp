@@ -518,7 +518,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private void addGuardianToYouthAccount(User youthUser, User guardianUser) {
         System.out.println("Adding guardian: :" + guardianUser.getUsername() + " to" + youthUser.getUsername());
 
-        DatabaseReference linkedYouthUserReference = userTable.child(youthUser.getUserId()).child("linkedusers");
+        DatabaseReference linkedYouthUserReference = userTable.child(youthUser.getUserId()).child("linkedUsers");
         Map<String, Object> guardianUserInfo = new HashMap<>();
         guardianUserInfo.put(guardianUser.getUserId(), new HashMap<String, Object>() {{
             put("userId", guardianUser.getUserId());
@@ -543,7 +543,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private void addYouthToGuardianAccount(User youthUser, User guardianUser) {
         System.out.println("Adding guardian: :" + guardianUser.getUsername() + " to" + youthUser.getUsername());
 
-        DatabaseReference linkedGuardianUserReference = userTable.child(guardianUser.getUserId()).child("linkedusers");
+        DatabaseReference linkedGuardianUserReference = userTable.child(guardianUser.getUserId()).child("linkedUsers");
         Map<String, Object> youthUserInfo = new HashMap<>();
         youthUserInfo.put(youthUser.getUserId(), new HashMap<String, Object>(){{
             put("userId", youthUser.getUserId());
@@ -568,49 +568,37 @@ public class GuardianProfileActivity extends AppCompatActivity {
     private void readYouthProfilesFromFirebase(User guardian) {
         System.out.println("userid received by read database: " + guardian);
 
-        userTable.child(guardian.getUserId()).child("linkedusers").addValueEventListener(new ValueEventListener() {
+        userTable.child(guardian.getUserId()).child("linkedUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Clear the addresses field in the User class
+                // Clear linked users in User Class
                 guardian.setLinkedUsers(new HashMap<String, User>());
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //manually deserialize the HashMap
-                    Map<String, Object> linkedUsersMap = (Map<String, Object>) snapshot.getValue();
-
-                    // retrieve values from the Hashmap
-                    String userId = (String) linkedUsersMap.get("addressId");
-                    String accountType = (String) linkedUsersMap.get("address");
-                    String username = (String) linkedUsersMap.get("city");
-                    String password = (String) linkedUsersMap.get("province");
-                    String firstName = (String) linkedUsersMap.get("postalCode");
-                    String lastName = (String) linkedUsersMap.get("country");
-                    String birthdate = (String) linkedUsersMap.get("addressNotes");
-                    String email = (String) linkedUsersMap.get("accessible");
-                    String phoneNo = (String) linkedUsersMap.get("shovelAvailable");
-                    String profileIMageURL = (String) linkedUsersMap.get("profilePictureUrl");
-
-                    // Create new Address object
-                    User linkedUserObject = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phoneNo);
-
-                    // Add the Address object to the addresses HashMap in User model
-                    guardian.addLinkedUser(userId, linkedUserObject);
+                     //Deserialize user object from snapshot
+                    User linkedUser = snapshot.getValue(User.class);
+                    if (linkedUser != null) {
+                        String userId = snapshot.getKey();
+                        guardian.addLinkedUser(userId, linkedUser);
+                    }
                 }
 
-                // Retrieve list of linkedYouths from Hashmap
+                // Get list of linked users
                 List<User> linkedUsers = new ArrayList<>(guardian.getLinkedUsers().values());
 
-                // Update the Spinner with addresses
+                // Update spinner with users
                 ArrayAdapter<User> linkedYouthAdapter = new ArrayAdapter<>(GuardianProfileActivity.this, android.R.layout.simple_spinner_item, linkedUsers);
                 linkedYouthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 linkedYouthSpinner.setAdapter(linkedYouthAdapter);
 
-                // Enable or disable the "Create Work Order" button based on the presence of addresses
+                // Enable or disable spinner based on linked users' presence
                 linkedYouthSpinner.setEnabled(!linkedUsers.isEmpty());
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle error
+                Log.e(TAG, "Error reading linked users: " + databaseError.getMessage());
             }
         });
     }
