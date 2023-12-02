@@ -482,7 +482,8 @@ public class GuardianProfileActivity extends AppCompatActivity {
             return;
         }
 
-        String youthUsername = addYouthET.getText().toString();
+        String youthUsername = addYouthET.getText().toString().trim();
+
 
         // Query youth in Firebase
         userTable.orderByChild("username").equalTo(youthUsername).addListenerForSingleValueEvent(new ValueEventListener() {
