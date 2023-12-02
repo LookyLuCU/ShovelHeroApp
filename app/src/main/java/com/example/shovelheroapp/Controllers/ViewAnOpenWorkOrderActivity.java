@@ -164,7 +164,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
 
 
 
-                        //GPD DIRECTIONS
+                        //GPS DIRECTIONS
                         btnDirections.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -179,8 +179,9 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                         btnTakeIt.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(ViewAnOpenWorkOrderActivity.this, "Work Order has been sent for approval from our Guardian!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ViewAnOpenWorkOrderActivity.this, "Shovelling job has been sent for approval from your Guardian!", Toast.LENGTH_SHORT).show();
                                 currentWorkOrder.setStatus(Status.PendingGuardianApproval.toString());
+                                currentWorkOrder.setShovellerId(currentUser.getUserId());
                                 //**TODO: requestGuardianApproval(currentWorkOrder.getShovellerId());
                             }
                         });

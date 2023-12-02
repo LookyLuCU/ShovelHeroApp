@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,9 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         public TextView sqFootageTV;
         public TextView statusTV;
 
+
+        public Button btnOpenWo;
+
         public ViewHolder(View view) {
             super(view);
             //addressImage = view.findViewById(R.id.imgPropertyImage);
@@ -39,6 +43,9 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
             //distanceTV = view.findViewById(R.id.tvDistance);
             sqFootageTV = view.findViewById(R.id.tvSquareFootage);
             statusTV = view.findViewById(R.id.tvStatus);
+
+            //**TODO: IS THIS WHERE THIS GOES?
+            btnOpenWo = view.findViewById(R.id.btnOpen);
         }
     }
 
@@ -63,6 +70,8 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
 
         holder.sqFootageTV.setText("Job size: " + String.valueOf(workOrder.getSquareFootage()) + "square feet");
         holder.statusTV.setText("Job Status: " + workOrder.getStatus());
+
+
     }
 
     @Override
