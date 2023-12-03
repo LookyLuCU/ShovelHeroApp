@@ -108,10 +108,10 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         workOrderPriceTextView = findViewById(R.id.tvWorkOrderPrice);
 
 
-        //**TODO: Fix date/time
-
         // Set requestDate to Hidden by default
+        //**TODO: revert
         requestDate.setText("");
+        //requestDate.findViewById(R.id.tvRequestDateTime);
         requestedDate = findViewById(R.id.etCustomDate);
         //requestedTime = findViewById(R.id.tpCustomTime);
         requestedTime = findViewById(R.id.etCustomTime);
@@ -376,6 +376,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
     public void addWorkOrderDetails(WorkOrder currentWorkOrder) {
         System.out.println("Add workOrderDetails method started - line 328 - WO rec'd: " + currentWorkOrder);
 
+
         String customerRequestedDate = requestedDate.getText().toString();
         String customerRequestedTime = requestedTime.getText().toString();
         String specialInstructions = addressNotesEditText.getText().toString();
@@ -584,7 +585,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
         workOrderReference = FirebaseDatabase.getInstance().getReference("workorders").child(currentWorkOrder.getWorkOrderId());
         Map<String, Object> addShoveller = new HashMap<>();
-        addShoveller.put("shovelerId", shovellerId);
+        addShoveller.put("shovellerId", shovellerId);
 
         workOrderReference.updateChildren(addShoveller)
             .addOnSuccessListener(new OnSuccessListener<Void>() {

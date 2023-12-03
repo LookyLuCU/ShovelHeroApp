@@ -520,6 +520,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
         DatabaseReference linkedYouthUserReference = userTable.child(youthUser.getUserId()).child("linkedUsers");
         Map<String, Object> guardianUserInfo = new HashMap<>();
+
         guardianUserInfo.put(guardianUser.getUserId(), new HashMap<String, Object>() {{
             put("userId", guardianUser.getUserId());
             put("username", guardianUser.getUsername());

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                                 for (DataSnapshot userSnapShot : snapshot.getChildren()) {
                                     User user = userSnapShot.getValue(User.class);
 
-                                    if (user != null && user.getPassword().equals(password)){
+                                    if (user != null && user.getPassword().equals(password) && !user.getPassword().isEmpty() && !user.getUsername().isEmpty()){
                                         System.out.println("Username and password ok");
 
                                         String accountType = user.getAccountType();

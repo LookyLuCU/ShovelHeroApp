@@ -41,7 +41,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
     //initialize ShovelHeroDB (Firebase)
     DatabaseReference userTable;
-    DatabaseReference workOrderTable;
 
 
     //Pending Work Order listings
@@ -51,7 +50,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
 
     private TextView usernameTV;
-    private TextView passwordTV;
     private TextView firstNameTV;
     private TextView lastNameTV;
     private TextView emailTV;
@@ -74,7 +72,8 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
     Button btnAddAddress;
     Button btnEditPassword;
     Button btnViewRatings;
-    Button btnLogout;
+    Button btnMyGuardian;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +96,9 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btnEditPassword);
         btnViewRatings = findViewById(R.id.btnViewRatings);
 
+        //**TODO: to remove
+        btnMyGuardian = findViewById(R.id.btnViewGuardian);
+
         DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
         //GET USERID FROM LOGIN OR REGISTRATION
@@ -104,11 +106,13 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         if (intent != null) {
             userId = intent.getStringExtra("USER_ID");
             if (userId != null) {
+                System.out.println("shoveller ID recieved: " + userId);  //WORKING
                 retrieveYouthProfile(userId);
             }
         }
 
         //initialize recyclerview
+        System.out.println("Initializing Pending Orders Recycler");
         pendingWORecyclerView = findViewById(R.id.rvPendingWorkOrders);
         pendingWORecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -124,23 +128,23 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                 pendingWorkOrderList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
-                   // if (!workOrder.getStatus().equals("Closed") && workOrder.getShovellerId().equals(userId)) {
-                    //if (workOrder.getStatus().equals("Open")) {
 
-                    String status = workOrder.getStatus();
-                    String shovellerId = workOrder.getShovellerId();
+                    System.out.println("userId = " + userId);
+                    System.out.println("shovellerId = " + workOrder.getShovellerId());
 
-                    if ((status != null) && (shovellerId != null) &&
-                            (status.equals(Status.Open.toString()) ||
-                                    status.equals(Status.OpenCustom.toString()) ||
-                                    status.equals(Status.PendingGuardianApproval.toString()) ||
-                                    status.equals(Status.Accepted.toString()) ||
-                                    status.equals(Status.Enroute.toString()) ||
-                                    status.equals(Status.InProgress.toString()) ||
-                                    status.equals(Status.Issue.toString())) &&
-                            shovellerId.equals(userId)) {
+                    if(workOrder.getShovellerId() != null &&
+                            workOrder.getShovellerId().equals(userId) &&
+                            (workOrder.getStatus().equals(Status.Open.toString()) ||
+                                workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
+                                workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
+                                workOrder.getStatus().equals(Status.Accepted.toString()) ||
+                                workOrder.getStatus().equals(Status.Enroute.toString()) ||
+                                workOrder.getStatus().equals(Status.InProgress.toString()) ||
+                                workOrder.getStatus().equals(Status.Issue.toString()) )
+                                    ) {
                         pendingWorkOrderList.add(workOrder);
-                    } else {
+                    }
+                    else {
                         Toast.makeText(YouthShovelerProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -193,6 +197,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
 
     private void retrieveYouthProfile(String userId) {
+        System.out.println("Retrieving youth profile! - line 202");
         userTable.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -202,6 +207,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     if (user != null) {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
+                        System.out.println("Retrieve youth username! - line 212: " + user.getUsername());
                         firstNameTV.setText("First Name: " + user.getFirstName());
                         lastNameTV.setText(user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
@@ -346,6 +352,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
                     // Add the Address object to the addresses HashMap in User model
                     user.addAddress(addressId, addressObject);
+
                 }
 
                 // Retrieve list of addresses from Hashmap

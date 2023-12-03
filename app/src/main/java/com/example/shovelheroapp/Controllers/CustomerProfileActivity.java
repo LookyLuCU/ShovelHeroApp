@@ -72,7 +72,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
     Button btnManagePaymentInfo;
     Button btnEditPassword;
     Button btnViewMyRatings;
-    Button btnLogout;
 
 
     @Override

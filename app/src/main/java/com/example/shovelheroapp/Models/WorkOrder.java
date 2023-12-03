@@ -3,7 +3,6 @@ package com.example.shovelheroapp.Models;
 import android.media.Image;
 import android.widget.CalendarView;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,7 +52,7 @@ public class WorkOrder {
         this.squareFootage = squareFootage;
         this.itemsRequested = new HashSet<>();
         this.customerId = customerId;
-        this.shovellerId = null;
+        //this.shovellerId = null;
         this.customerAddressId = customerAddressId;
         this.transaction = new HashMap<>();
     }
@@ -226,6 +225,6 @@ public class WorkOrder {
     }
 
     public void setShovellerId(String shovellerId) {
-        this.customerAddressId = customerAddressId;
+        this.shovellerId = shovellerId;
     }
 }
