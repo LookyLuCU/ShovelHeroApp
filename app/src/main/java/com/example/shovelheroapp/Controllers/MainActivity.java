@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        overridePendingTransition(R.anim.zoom_in, 0);
+
         userReference = FirebaseDatabase.getInstance().getReference("users");
         System.out.println("Firebase connected");
 
