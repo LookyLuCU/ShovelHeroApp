@@ -289,6 +289,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                  String guardianId = user.getUserId();
                                  intentViewRatings.putExtra("USER_ID", guardianId);
                                  startActivity(intentViewRatings);
+                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                  **/
                             }
                         });
@@ -302,6 +303,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                 String guardianId = user.getUserId();
                                 intentManageYouthProfile.putExtra("USER_ID", guardianId);
                                 startActivity(intentManageYouthProfile);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -314,6 +316,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                  String guardianId = user.getUserId();
                                  intentManageYouthPayment.putExtra("USER_ID", guardianId);
                                  startActivity(intentManageYouthPayment);
+                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -325,6 +328,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                 String guardianId = user.getUserId();
                                 intentNewAddress.putExtra("USER_ID", guardianId);
                                 startActivity(intentNewAddress);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -336,6 +340,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                 String guardianId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", guardianId);
                                 startActivity(intentEditPassword);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
                     } else {

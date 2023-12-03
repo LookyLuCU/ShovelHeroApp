@@ -432,6 +432,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                         String customerId = currentWorkOrder.getCustomerId();
                         intentCreateWO.putExtra("USER_ID", customerId);
                         startActivity(intentCreateWO);
+                        overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -461,6 +462,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     String customerId = currentWO.getCustomerId();
                     intentCancelWO.putExtra("USER_ID", customerId);
                     startActivity(intentCancelWO);
+                    overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                 }
             }
 
@@ -522,32 +524,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
         timePickerDialog.show();
     }
-
-
-    // Validation function for Date
-    private boolean isValidDate(String date) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            sdf.setLenient(false);
-            sdf.parse(date);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    // Validation function for Time
-    private boolean isValidTime(String time) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
-            sdf.setLenient(false);
-            sdf.parse(time);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
 
     // Validation function for UserName
     private void validateUserName(String customShovelerUsername, WorkOrder currentWorkOrder) {

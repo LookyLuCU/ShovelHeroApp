@@ -1,10 +1,13 @@
 package com.example.shovelheroapp.Controllers;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
@@ -13,11 +16,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -90,22 +88,26 @@ public class EditPasswordActivity extends AppCompatActivity {
                             String youthID = currentUser.getUserId();
                             intentYouth.putExtra("USER_ID", youthID);
                             startActivity(intentYouth);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         case "Customer":
                             Intent intentCustomer = new Intent(EditPasswordActivity.this, CustomerProfileActivity.class);
                             String customerId = currentUser.getUserId();
                             intentCustomer.putExtra("USER_ID", customerId);
                             startActivity(intentCustomer);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         case "Guardian":
                             Intent intentGuardian = new Intent(EditPasswordActivity.this, GuardianProfileActivity.class);
                             String guardianId = currentUser.getUserId();
                             intentGuardian.putExtra("USER_ID", guardianId);
                             startActivity(intentGuardian);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         default:
                             Intent intent = new Intent(EditPasswordActivity.this, UserRegistrationActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                     }
                 } else{

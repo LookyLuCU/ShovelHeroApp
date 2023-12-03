@@ -197,22 +197,26 @@ public class CreateAddressActivity extends AppCompatActivity {
                             String youthID = currentUser.getUserId();
                             intentYouth.putExtra("USER_ID", youthID);
                             startActivity(intentYouth);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         case "Customer":
                             Intent intentCustomer = new Intent(CreateAddressActivity.this, CustomerProfileActivity.class);
                             String customerId = currentUser.getUserId();
                             intentCustomer.putExtra("USER_ID", customerId);
                             startActivity(intentCustomer);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         case "Guardian":
                             Intent intentGuardian = new Intent(CreateAddressActivity.this, GuardianProfileActivity.class);
                             String guardianId = currentUser.getUserId();
                             intentGuardian.putExtra("USER_ID", guardianId);
                             startActivity(intentGuardian);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                         default:
                             Intent intent = new Intent(CreateAddressActivity.this, UserRegistrationActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             break;
                     }
                 } else{

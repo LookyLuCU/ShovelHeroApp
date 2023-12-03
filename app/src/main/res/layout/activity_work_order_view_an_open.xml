@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/tvStatus"
@@ -49,7 +50,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="130dp"
@@ -162,7 +164,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/btnDirections"
@@ -181,7 +184,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:padding="8dp"
-        android:background="@drawable/rv_item_background">
+        android:background="@drawable/rv_item_background"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/lblCustomerUsername"
@@ -207,7 +211,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:padding="8dp"
-        android:background="@drawable/rv_item_background">
+        android:background="@drawable/rv_item_background"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/lblShovellerUsername"
@@ -231,7 +236,8 @@
         android:orientation="horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="35dp">
+        android:layout_marginTop="35dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/lblRequestDateTime"
@@ -256,7 +262,8 @@
         android:orientation="horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/lblSpecialTime"
@@ -290,7 +297,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="45dp"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="40dp"
+        android:layout_weight="1">
 
         <!--For Shovellers-->
         <Button
@@ -401,7 +409,6 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:layout_marginLeft="5dp"/>
-
 
     </LinearLayout>
 

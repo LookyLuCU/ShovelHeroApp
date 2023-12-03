@@ -224,6 +224,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                 String youthId = user.getUserId();
                                 intentManageCustomerProfile.putExtra("USER_ID", youthId);
                                 startActivity(intentManageCustomerProfile);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -237,6 +238,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                  String customerId = user.getUserId();
                                  intentManagePayment.putExtra("USER_ID", customerId);
                                  startActivity(intentManagePayment);
+                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                  **/
                             }
                         });
@@ -249,6 +251,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                 String customerId = user.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -261,6 +264,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                 String customerId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", customerId);
                                 startActivity(intentEditPassword);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -274,6 +278,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                                  String customerId = user.getUserId();
                                  intentViewRatings.putExtra("USER_ID", customerId);
                                  startActivity(intentViewRatings);
+                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                  **/
                             }
                         });
@@ -370,6 +375,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         Intent intentCreateWO = new Intent(CustomerProfileActivity.this, CreateWorkOrderActivity.class);
                         intentCreateWO.putExtra("WORK_ORDER_ID", workOrderID);
                         startActivity(intentCreateWO);
+                        overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                     })
                     .addOnFailureListener(e -> Toast.makeText(CustomerProfileActivity.this, "Could not create Shovelling Job", Toast.LENGTH_SHORT).show());
         }

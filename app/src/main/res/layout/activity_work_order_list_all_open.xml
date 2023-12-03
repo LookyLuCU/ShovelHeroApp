@@ -37,7 +37,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="460dp"
-        android:background="#F5FCFF">
+        android:background="#F5FCFF"
+        android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWorkOrders"

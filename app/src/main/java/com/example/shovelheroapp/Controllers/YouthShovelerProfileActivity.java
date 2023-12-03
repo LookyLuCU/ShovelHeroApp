@@ -226,9 +226,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         if (user.getAddresses() == null) {
                             System.out.println("Please add your address to view local job listings");
                             Toast.makeText(YouthShovelerProfileActivity.this, "Please add your address to view local job listings", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //ANOTHER TRY AT LISTING ADDRESS
-                            //displayAddresses(user.getAddresses());
                         }
 
 
@@ -244,6 +241,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 String youthId = user.getUserId();
                                 intentViewYouthJobs.putExtra("USER_ID", youthId);
                                 startActivity(intentViewYouthJobs);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -257,6 +255,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 String youthId = user.getUserId();
                                 intentManageYouthPayment.putExtra("USER_ID", youthId);
                                 startActivity(intentManageYouthPayment);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -269,6 +268,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 String youthId = user.getUserId();
                                 intentManageYouthProfile.putExtra("USER_ID", youthId);
                                 startActivity(intentManageYouthProfile);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -280,6 +280,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 String customerId = user.getUserId();
                                 intentNewAddress.putExtra("USER_ID", customerId);
                                 startActivity(intentNewAddress);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -291,6 +292,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                 String youthId = user.getUserId();
                                 intentEditPassword.putExtra("USER_ID", youthId);
                                 startActivity(intentEditPassword);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -305,6 +307,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                                  String youthId = user.getUserId();
                                  intentViewRatings.putExtra("USER_ID", youthId);
                                  startActivity(intentViewRatings);
+                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                  **/
                             }
                         });
@@ -386,7 +389,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
             menu.findItem(R.id.menu_logout).setVisible(true);
     }
      **/
-
 }
 
 

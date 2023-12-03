@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +24,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,10 +34,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UserRegistrationActivity extends AppCompatActivity {
@@ -205,22 +201,26 @@ public class UserRegistrationActivity extends AppCompatActivity {
                                 String youthID = userId;
                                 intentCreateYouth.putExtra("USER_ID", youthID);
                                 startActivity(intentCreateYouth);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                 break;
                             case "Customer":
                                 Intent intentCreateCustomer = new Intent(UserRegistrationActivity.this, CustomerProfileActivity.class);
                                 String customerId = userId;
                                 intentCreateCustomer.putExtra("USER_ID", customerId);
                                 startActivity(intentCreateCustomer);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                 break;
                             case "Guardian":
                                 Intent intentCreateGuardian = new Intent(UserRegistrationActivity.this, GuardianProfileActivity.class);
                                 String guardianId = userId;
                                 intentCreateGuardian.putExtra("USER_ID", guardianId);
                                 startActivity(intentCreateGuardian);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                 break;
                             default:
                                 Intent intent = new Intent(UserRegistrationActivity.this, UserRegistrationActivity.class);
                                 startActivity(intent);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                         }
                     }
                 })

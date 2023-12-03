@@ -29,7 +29,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -141,7 +142,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#F5FCFF">
+        android:background="#F5FCFF"
+        android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPendingWorkOrders"
@@ -161,7 +163,8 @@
         android:layout_height="230dp"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"

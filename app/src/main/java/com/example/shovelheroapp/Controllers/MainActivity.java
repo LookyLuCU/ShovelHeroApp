@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                                                 String youthID = user.getUserId();
                                                 intentLoginYouth.putExtra("USER_ID", youthID);
                                                 startActivity(intentLoginYouth);
+                                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                                 finish();
                                                 break;
                                             case "Customer":
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                                 String customerId = user.getUserId();
                                                 intentLoginCustomer.putExtra("USER_ID", customerId);
                                                 startActivity(intentLoginCustomer);
+                                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                                 finish();
                                                 break;
                                             case "Guardian":
@@ -85,11 +87,13 @@ public class MainActivity extends AppCompatActivity {
                                                 String guardianId = user.getUserId();
                                                 intentLoginGuardian.putExtra("USER_ID", guardianId);
                                                 startActivity(intentLoginGuardian);
+                                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                                 finish();
                                                 break;
                                             default:
                                                 Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
                                                 startActivity(intent);
+                                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                                                 break;
                                         }
                                     }
