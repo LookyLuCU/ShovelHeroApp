@@ -22,10 +22,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shovelheroapp.Models.Address;
+import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
@@ -53,7 +55,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
     //Pending Work Order listings
     private RecyclerView pendingWORecyclerView;
-    private WorkOrderAdapterForShoveler workOrderAdapter;
+    private WorkOrderAdapterForGuardian workOrderAdapter;
     private List<WorkOrder> pendingWorkOrderList;
 
 
@@ -87,7 +89,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
     Button btnAddYouth;
     Button btnViewYouthProfile;
     Button btnViewRatings;
-    Button btnViewJobs;
     Button btnManagePaymentInfo;
     Button btnManageProfileInfo;
     Button btnAddAddress;
@@ -149,8 +150,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
         btnAddAddress = findViewById(R.id.btnAddAddress);
         btnEditPassword = findViewById(R.id.btnEditPassword);
 
-        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
-
 
         //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
@@ -163,26 +162,39 @@ public class GuardianProfileActivity extends AppCompatActivity {
         }
 
 
-        //LIST OF OPEN ORDERS FOR GUARDIAN?
-        /**
+        //LIST OF OPEN ORDERS FOR GUARDIAN
         //initialize recyclerview
+        System.out.println("Initializing Pending Orders Recycler");
         pendingWORecyclerView = findViewById(R.id.rvPendingWorkOrders);
         pendingWORecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialize Pending Work Order list and Adapter
         pendingWorkOrderList = new ArrayList<>();
-        workOrderAdapter = new WorkOrderAdapterForGuardian(this, pendingWorkOrderList);
+        workOrderAdapter = new WorkOrderAdapterForGuardian(this, pendingWorkOrderList, userId);
         pendingWORecyclerView.setAdapter(workOrderAdapter);
 
         //ADD PENDING WORK ORDERS TO PROFILE
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 pendingWorkOrderList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
-                    // if (!workOrder.getStatus().equals("Closed") && workOrder.getShovellerId().equals(userId)) {
-                    if (workOrder.getStatus().equals("Open")) {
+
+                    //System.out.println("userId = " + userId);
+                    //System.out.println("shovellerId = " + workOrder.getShovellerId());
+
+                    if(workOrder.getGuardianId() != null &&
+                            workOrder.getGuardianId().equals(userId) &&
+                            (workOrder.getStatus().equals(Status.Open.toString()) ||
+                                    workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
+                                    workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
+                                    workOrder.getStatus().equals(Status.Accepted.toString()) ||
+                                    workOrder.getStatus().equals(Status.Enroute.toString()) ||
+                                    workOrder.getStatus().equals(Status.InProgress.toString()) ||
+                                    workOrder.getStatus().equals(Status.Issue.toString()) )
+                    ) {
                         pendingWorkOrderList.add(workOrder);
                     }
                     else {
@@ -201,7 +213,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
             }
         });
 
-        **/
 
 
         //Navigation Bar Activity
@@ -379,13 +390,13 @@ public class GuardianProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    String addressNotes = (String) addressMap.get("addressNotes");
+                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    String accessible = (String) addressMap.get("accessible");
-                    String shovelAvailable = (String) addressMap.get("shovelAvailable");
+                    //String accessible = (String) addressMap.get("accessible");
+                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
-                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
+                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);
 
                     // Add the Address object to the addresses HashMap in User model
                     user.addAddress(addressId, addressObject);

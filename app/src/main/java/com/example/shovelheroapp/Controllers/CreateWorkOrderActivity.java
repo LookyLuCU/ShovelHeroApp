@@ -414,7 +414,8 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         updateWorkOrder.put("walkwayChecked", walkwayCheckBox.isChecked());
 
         // Other work order details
-        updateWorkOrder.put("specialinstructions", specialInstructions);
+        updateWorkOrder.put("specialInstructions", specialInstructions);
+
         updateWorkOrder.put("status", status);
         updateWorkOrder.put("requestedDateTime", formattedDateTime);
 

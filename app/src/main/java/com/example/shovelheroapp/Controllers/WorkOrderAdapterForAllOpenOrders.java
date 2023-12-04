@@ -16,8 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkOrderAdapterForAllOpenOrders extends RecyclerView.Adapter<WorkOrderAdapterForAllOpenOrders.ViewHolder> {
     private List<WorkOrder> workOrders;
@@ -95,8 +102,7 @@ public class WorkOrderAdapterForAllOpenOrders extends RecyclerView.Adapter<WorkO
             public void onClick(View view) {
                 System.out.println("Shoveller clicked to send the WO to their guardian");
 
-                workOrder.setStatus(Status.PendingGuardianApproval.toString());
-                workOrder.setShovellerId(userId);
+                findGuardians(workOrder.getWorkOrderId());
 
                 String userID = userId;
                 Context context = holder.itemView.getContext();
@@ -106,9 +112,6 @@ public class WorkOrderAdapterForAllOpenOrders extends RecyclerView.Adapter<WorkO
                 ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
             }
         });
-
-
-
 
 
     }
@@ -122,6 +125,39 @@ public class WorkOrderAdapterForAllOpenOrders extends RecyclerView.Adapter<WorkO
         workOrders.clear();
         workOrders.addAll(newWorkOrders);
         notifyDataSetChanged();
+    }
+
+    public void findGuardians(String workOrderId){
+        System.out.println("Getting guardian ID");
+
+        DatabaseReference linkedGuardian = FirebaseDatabase.getInstance().getReference("users").child(userId).child("linkedUsers");
+        linkedGuardian.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot linkedGuardianSnapshot : snapshot.getChildren()) {
+                        String linkedGuardianId = linkedGuardianSnapshot.getKey();
+
+                        requestWorkOrder(linkedGuardianId, workOrderId);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    public void requestWorkOrder(String guardianID, String workOrderId){
+
+        DatabaseReference wORef = FirebaseDatabase.getInstance().getReference("workorders").child(workOrderId);
+        Map<String, Object> updateWorkOrder = new HashMap<>();
+        updateWorkOrder.put("guardianId", guardianID);
+        updateWorkOrder.put("shovellerId", userId);
+        updateWorkOrder.put("status", Status.PendingGuardianApproval.toString());
+
+        wORef.updateChildren(updateWorkOrder);
+        //TODO: notify guardian
     }
 }
 

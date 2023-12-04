@@ -64,13 +64,13 @@ public class CreateAddressActivity extends AppCompatActivity {
         provinceEditText = findViewById(R.id.etProvince);
         postalCodeEditText = findViewById(R.id.etPostalCode);
         countrySpinner = findViewById(R.id.spCountry);
-        addressNotesEditText = findViewById(R.id.etAddressNotes);
+        //addressNotesEditText = findViewById(R.id.etAddressNotes);
         drivewaySquareFootageEditText = findViewById(R.id.etSqFoot);
-        drivewayCB = findViewById(R.id.cbDriveway);
-        walkwayCB = findViewById(R.id.cbWalkway);
-        sidewalkCB = findViewById(R.id.cbSidewalk);
-        accessibleCB = findViewById(R.id.cbAccessible);
-        shovelAvailableOnsiteCB = findViewById(R.id.cbShovelAvailable);
+        //drivewayCB = findViewById(R.id.cbDriveway);
+        //walkwayCB = findViewById(R.id.cbWalkway);
+        //sidewalkCB = findViewById(R.id.cbSidewalk);
+        //accessibleCB = findViewById(R.id.cbAccessible);
+        //shovelAvailableOnsiteCB = findViewById(R.id.cbShovelAvailable);
 
         btnCreateAddress = findViewById(R.id.btnCreateAddress);
 
@@ -119,10 +119,11 @@ public class CreateAddressActivity extends AppCompatActivity {
         String province = provinceEditText.getText().toString();
         String postalCode = postalCodeEditText.getText().toString();
         String country = countrySpinner.getSelectedItem().toString();
-        String addressNotes = addressNotesEditText.getText().toString();
+        //String addressNotes = addressNotesEditText.getText().toString();
         String sqFootageStr = drivewaySquareFootageEditText.getText().toString();
         int sqFootage = sqFootageStr.isEmpty() ? 0 : Integer.parseInt(sqFootageStr);
 
+        /**
         if (accessibleCB.isChecked()) {
             accessible = "Accessible";
         } else {
@@ -153,10 +154,11 @@ public class CreateAddressActivity extends AppCompatActivity {
         } else {
             itemsRequestedList.add("NO Walkway Please");
         }
+         **/
 
         //CREATE ADDRESS OBJECT (WITHIN USER) THEN RESET FIELDS FOR NEW ENTRY
         if (!address.isEmpty() && !city.isEmpty() && !province.isEmpty() && !postalCode.isEmpty() && !country.isEmpty() && !sqFootageStr.isEmpty()) {
-            Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
+            Address newAddress = new Address(addressId, address, city, province, postalCode, country, sqFootage);
 
             System.out.println("New address created: " + newAddress.getAddress());
 
@@ -170,9 +172,9 @@ public class CreateAddressActivity extends AppCompatActivity {
                 provinceEditText.setText("");
                 postalCodeEditText.setText("");
                 countrySpinner.setAdapter(null);
-                addressNotesEditText.setText("");
-                accessibleCB.setChecked(false);
-                shovelAvailableOnsiteCB.setChecked(false);
+                //addressNotesEditText.setText("");
+                //accessibleCB.setChecked(false);
+                //shovelAvailableOnsiteCB.setChecked(false);
             }
         }
         else {

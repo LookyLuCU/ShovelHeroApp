@@ -30,6 +30,7 @@ public class WorkOrder {
     private String customerId; //to be foreign key
     private String customerAddressId; //to be foreign key
     private String shovellerId;
+    private String guardianId;
     private HashMap<String, Transaction> transaction;
 
 
@@ -52,7 +53,6 @@ public class WorkOrder {
         this.squareFootage = squareFootage;
         this.itemsRequested = new HashSet<>();
         this.customerId = customerId;
-        //this.shovellerId = null;
         this.customerAddressId = customerAddressId;
         this.transaction = new HashMap<>();
     }
@@ -226,5 +226,13 @@ public class WorkOrder {
 
     public void setShovellerId(String shovellerId) {
         this.shovellerId = shovellerId;
+    }
+
+    public String getGuardianId() {
+        return guardianId;
+    }
+
+    public void setGuardianId(String guardianId) {
+        this.guardianId = guardianId;
     }
 }

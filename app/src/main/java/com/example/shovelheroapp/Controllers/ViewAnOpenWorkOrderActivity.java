@@ -2,15 +2,12 @@ package com.example.shovelheroapp.Controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
@@ -21,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 
 public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
 
@@ -28,6 +27,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
 
     //initialize Firebase
     DatabaseReference workOrderTable;
+    DatabaseReference userTable;
 
     private TextView tvStatus;
     private TextView tvSquareFootage;
@@ -66,7 +66,6 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +73,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
 
         //instantiate Firebase
         workOrderTable = FirebaseDatabase.getInstance().getReference("workorders");
+        userTable = FirebaseDatabase.getInstance().getReference("users");
 
        tvCustomerUsername = findViewById(R.id.tvCustomerUsername);
        tvShovellerUsername = findViewById(R.id.tvShovellerUsername);
@@ -84,11 +84,13 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
         tvSpecialInstructions = findViewById(R.id.tvSpecialNotes);
         tvCustomerUsername = findViewById(R.id.tvCustomerUsername);
         tvShovellerUsername = findViewById(R.id.tvShovellerUsername);
+        tvSquareFootage = findViewById(R.id.tvSquareFootage);
         tvRequestDateTime = findViewById(R.id.tvRequestDateTime);
         tvRequestedDate = findViewById(R.id.tvRequestedDate);
         tvRequestedTime = findViewById(R.id.tvRequestedTime);
 
         btnDirections = findViewById(R.id.btnDirections);
+        /**
         btnTakeIt = findViewById(R.id.btnTakeIt);
         btnCancel = findViewById(R.id.btnCancel);
         btnEnroute = findViewById(R.id.btnEnroute);
@@ -96,11 +98,13 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
         btnArrived = findViewById(R.id.btnArrived);
         btnCompleted = findViewById(R.id.btnCompleted);
         btnIssueReported = findViewById(R.id.btnIssueReport);
+         **/
 
-        //GET WOID FROM LOGIN OR REGISTRATION
+
+        //GET WOID FROM WORK ORDER LIST
         Intent intent = getIntent();
         if (intent != null) {
-            woId = intent.getStringExtra("USER_ID");
+            woId = intent.getStringExtra("WO_ID");
             if (woId != null) {
                 System.out.println("work order ID recieved: " + woId);  //WORKING
                 retrieveWorkOrderData(woId);
@@ -135,16 +139,25 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     currentWorkOrder = snapshot.getValue(WorkOrder.class);
                     if (currentWorkOrder != null) {
-                        //**TODO: tvCustomerUsername.setText(currentWorkOrder.);
-                        tvStatus.setText(currentWorkOrder.getStatus());
-                        tvSquareFootage.setText(currentWorkOrder.getSquareFootage());
-                        //**TODO: tvShovellerUsername.setText(currentWorkOrder.getShovellerId());
                         //**TODO: tvAddress.setText(currentWorkOrder.getCustomerAddressId());
+                        //**TODO: tvCustomerUsername.setText(currentWorkOrder.);
+                        //**TODO: tvShovellerUsername.setText(currentWorkOrder.getShovellerId());
+                        tvStatus.setText(currentWorkOrder.getStatus());
+                        String squareFeet = String.valueOf(currentWorkOrder.getSquareFootage());
+                        tvSquareFootage.setText(squareFeet + " Square Feet");
                         tvRequestDateTime.setText(currentWorkOrder.getRequestDate());
                         tvRequestedDate.setText(currentWorkOrder.getRequestedDate());
                         tvRequestedTime.setText(currentWorkOrder.getRequestedTime());
                         //**TODO: tvItemsRequested.setText(currentWorkOrder.getItemsRequested);
                         tvSpecialInstructions.setText(currentWorkOrder.getSpecialInstructions());
+
+                        readAddressFromFirebase(currentWorkOrder);
+                        getCustomerUsername(currentWorkOrder);
+
+                        if(currentWorkOrder.getShovellerId() != null) {
+                            getShovellerUsername(currentWorkOrder);
+                        }
+
 
                         // **TODO:Load profile Image
                         /**
@@ -157,12 +170,10 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                          **/
 
 
-                        //**TODO: readAddressFromFirebase(currentWorkOrder);
-                        //**TODO: readLinkedUsernamesFromFirebase(currentWorkOrder);
 
-                        //BUTTONS   ****PLEASE DO NOT DELETE EXTRA CODE: ADDED FOE REUSE
-
-
+                        //*******************************************************************
+                        //TODO:BUTTONS   ****PLEASE DO NOT DELETE EXTRA CODE: ADDED FOE REUSE
+                        /**
 
                         //GPS DIRECTIONS
                         btnDirections.setOnClickListener(new View.OnClickListener() {
@@ -170,8 +181,6 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Toast.makeText(ViewAnOpenWorkOrderActivity.this, "Getting Directions", Toast.LENGTH_SHORT).show();
                                 //**TODO: Add GPS API to link directions
-
-
                             }
                         });
 
@@ -187,6 +196,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                         });
 
 
+
                         //CANCEL JOB FROM SHOVELLER - PUT BACK INTO OPEN QUEUE & REMOVE SHOVELLER ID
                         btnCancel.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -196,6 +206,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                                 Toast.makeText(ViewAnOpenWorkOrderActivity.this, "Work Order released back into main list", Toast.LENGTH_SHORT).show();
                             }
                         });
+
 
 
                         btnApprove.setOnClickListener(new View.OnClickListener() {
@@ -251,11 +262,93 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                                 Toast.makeText(ViewAnOpenWorkOrderActivity.this, "An issue has been reported", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        **/
+
+
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    //READ ADDRESS FROM REALTIMEDB - DONE
+    private void readAddressFromFirebase(WorkOrder workOrder) {
+        System.out.println("workOrderId received to retrieve address: " + workOrder);
+
+        DatabaseReference addressReference = userTable.child(workOrder.getCustomerId()).child("addresses").child(workOrder.getCustomerAddressId());
+        System.out.println("addressed referenced for address, ID: " + addressReference.getKey()); //RETRIEVES OK
+
+        addressReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> addressMap = (HashMap<String, Object>) snapshot.getValue();
+
+                    //retrieve values from hashmap
+                    String address = (String) addressMap.get("address");
+                    String city = (String) addressMap.get("city");
+                    String province = (String) addressMap.get("province");
+
+                    tvAddress.setText(address + ", " + city + ", " + province);
+                    System.out.println("Address retrieved from Firebase: " + address);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //handle error
+            }
+        });
+    }
+
+    // Validation function for UserName
+    private void getCustomerUsername(WorkOrder currentWorkOrder) {
+        System.out.println("Adding Customer Usernames for WO: " + currentWorkOrder.getWorkOrderId());
+        DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("users").child(currentWorkOrder.getCustomerId());
+
+        customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
+
+                    //retrieve values from hashmap
+                    String customerUsername = (String) userMap.get("username");
+
+                    tvCustomerUsername.setText(customerUsername);
+                    System.out.println("Customer Username retrieved from Firebase: " + customerUsername);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //handle error
+            }
+        });
+    }
+
+    // Validation function for UserName
+    private void getShovellerUsername(WorkOrder currentWorkOrder) {
+        System.out.println("Adding Shoveller Usernames for WO: " + currentWorkOrder.getWorkOrderId());
+        DatabaseReference shovellerRef = FirebaseDatabase.getInstance().getReference("users").child(currentWorkOrder.getShovellerId());
+        shovellerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    if (snapshot.exists()) {
+                        HashMap<String, Object> userMap = (HashMap<String, Object>) snapshot.getValue();
+
+                        //retrieve values from hashmap
+                        String ShovellerUsername = (String) userMap.get("username");
+                        tvShovellerUsername.setText(ShovellerUsername);
+                        System.out.println("Customer Username retrieved from Firebase: " + ShovellerUsername);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //handle error
             }
         });
     }

@@ -288,6 +288,32 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/lblSquareFootage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="Job Size:"
+            android:textColor="#2991C8"/>
+
+
+        <TextView
+            android:id="@+id/tvSquareFootage"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="#2991C8"/>
+
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -300,8 +326,9 @@
         android:layout_marginBottom="40dp"
         android:layout_weight="1">
 
+
         <!--For Shovellers-->
-        <Button
+        <!--Button
             android:id="@+id/btnTakeIt"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -348,11 +375,11 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Report an Issue"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"/-->
 
 
         <!--For GUARDIANS-->
-        <Button
+        <!--Button
             android:id="@+id/btnGuardianApprove"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -360,7 +387,7 @@
             android:layout_marginLeft="5dp"/>
 
         <Button
-            android:id="@+id/btnGUardianReject"
+            android:id="@+id/btnGuardianReject"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Reject"
@@ -399,16 +426,16 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Report an Issue"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"/-->
 
 
         <!--For CUSTOMERS-->
-        <Button
+        <!--Button
             android:id="@+id/btnCustomerCancel"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"/-->
 
     </LinearLayout>
 

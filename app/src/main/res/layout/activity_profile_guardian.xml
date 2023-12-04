@@ -165,11 +165,25 @@
             android:layout_marginBottom="6dp"
             android:layout_marginTop="5dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPendingApproval"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="3dp"/>
+            android:layout_height="100dp"
+            android:background="#F5FCFF"
+            android:layout_marginTop="25dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPendingWorkOrders"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:scrollbars="vertical" />
+
+        </ScrollView>
 
     </LinearLayout>
 

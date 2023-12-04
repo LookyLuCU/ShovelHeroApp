@@ -1,6 +1,8 @@
 package com.example.shovelheroapp.Controllers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +13,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderAdapterForShoveler.ViewHolder> {
     private List<WorkOrder> workOrders;
     private Context context;
+    private String userId;
 
-    public WorkOrderAdapterForShoveler(Context context, List<WorkOrder> workOrders) {
+    public WorkOrderAdapterForShoveler(Context context, List<WorkOrder> workOrders, String userId) {
         this.context = context;
         this.workOrders = workOrders;
+        this.userId = userId;
     }
 
     //ViewHolder class
@@ -32,6 +41,10 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         //public TextView distanceTV;
         public TextView sqFootageTV;
         public TextView statusTV;
+
+        public Button btnView;
+        public Button btnCancel;
+
 
 
         public Button btnOpenWo;
@@ -44,8 +57,8 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
             sqFootageTV = view.findViewById(R.id.tvSquareFootage);
             statusTV = view.findViewById(R.id.tvStatus);
 
-            //**TODO: IS THIS WHERE THIS GOES?
-            btnOpenWo = view.findViewById(R.id.btnOpen);
+            btnView = itemView.findViewById(R.id.btnView);
+            btnCancel = itemView.findViewById(R.id.btnCancel);
         }
     }
 
@@ -72,6 +85,37 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         holder.statusTV.setText("Job Status: " + workOrder.getStatus());
 
 
+        holder.btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String wOID = workOrder.getWorkOrderId();
+                Context context = holder.itemView.getContext();
+                Intent wOIntent = new Intent(context, ViewAnOpenWorkOrderActivity.class);
+                wOIntent.putExtra("WO_ID", wOID);
+                context.startActivity(wOIntent);
+                ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+            }
+        });
+
+        holder.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Shoveller clicked cancel. WO returned to open status.");
+
+                cancelOrder(workOrder.getWorkOrderId());
+                //workOrder.setStatus(Status.Open.toString());
+                //workOrder.setShovellerId(null);
+
+                //TODO: notify customer and guardian of cancel
+
+                String userID = userId;
+                Context context = holder.itemView.getContext();
+                Intent wOIntent = new Intent(context, YouthShovelerProfileActivity.class);
+                wOIntent.putExtra("USER_ID", userID);
+                context.startActivity(wOIntent);
+                ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+            }
+        });
     }
 
     @Override
@@ -83,6 +127,17 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         workOrders.clear();
         workOrders.addAll(newWorkOrders);
         notifyDataSetChanged();
+    }
+
+    public void cancelOrder(String wOID){
+        DatabaseReference workOrderRef = FirebaseDatabase.getInstance().getReference("workorders").child(wOID);
+        Map<String, Object> wOMap = new HashMap<>();
+        wOMap.put("status", Status.Open.toString());
+        wOMap.put("shovellerId", null);
+        wOMap.put("guardianId", null);
+        //TODO: notify customer of potential delay
+        //TODO: confirmation popup with reason request
+
     }
 }
 

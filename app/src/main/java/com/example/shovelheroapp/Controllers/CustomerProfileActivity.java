@@ -115,7 +115,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
         //initialize Pending Work Order list and Adapter
         pendingWorkOrderList = new ArrayList<>();
-        workOrderAdapter = new WorkOrderAdapterForCustomer(this, pendingWorkOrderList);
+        workOrderAdapter = new WorkOrderAdapterForCustomer(this, pendingWorkOrderList, userId);
         pendingWORecyclerView.setAdapter(workOrderAdapter);
 
         //ADD PENDING WORK ORDERS TO PROFILE
@@ -317,13 +317,13 @@ public class CustomerProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    String addressNotes = (String) addressMap.get("addressNotes");
+                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    String accessible = (String) addressMap.get("accessible");
-                    String shovelAvailable = (String) addressMap.get("shovelAvailable");
+                    //String accessible = (String) addressMap.get("accessible");
+                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
-                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
+                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);
 
                     // Add the Address object to the addresses HashMap in User model
                     user.addAddress(addressId, addressObject);

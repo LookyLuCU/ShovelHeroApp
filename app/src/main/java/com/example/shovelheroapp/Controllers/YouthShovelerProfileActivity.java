@@ -99,7 +99,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
         //**TODO: to remove
         btnMyGuardian = findViewById(R.id.btnViewGuardian);
 
-        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
@@ -118,10 +117,11 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
         //initialize Pending Work Order list and Adapter
         pendingWorkOrderList = new ArrayList<>();
-        workOrderAdapter = new WorkOrderAdapterForShoveler(this, pendingWorkOrderList);
+        workOrderAdapter = new WorkOrderAdapterForShoveler(this, pendingWorkOrderList, userId);
         pendingWORecyclerView.setAdapter(workOrderAdapter);
 
         //ADD PENDING WORK ORDERS TO PROFILE
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -133,15 +133,15 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     System.out.println("shovellerId = " + workOrder.getShovellerId());
 
                     if(workOrder.getShovellerId() != null &&
-                            workOrder.getShovellerId().equals(userId) &&
-                            (workOrder.getStatus().equals(Status.Open.toString()) ||
-                                workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
-                                workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
-                                workOrder.getStatus().equals(Status.Accepted.toString()) ||
-                                workOrder.getStatus().equals(Status.Enroute.toString()) ||
-                                workOrder.getStatus().equals(Status.InProgress.toString()) ||
-                                workOrder.getStatus().equals(Status.Issue.toString()) )
-                                    ) {
+                        workOrder.getShovellerId().equals(userId) &&
+                        (workOrder.getStatus().equals(Status.Open.toString()) ||
+                            workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
+                            workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
+                            workOrder.getStatus().equals(Status.Accepted.toString()) ||
+                            workOrder.getStatus().equals(Status.Enroute.toString()) ||
+                            workOrder.getStatus().equals(Status.InProgress.toString()) ||
+                            workOrder.getStatus().equals(Status.Issue.toString()) ) )
+                    {
                         pendingWorkOrderList.add(workOrder);
                     }
                     else {
@@ -345,13 +345,13 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    String addressNotes = (String) addressMap.get("addressNotes");
+                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    String accessible = (String) addressMap.get("accessible");
-                    String shovelAvailable = (String) addressMap.get("shovelAvailable");
+                    //String accessible = (String) addressMap.get("accessible");
+                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
-                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, addressNotes, drivewaySquareFootage, accessible, shovelAvailable);
+                    Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);
 
                     // Add the Address object to the addresses HashMap in User model
                     user.addAddress(addressId, addressObject);
