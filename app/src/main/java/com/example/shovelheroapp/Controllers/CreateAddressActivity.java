@@ -1,5 +1,6 @@
 package com.example.shovelheroapp.Controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,20 +11,38 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.AddressComponent;
+
+
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import android.util.Log;
 
 public class CreateAddressActivity extends AppCompatActivity {
     private static final String TAG = "CreateAddressActivity";
@@ -49,6 +68,14 @@ public class CreateAddressActivity extends AppCompatActivity {
     private Button btnCreateAddress;
     private DatabaseReference userTable;
 
+    private String streetAddress = "";
+    private String city = "";
+    private String postalCode = "";
+    private String country = "";
+    private String province = "";
+
+    private ActivityResultLauncher<Intent> autocompleteResultLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +87,10 @@ public class CreateAddressActivity extends AppCompatActivity {
         //get text input fields
         customerAddressImage = findViewById(R.id.imgPropertyImage);
         addressEditText = findViewById(R.id.etAddress);
-        cityEditText = findViewById(R.id.etCity);
-        provinceEditText = findViewById(R.id.etProvince);
-        postalCodeEditText = findViewById(R.id.etPostalCode);
-        countrySpinner = findViewById(R.id.spCountry);
+//        cityEditText = findViewById(R.id.etCity);
+//        provinceEditText = findViewById(R.id.etProvince);
+//        postalCodeEditText = findViewById(R.id.etPostalCode);
+//        countrySpinner = findViewById(R.id.spCountry);
         addressNotesEditText = findViewById(R.id.etAddressNotes);
         drivewaySquareFootageEditText = findViewById(R.id.etSqFoot);
         drivewayCB = findViewById(R.id.cbDriveway);
@@ -73,6 +100,11 @@ public class CreateAddressActivity extends AppCompatActivity {
         shovelAvailableOnsiteCB = findViewById(R.id.cbShovelAvailable);
 
         btnCreateAddress = findViewById(R.id.btnCreateAddress);
+
+        // Initialize Places API
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyCjuP_72OOu-Bu6rgLZyxXVuNqZdIj1eG8");
+        }
 
         //get userID
 
@@ -84,102 +116,136 @@ public class CreateAddressActivity extends AppCompatActivity {
         //Instantiate userTable
         userTable = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);
 
-        btnCreateAddress.setOnClickListener(new View.OnClickListener() {
+        autocompleteResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
-            public void onClick(View v) {
-                String address = addressEditText.getText().toString();
-                String city = cityEditText.getText().toString();
-                String province = provinceEditText.getText().toString();
-                String postalCode = postalCodeEditText.getText().toString();
-                String drivewaySquareFootage = drivewaySquareFootageEditText.getText().toString();
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Place place = Autocomplete.getPlaceFromIntent(result.getData());
 
-                if (address.isEmpty() || city.isEmpty() || province.isEmpty() || postalCode.isEmpty() || drivewaySquareFootage.isEmpty()){
-                    Toast.makeText(CreateAddressActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
-                }else if (!postalCode.matches("^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$")){
-                    Toast.makeText(CreateAddressActivity.this, "Please enter valid postal code", Toast.LENGTH_SHORT).show();
-                }else if (!city.matches("^[a-zA-Z]+$")){
-                    Toast.makeText(CreateAddressActivity.this, "Please enter valid city", Toast.LENGTH_SHORT).show();
-                }else if (!province.matches("^[a-zA-Z]+$")){
-                    Toast.makeText(CreateAddressActivity.this, "Please enter valid province", Toast.LENGTH_SHORT).show();
-                }else if (!drivewaySquareFootage.matches("^[0-9]+$")){
-                    Toast.makeText(CreateAddressActivity.this, "Please enter valid square footage", Toast.LENGTH_SHORT).show();
-                }else{
-                    createAddress();
-                    saveAndReturnToProfile(currentUserId);
-                    Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
+                    String streetNumber = "";
+                    String route = "";
+
+                    city = "";
+                    province = "";
+                    postalCode = "";
+                    country = "";
+
+                    if (place.getAddressComponents() != null) {
+                        for (AddressComponent component : place.getAddressComponents().asList()) {
+                            for (String type : component.getTypes()) {
+                                if (type.equals("postal_code")) {
+                                    postalCode = component.getName();
+                                } else if (type.equals("locality") || type.equals("sublocality")) {
+                                    city = component.getName();
+                                } else if (type.equals("administrative_area_level_1")) {
+                                    province = component.getName();
+                                } else if (type.equals("country")) {
+                                    country = component.getName();
+                                } else if (type.equals("route")) {
+                                    route = component.getName();
+                                } else if (type.equals("street_number")) {
+                                    streetNumber = component.getName();
+                                }
+                            }
+                        }
+                    }
+
+                    streetAddress = streetNumber + " " + route;
+
+                    // Create full address by concatenated components
+                    String fullAddress = streetAddress + ", " + city + ", " + province + ", " + postalCode + ", " + country;
+
+                    // Set full address in address edit text
+                    if (addressEditText != null) {
+                        addressEditText.setText(fullAddress.trim());
+                    }
+
+                } else if (result.getResultCode() == AutocompleteActivity.RESULT_ERROR) {
+                    Status status = Autocomplete.getStatusFromIntent(result.getData());
+                    Log.e(TAG, "Error: " + status.getStatusMessage());
                 }
             }
         });
-    }
 
+        // Click Listener for Address Edit Text
+        addressEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAutocompleteActivity();
+            }
+        });
+
+        btnCreateAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnCreateAddress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String address = addressEditText.getText().toString().trim();
+                        String drivewaySquareFootage = drivewaySquareFootageEditText.getText().toString().trim();
+
+                        if (address.isEmpty() || drivewaySquareFootage.isEmpty()) {
+                            Toast.makeText(CreateAddressActivity.this, "Please fill out the address and square footage", Toast.LENGTH_SHORT).show();
+                        }
+                        //
+                        else if (!drivewaySquareFootage.matches("^[0-9]+$")) {
+                            Toast.makeText(CreateAddressActivity.this, "Please enter a valid square footage (numbers only)", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+
+                            createAddress();
+                            saveAndReturnToProfile(currentUserId);
+                        }
+                    }
+                });
+            }
+        });
+    }
     public void createAddress() {
         String addressId = userTable.child("addresses").push().getKey();
-        String address = addressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
-        String province = provinceEditText.getText().toString();
-        String postalCode = postalCodeEditText.getText().toString();
-        String country = countrySpinner.getSelectedItem().toString();
+
+        String streetNumberAndName = streetAddress; // street number and name?
+
+        // other address components
+        String userCity = city;
+        String userProvince = province;
+        String userPostalCode = postalCode;
+        String userCountry = country;
+
+        // other user inputs from edit text
         String addressNotes = addressNotesEditText.getText().toString();
         String sqFootageStr = drivewaySquareFootageEditText.getText().toString();
         int sqFootage = sqFootageStr.isEmpty() ? 0 : Integer.parseInt(sqFootageStr);
 
-        if (accessibleCB.isChecked()) {
-            accessible = "Accessible";
-        } else {
-            accessible = "Not an Accessible Site";
-        }
+        // checkboxes
+        accessible = accessibleCB.isChecked() ? "Accessible" : "Not an Accessible Site";
+        shovelAvailable = shovelAvailableOnsiteCB.isChecked() ? "Available" : "Bring Your Own Shovel";
 
-        if (shovelAvailableOnsiteCB.isChecked()) {
-            shovelAvailable = "Available";
-        } else {
-            shovelAvailable = "Bring Your Own Shovel";
-        }
+        // create address object
+        Address newAddress = new Address(addressId, streetNumberAndName, userCity, userProvince, userPostalCode, userCountry, addressNotes, sqFootage, accessible, shovelAvailable);
 
-        //ITEMS REQUESTED LIST
-        if (drivewayCB.isChecked()) {
-            itemsRequestedList.add("Driveway");
-        } else {
-            itemsRequestedList.add("NO Driveway Please");
-        }
-
-        if (sidewalkCB.isChecked()) {
-            itemsRequestedList.add("Sidewalk");
-        } else {
-            itemsRequestedList.add("NO Sidewalk Please");
-        }
-
-        if (walkwayCB.isChecked()) {
-            itemsRequestedList.add("Walkway");
-        } else {
-            itemsRequestedList.add("NO Walkway Please");
-        }
-
-        //CREATE ADDRESS OBJECT (WITHIN USER) THEN RESET FIELDS FOR NEW ENTRY
-        if (!address.isEmpty() && !city.isEmpty() && !province.isEmpty() && !postalCode.isEmpty() && !country.isEmpty() && !sqFootageStr.isEmpty()) {
-            Address newAddress = new Address(addressId, address, city, province, postalCode, country, addressNotes, sqFootage, accessible, shovelAvailable);
-
-            System.out.println("New address created: " + newAddress.getAddress());
-
-            //save new address and reset input form
-            if (addressId != null) {
-                userTable.child("addresses").child(addressId).setValue(newAddress);
-                System.out.println("New address added to Firebase under user: " + newAddress.getAddress());
-
-                addressEditText.setText("");
-                cityEditText.setText("");
-                provinceEditText.setText("");
-                postalCodeEditText.setText("");
-                countrySpinner.setAdapter(null);
-                addressNotesEditText.setText("");
-                accessibleCB.setChecked(false);
-                shovelAvailableOnsiteCB.setChecked(false);
-            }
-        }
-        else {
-            System.out.println("Missing address info, please retry");
-        }
+        // save address in firebase
+        userTable.child("addresses").child(addressId).setValue(newAddress)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "New address added to Firebase under user: " + newAddress.getAddress());
+                    Toast.makeText(CreateAddressActivity.this, "Address created successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to save address", e);
+                    Toast.makeText(CreateAddressActivity.this, "Failed to save address", Toast.LENGTH_SHORT).show();
+                });
     }
+    private void startAutocompleteActivity() {
+        List<Place.Field> fields = Arrays.asList(
+                Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,
+                Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS);
 
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .setCountries(Collections.singletonList("CA"))
+                .build(this);
+
+        autocompleteResultLauncher.launch(intent);
+    }
 
     private void saveAndReturnToProfile(String currentUserId){
         DatabaseReference userTable = FirebaseDatabase.getInstance().getReference("users").child(currentUserId);

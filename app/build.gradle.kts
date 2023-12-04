@@ -34,6 +34,9 @@ android {
 
 dependencies {
 
+    // Google Places
+    implementation("com.google.android.libraries.places:places:3.3.0")
+
     //Glide
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.google.firebase:firebase-inappmessaging-display:20.4.0")
