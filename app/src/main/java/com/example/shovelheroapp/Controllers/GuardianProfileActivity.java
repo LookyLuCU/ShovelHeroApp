@@ -68,12 +68,8 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
     private Spinner addressSpinner;
     private Spinner linkedYouthSpinner;
-
-    private User currentUser;
     private String userId;
 
-    //Link youth
-    private List<User> linkedYouthList;
 
     EditText addYouthET;
 
@@ -260,8 +256,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         }
 
                         readAddressesFromFirebase(user);
-                        //readYouthProfilesFromFirebase(user);
-
 
                         if(user.getGuardianIdValidated() == false){
                             System.out.println("Please add your Picture ID to get started");
@@ -272,7 +266,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             retrieveLinkedYouths(user);
 
                         }
-
 
 
                         //ADD YOUTH BUTTON
@@ -287,7 +280,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                                 //}
                             }
                         });
-
 
                         //VIEW RATINGS BUTTON
                         btnViewRatings.setOnClickListener(new View.OnClickListener() {
@@ -390,10 +382,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    //String accessible = (String) addressMap.get("accessible");
-                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
                     Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);

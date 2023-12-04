@@ -317,10 +317,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    //String accessible = (String) addressMap.get("accessible");
-                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
                     Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);
@@ -358,6 +355,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
             //work order elements
             String workOrderID = workOrderReference.push().getKey();
+            
             // Format current date as String for Firebase (avoid data type mismatch)
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             String requestDate = dateFormat.format(Calendar.getInstance().getTime());

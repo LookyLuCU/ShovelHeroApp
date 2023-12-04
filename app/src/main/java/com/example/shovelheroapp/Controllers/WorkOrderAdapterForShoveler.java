@@ -75,11 +75,10 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
 
         Log.d("WorkOrderAdapter", "onBindViewHolder: " + workOrder.getStatus());
 
-        //TODO: get initial property address (from Address)
-        //holder.addressImage.setImageBitmap(workOrder.getAddressImage);
+        //TODO: holder.addressImage.setImageBitmap(workOrder.getAddressImage);
         holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestDate()));
         //TODO: calculate distance from shoveller address and add here
-        //holder.distanceTV.setText(workOrder.getDistance);
+        //TODO:holder.distanceTV.setText(workOrder.getDistance);
 
         holder.sqFootageTV.setText("Job size: " + String.valueOf(workOrder.getSquareFootage()) + "square feet");
         holder.statusTV.setText("Job Status: " + workOrder.getStatus());
@@ -103,10 +102,6 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
                 System.out.println("Shoveller clicked cancel. WO returned to open status.");
 
                 cancelOrder(workOrder.getWorkOrderId());
-                //workOrder.setStatus(Status.Open.toString());
-                //workOrder.setShovellerId(null);
-
-                //TODO: notify customer and guardian of cancel
 
                 String userID = userId;
                 Context context = holder.itemView.getContext();
@@ -136,7 +131,7 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         wOMap.put("shovellerId", null);
         wOMap.put("guardianId", null);
         //TODO: notify customer of potential delay
-        //TODO: confirmation popup with reason request
+        //TODO: confirmation pop-up with reason request
 
     }
 }

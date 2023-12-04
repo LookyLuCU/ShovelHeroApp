@@ -24,12 +24,8 @@ public class Address {
         this.province = province;
         this.postalCode = postalCode;
         this.country = country;
-        //this.addressNotes = addressNotes;
         this.drivewaySquareFootage = drivewaySquareFootage;
-        //this.accessible = accessible;
-        //this.shovelAvailable = shovelAvailable;
     }
-
 
     //CONSTRUCTORS
     public String getAddressId() {

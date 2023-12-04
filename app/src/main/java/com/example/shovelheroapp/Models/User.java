@@ -17,7 +17,7 @@ public class User {
     private String phoneNo;
 
 
-    //NON-CONSTRUCTOR FIELDS
+
     //private int paymentId;  // -->Foreign key - to choose from List of properties
 
     private String profilePictureUrl;

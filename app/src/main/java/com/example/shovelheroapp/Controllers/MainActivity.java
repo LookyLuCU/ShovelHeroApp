@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         public void loginUser(View view) {
             final String username = usernameEditText.getText().toString().trim();
             final String password = passwordEditText.getText().toString().trim();
-            //final String accountType = accountTypeSpinner.getSelectedItem().toString();
 
             //Check if username exists
             userReference.orderByChild("username").equalTo(username)
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
-        //***OK***TESTED AND WORKING
+
         public void createNewUser(View view){
             Intent intent = new Intent(MainActivity.this, UserRegistrationActivity.class);
             startActivity(intent);

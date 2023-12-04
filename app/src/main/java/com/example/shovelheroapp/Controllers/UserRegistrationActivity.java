@@ -62,7 +62,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
 
-        // Get User Input from activity_user_registration
         //select account type
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.account_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -175,8 +174,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String birthdate = selectedBirthdate;
-        //List<Address> addresses = new ArrayList<>();
-
 
         //create new user
         User newUser = new User(userId, accountType, username, password, firstName, lastName, birthdate, email, phone);

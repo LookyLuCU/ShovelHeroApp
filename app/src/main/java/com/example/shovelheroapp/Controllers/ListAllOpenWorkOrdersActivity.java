@@ -34,7 +34,6 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_order_list_all_open);
 
-        //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
         Intent intent = getIntent();
         if (intent != null) {

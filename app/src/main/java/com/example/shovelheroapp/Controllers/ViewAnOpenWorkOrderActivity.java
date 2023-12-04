@@ -35,7 +35,7 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
     private TextView tvShovellerUsername;
     private TextView tvAddress;
     private TextView tvRequestDateTime;
-    private TextView tvRequestedDate;   //**ED**
+    private TextView tvRequestedDate;
     private TextView tvRequestedTime;
     private TextView tvItemsRequested;
     private TextView tvSpecialInstructions;
@@ -139,9 +139,6 @@ public class ViewAnOpenWorkOrderActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     currentWorkOrder = snapshot.getValue(WorkOrder.class);
                     if (currentWorkOrder != null) {
-                        //**TODO: tvAddress.setText(currentWorkOrder.getCustomerAddressId());
-                        //**TODO: tvCustomerUsername.setText(currentWorkOrder.);
-                        //**TODO: tvShovellerUsername.setText(currentWorkOrder.getShovellerId());
                         tvStatus.setText(currentWorkOrder.getStatus());
                         String squareFeet = String.valueOf(currentWorkOrder.getSquareFootage());
                         tvSquareFootage.setText(squareFeet + " Square Feet");

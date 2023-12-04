@@ -75,8 +75,7 @@ public class WorkOrderAdapterForAllOpenOrders extends RecyclerView.Adapter<WorkO
 
         Log.d("WorkOrderAdapter", "onBindViewHolder: " + workOrder.getStatus());
 
-        //TODO: get initial property address (from Address)
-        //holder.addressImage.setImageBitmap(workOrder.getAddressImage);
+        //TODO: holder.addressImage.setImageBitmap(workOrder.getAddressImage);
         holder.requestDateTV.setText("Requested: " + String.valueOf(workOrder.getRequestDate()));
         //TODO: calculate distance from shoveller address and add here
         //holder.distanceTV.setText(workOrder.getDistance);

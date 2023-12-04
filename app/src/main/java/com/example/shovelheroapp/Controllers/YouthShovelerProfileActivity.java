@@ -59,7 +59,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
 
 
     private Spinner addressSpinner;
-    private List<String> addressList;
 
     //Navigation
     private BottomNavigationView bottomNavigationView;
@@ -345,10 +344,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     String province = (String) addressMap.get("province");
                     String postalCode = (String) addressMap.get("postalCode");
                     String country = (String) addressMap.get("country");
-                    //String addressNotes = (String) addressMap.get("addressNotes");
                     int drivewaySquareFootage = ((Long) addressMap.get("drivewaySquareFootage")).intValue();
-                    //String accessible = (String) addressMap.get("accessible");
-                    //String shovelAvailable = (String) addressMap.get("shovelAvailable");
 
                     // Create new Address object
                     Address addressObject = new Address(addressId, address, city, province, postalCode, country, drivewaySquareFootage);
@@ -357,7 +353,6 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                     user.addAddress(addressId, addressObject);
 
                 }
-
                 // Retrieve list of addresses from Hashmap
                 List<Address> addresses = new ArrayList<>(user.getAddresses().values());
 

@@ -96,10 +96,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_order_create);
 
-        //String dateTime;
-        //Calendar calendar;
-        //SimpleDateFormat simpleDateFormat;
-
         addressTextView = findViewById(R.id.tvAddress);
         sqFootageTextView = findViewById(R.id.tvSquareFootage);
         requestDate = findViewById(R.id.tvRequestDate);
@@ -125,7 +121,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.getDefault());
                 requestDate.setText(simpleDateFormat.format(new Date()));
-
             }
         });
 
@@ -145,15 +140,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                 displayRequestedTime();
             }
         });
-
-        /**
-         calendar = Calendar.getInstance();
-         //simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
-         simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
-         dateTime = simpleDateFormat.format(calendar.getTime()).toString();
-         //requestedDate.setText(dateTime);
-         simpleTimeFormat = new SimpleDateFormat("HH:mm aaa z");
-         */
 
         //TO VALIDATE THAT A JOB TYPE HAS BEEN SELECTED
         itemsRequested = new HashSet<>();
@@ -223,7 +209,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
 
                         workOrderPriceTextView.setText("Shovelling Price: $2.00");
                         sqFootageTextView.setText("Job Size: " + currentWorkOrder.getSquareFootage() + " square feet");
-                       // requestDate.setText(currentWorkOrder.getRequestDate().toString());
 
 
                         //*******
@@ -275,7 +260,6 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //handle error

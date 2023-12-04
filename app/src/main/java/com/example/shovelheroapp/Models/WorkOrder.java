@@ -108,16 +108,6 @@ public class WorkOrder {
         this.requestDatePicker = requestDatePicker;
     }
 
-    /**
-    public TextClock getRequestTimePicker() {
-        return requestTimePicker;
-    }
-
-    public void setRequestTimePicker(TextClock requestTimePicker) {
-        this.requestTimePicker = requestTimePicker;
-    }
-     */
-
     public String getRequestedTime() {
         return requestedTime;
     }
@@ -125,8 +115,6 @@ public class WorkOrder {
     public void setRequestedTime(String requestedDate) {
         this.requestedTime = requestedTime;
     }
-
-
 
     public String getRequestedDate() {
         return requestedDate;
