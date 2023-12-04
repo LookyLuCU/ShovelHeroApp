@@ -26,23 +26,37 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
     private RecyclerView workOrderRecyclerView;
     private WorkOrderAdapterForAllOpenOrders adapter;
     private List<WorkOrder> workOrders;
+    private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_order_list_all_open);
 
+        //get Username from registration page or or UserID from Login
+        //GET USERID FROM LOGIN OR REGISTRATION
+        Intent intent = getIntent();
+        if (intent != null) {
+            userId = intent.getStringExtra("USER_ID");
+            if (userId != null) {
+                //**TODO: assess user type and filter as needed
+                //retrieveGuardianProfile(userId);
+            }
+        }
+
         workOrderRecyclerView = findViewById(R.id.rvWorkOrders);
         workOrderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         workOrders = new ArrayList<>();
-        adapter = new WorkOrderAdapterForAllOpenOrders(this, workOrders);
+        adapter = new WorkOrderAdapterForAllOpenOrders(this, workOrders, userId);
         //adapter = new WorkOrderAdapterForAllOpenOrders(this, workOrders);
         workOrderRecyclerView.setAdapter(adapter);
         Log.d("ListAllOpenWorkOrders", "onCreate: Open");
 
-        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
+
+        DatabaseReference workOrderReference = FirebaseDatabase.getInstance().getReference("workorders");
 
         //WORK ORDER RECYCLER CONDITIONS
         workOrderReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -51,6 +65,9 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
                 workOrders.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     WorkOrder workOrder = snapshot.getValue(WorkOrder.class);
+
+                    //conditions based on usertype here
+
                     if (workOrder.getStatus().equals("Open")) {
                         workOrders.add(workOrder);
                     }
@@ -85,5 +102,9 @@ public class ListAllOpenWorkOrdersActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    public void filterListByUser(){
+
     }
 }
