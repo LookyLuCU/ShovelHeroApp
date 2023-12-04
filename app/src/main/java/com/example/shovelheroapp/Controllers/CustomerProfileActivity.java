@@ -366,6 +366,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
             //create new work order
             WorkOrder newWO = new WorkOrder(workOrderID, requestDate, status, squareFootage, userId, addressId);
 
+            assert workOrderID != null;
             workOrderReference.child(workOrderID).setValue(newWO)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CustomerProfileActivity.this, "New Shovelling Request Created", Toast.LENGTH_SHORT).show();

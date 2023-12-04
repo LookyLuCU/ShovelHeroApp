@@ -3,8 +3,10 @@ package com.example.shovelheroapp.Models;
 import android.media.Image;
 import android.widget.CalendarView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WorkOrder {
@@ -21,7 +23,7 @@ public class WorkOrder {
     private boolean isDrivewayChecked;
     private boolean isWalkwayChecked;
     private boolean isSidewalkChecked;
-    private Set<String> itemsRequested;
+    private List<String> itemsRequested;
     private String specialInstructions;
     private Image arrivalImage;
     private Image completedImage;
@@ -40,7 +42,7 @@ public class WorkOrder {
 
 
     public WorkOrder(){
-        itemsRequested = new HashSet<>();
+        itemsRequested = new ArrayList<>();
         transaction = new HashMap<>();
     }
 
@@ -51,7 +53,7 @@ public class WorkOrder {
         this.requestDate = requestDate;
         this.status = status;
         this.squareFootage = squareFootage;
-        this.itemsRequested = new HashSet<>();
+        this.itemsRequested = new ArrayList<>();
         this.customerId = customerId;
         this.customerAddressId = customerAddressId;
         this.transaction = new HashMap<>();
@@ -148,7 +150,7 @@ public class WorkOrder {
         isSidewalkChecked = sidewalkChecked;
     }
 
-    public void setItemsRequested(Set<String> itemsRequested) {
+    public void setItemsRequested(List<String> itemsRequested) {
         this.itemsRequested = itemsRequested;
     }
 
@@ -222,5 +224,8 @@ public class WorkOrder {
 
     public void setGuardianId(String guardianId) {
         this.guardianId = guardianId;
+        
+    public List<String> getItemsRequested() {
+        return itemsRequested;
     }
 }

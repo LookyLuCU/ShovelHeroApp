@@ -219,6 +219,7 @@ public class CreateWorkOrderActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 System.out.println("Order Shovelling button clicked");
+
                                 if (drivewayCheckBox.isChecked() ||
                                         sidewalkCheckBox.isChecked() || walkwayCheckBox.isChecked()) {
                                     String date = requestedDate.getText().toString();
