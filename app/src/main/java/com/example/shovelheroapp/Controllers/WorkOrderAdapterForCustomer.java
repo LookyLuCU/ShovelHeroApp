@@ -17,8 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkOrderAdapterForCustomer extends RecyclerView.Adapter<WorkOrderAdapterForCustomer.ViewHolder> {
     private List<WorkOrder> workOrders;
@@ -93,23 +99,20 @@ public class WorkOrderAdapterForCustomer extends RecyclerView.Adapter<WorkOrderA
         holder.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Shoveller clicked cancel. WO returned to open status.");
+                System.out.println("Customer clicked cancel. WO status updated.");
 
                 if (workOrder.getStatus() == Status.Open.toString() ||
                         workOrder.getStatus() == Status.OpenCustom.toString() ||
                         workOrder.getStatus() == Status.PendingGuardianApproval.toString() ||
                         workOrder.getStatus() == Status.Accepted.toString()) {
 
-                            workOrder.setStatus(Status.CancelledByCustomer.toString());
-                            workOrder.setShovellerId(null);
-                            //TODO: notify shoveller and guardian of cancel
+                            cancelOrder(workOrder.getWorkOrderId());
 
-                            String userID = userId;
-                            Context context = holder.itemView.getContext();
-                            Intent wOIntent = new Intent(context, YouthShovelerProfileActivity.class);
-                            wOIntent.putExtra("USER_ID", userID);
-                            context.startActivity(wOIntent);
-                            ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                            //TODO: notify shoveller and guardian of cancel
+                            //TODO: update recycler list of WO's
+
+                        updateData(workOrders);
+
                 } else {
                     Toast.makeText(view.getContext(), "Cannot cancel order. Shoveller has left for your location.", Toast.LENGTH_SHORT).show();
                 }
@@ -126,6 +129,29 @@ public class WorkOrderAdapterForCustomer extends RecyclerView.Adapter<WorkOrderA
         workOrders.clear();
         workOrders.addAll(newWorkOrders);
         notifyDataSetChanged();
+    }
+
+    public void cancelOrder(String wOID){
+        DatabaseReference workOrderRef = FirebaseDatabase.getInstance().getReference("workorders").child(wOID);
+        Map<String, Object> wOMap = new HashMap<>();
+        wOMap.put("status", Status.CancelledByCustomer.toString());
+
+        //TODO: notify shoveller and guardian of cancellation
+
+        workOrderRef.updateChildren(wOMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        System.out.println("Job Successfully cancelled");
+                        Toast.makeText(context, "Shovelling job cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Could not cancel job. Please try again or contact customer service.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
 

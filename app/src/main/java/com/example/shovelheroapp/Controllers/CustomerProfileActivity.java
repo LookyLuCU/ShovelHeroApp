@@ -133,7 +133,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             workOrder.getStatus().equals(Status.InProgress.toString()) ||
                             workOrder.getStatus().equals(Status.Issue.toString()) )
                         && workOrder.getCustomerId().equals(userId)) {
-                    //if (workOrder.getStatus().equals("Open") ) {
                         pendingWorkOrderList.add(workOrder);
                     }
                     else {
@@ -185,7 +184,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
                         //display user profile data
                         usernameTV.setText("Username: " + user.getUsername());
                         firstNameTV.setText("Name: " + user.getFirstName());
-                        lastNameTV.setText(user.getLastName());
+                        lastNameTV.setText(" " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,8 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorkOrderAdapterForGuardian extends RecyclerView.Adapter<WorkOrderAdapterForGuardian.ViewHolder> {
     private List<WorkOrder> workOrders;
@@ -94,16 +101,10 @@ public class WorkOrderAdapterForGuardian extends RecyclerView.Adapter<WorkOrderA
             public void onClick(View view) {
                 System.out.println("Shoveller clicked cancel. WO returned to open status.");
 
-                workOrder.setStatus(Status.Accepted.toString());
-                workOrder.setShovellerId(userId);
-                //TODO: notify customer and guardian of cancel
+                approveOrder(workOrder.getWorkOrderId());
 
-                String userID = userId;
-                Context context = holder.itemView.getContext();
-                Intent wOIntent = new Intent(context, GuardianProfileActivity.class);
-                wOIntent.putExtra("USER_ID", userID);
-                context.startActivity(wOIntent);
-                ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                //TODO: notify shoveller and customer of approval
+                //TODO: update recycler list of WO's
             }
         });
 
@@ -112,16 +113,10 @@ public class WorkOrderAdapterForGuardian extends RecyclerView.Adapter<WorkOrderA
             public void onClick(View view) {
                 System.out.println("Shoveller clicked cancel. WO returned to open status.");
 
-                workOrder.setStatus(Status.Open.toString());
-                workOrder.setShovellerId(null);
-                //TODO: notify shoveller of reject
+                rejectOrder(workOrder.getWorkOrderId());
 
-                String userID = userId;
-                Context context = holder.itemView.getContext();
-                Intent wOIntent = new Intent(context, GuardianProfileActivity.class);
-                wOIntent.putExtra("USER_ID", userID);
-                context.startActivity(wOIntent);
-                ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                //TODO: notify shoveller of reject
+                //TODO: update recycler list of orders
             }
         });
     }
@@ -135,6 +130,56 @@ public class WorkOrderAdapterForGuardian extends RecyclerView.Adapter<WorkOrderA
         workOrders.clear();
         workOrders.addAll(newWorkOrders);
         notifyDataSetChanged();
+    }
+
+    public void approveOrder(String wOID){
+        DatabaseReference workOrderRef = FirebaseDatabase.getInstance().getReference("workorders").child(wOID);
+        Map<String, Object> wOMap = new HashMap<>();
+        wOMap.put("status", Status.Accepted.toString());
+
+        //TODO: notify customer of approval
+        //TODO: notify shoveller customer of approval
+
+        workOrderRef.updateChildren(wOMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        System.out.println("Job Successfully rejected");
+                        Toast.makeText(context, "Shovelling job approved. Please arrive onsite with 2 hours of requested time.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Could not approve job", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void rejectOrder(String wOID){
+        DatabaseReference workOrderRef = FirebaseDatabase.getInstance().getReference("workorders").child(wOID);
+        Map<String, Object> wOMap = new HashMap<>();
+        wOMap.put("status", Status.Open.toString());
+        wOMap.put("guardianId", "");
+        wOMap.put("shovellerId", "");
+
+        //TODO: notify customer of rejection
+        //TODO: notify shoveller customer of rejection
+
+        workOrderRef.updateChildren(wOMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        System.out.println("Job Successfully rejected");
+                        Toast.makeText(context, "Shovelling job rejected", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Could not reject job", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
 

@@ -183,9 +183,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
 
                     if(workOrder.getGuardianId() != null &&
                             workOrder.getGuardianId().equals(userId) &&
-                            (workOrder.getStatus().equals(Status.Open.toString()) ||
-                                    workOrder.getStatus().equals(Status.OpenCustom.toString()) ||
-                                    workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
+                            (workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
                                     workOrder.getStatus().equals(Status.Accepted.toString()) ||
                                     workOrder.getStatus().equals(Status.Enroute.toString()) ||
                                     workOrder.getStatus().equals(Status.InProgress.toString()) ||
@@ -242,7 +240,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                         //display user profile info
                         usernameTV.setText("Username: " + user.getUsername());
                         firstNameTV.setText("First Name: " + user.getFirstName());
-                        lastNameTV.setText(user.getLastName());
+                        lastNameTV.setText(" " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 

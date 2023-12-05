@@ -77,13 +77,23 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
                 if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()){
                     Toast.makeText(EditUserProfileActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
+                } else if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+                    Toast.makeText(EditUserProfileActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
+                } else if (!(android.util.Patterns.PHONE.matcher(phone).matches())) {
+                    Toast.makeText(EditUserProfileActivity.this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
+                } else {
+                    updateUserProfile();
                 }
+
+
+                /**
                 if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
                     Toast.makeText(EditUserProfileActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
                 }
                 if(!(android.util.Patterns.PHONE.matcher(phone).matches())){
                     Toast.makeText(EditUserProfileActivity.this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
                 }
+                 **/
             }
         });
         changeProfilePicture.setOnClickListener(v -> selectProfileImage());
@@ -116,12 +126,14 @@ public class EditUserProfileActivity extends AppCompatActivity {
         //Load the User Data
         loadUserProfile();
 
+        /**
         updateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateUserProfile();
             }
         });
+         **/
     }
 
     private void selectProfileImage(){

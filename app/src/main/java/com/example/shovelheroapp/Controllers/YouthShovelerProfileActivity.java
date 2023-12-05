@@ -208,7 +208,7 @@ public class YouthShovelerProfileActivity extends AppCompatActivity {
                         usernameTV.setText("Username: " + user.getUsername());
                         System.out.println("Retrieve youth username! - line 212: " + user.getUsername());
                         firstNameTV.setText("First Name: " + user.getFirstName());
-                        lastNameTV.setText(user.getLastName());
+                        lastNameTV.setText(" " + user.getLastName());
                         emailTV.setText("Email: " + user.getEmail());
                         phoneTV.setText("Phone Number: " + user.getPhoneNo());
 

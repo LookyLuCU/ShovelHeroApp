@@ -5,9 +5,7 @@ import android.widget.CalendarView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class WorkOrder {
 
@@ -223,7 +221,7 @@ public class WorkOrder {
     }
 
     public void setGuardianId(String guardianId) {
-        this.guardianId = guardianId;
+        this.guardianId = guardianId; }
         
     public List<String> getItemsRequested() {
         return itemsRequested;

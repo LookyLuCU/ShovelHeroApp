@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "User not found. Please try again or create a new account.", Toast.LENGTH_SHORT).show();
 ;                            }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             //handle error

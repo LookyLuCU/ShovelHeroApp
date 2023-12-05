@@ -3,12 +3,11 @@ package com.example.shovelheroapp.Controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -21,7 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.shovelheroapp.Models.Address;
 import com.example.shovelheroapp.Models.User;
 import com.example.shovelheroapp.R;
+import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -31,38 +32,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.android.gms.common.api.Status;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.AddressComponent;
-
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import android.util.Log;
-
 public class CreateAddressActivity extends AppCompatActivity {
     private static final String TAG = "CreateAddressActivity";
 
     private ImageView customerAddressImage;
     private EditText addressEditText;
-    private EditText cityEditText;
-    private EditText provinceEditText;
-    private EditText postalCodeEditText;
-    private Spinner countrySpinner;
-    private EditText addressNotesEditText;
+    //private EditText cityEditText;
+    //private EditText provinceEditText;
+    //private EditText postalCodeEditText;
+    //private Spinner countrySpinner;
+    //private EditText addressNotesEditText;
     private List<String> itemsRequestedList;
-    private CheckBox drivewayCB;
-    private CheckBox walkwayCB;
-    private CheckBox sidewalkCB;
+
     private EditText drivewaySquareFootageEditText;
-    private CheckBox accessibleCB;
-    private CheckBox shovelAvailableOnsiteCB;
-    private String accessible;
-    private String shovelAvailable;
     private User currentUser;
     private String currentUserId;
     private Button btnCreateAddress;
@@ -182,7 +170,7 @@ public class CreateAddressActivity extends AppCompatActivity {
                         if (address.isEmpty() || drivewaySquareFootage.isEmpty()) {
                             Toast.makeText(CreateAddressActivity.this, "Please fill out the address and square footage", Toast.LENGTH_SHORT).show();
                         }
-                        //
+
                         else if (!drivewaySquareFootage.matches("^[0-9]+$")) {
                             Toast.makeText(CreateAddressActivity.this, "Please enter a valid square footage (numbers only)", Toast.LENGTH_SHORT).show();
                         }
@@ -199,10 +187,10 @@ public class CreateAddressActivity extends AppCompatActivity {
     public void createAddress() {
         String addressId = userTable.child("addresses").push().getKey();
         String address = addressEditText.getText().toString();
-        String city = cityEditText.getText().toString();
-        String province = provinceEditText.getText().toString();
-        String postalCode = postalCodeEditText.getText().toString();
-        String country = countrySpinner.getSelectedItem().toString();
+        //String city = cityEditText.getText().toString();
+        //String province = provinceEditText.getText().toString();
+        //String postalCode = postalCodeEditText.getText().toString();
+        //String country = countrySpinner.getSelectedItem().toString();
         String sqFootageStr = drivewaySquareFootageEditText.getText().toString();
         int sqFootage = sqFootageStr.isEmpty() ? 0 : Integer.parseInt(sqFootageStr);
 
@@ -219,10 +207,10 @@ public class CreateAddressActivity extends AppCompatActivity {
                 System.out.println("New address added to Firebase under user: " + newAddress.getAddress());
 
                 addressEditText.setText("");
-                cityEditText.setText("");
-                provinceEditText.setText("");
-                postalCodeEditText.setText("");
-                countrySpinner.setAdapter(null);
+                //cityEditText.setText("");
+                //provinceEditText.setText("");
+                //postalCodeEditText.setText("");
+                //countrySpinner.setAdapter(null);
             }
         }
         else {

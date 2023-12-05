@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.shovelheroapp.Models.Enums.Status;
 import com.example.shovelheroapp.Models.WorkOrder;
 import com.example.shovelheroapp.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -45,9 +48,6 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         public Button btnView;
         public Button btnCancel;
 
-
-
-        public Button btnOpenWo;
 
         public ViewHolder(View view) {
             super(view);
@@ -103,12 +103,8 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
 
                 cancelOrder(workOrder.getWorkOrderId());
 
-                String userID = userId;
-                Context context = holder.itemView.getContext();
-                Intent wOIntent = new Intent(context, YouthShovelerProfileActivity.class);
-                wOIntent.putExtra("USER_ID", userID);
-                context.startActivity(wOIntent);
-                ((Activity) context).overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                //TODO: update for real time update
+                //updateData(workOrders);
             }
         });
     }
@@ -130,9 +126,24 @@ public class WorkOrderAdapterForShoveler extends RecyclerView.Adapter<WorkOrderA
         wOMap.put("status", Status.Open.toString());
         wOMap.put("shovellerId", null);
         wOMap.put("guardianId", null);
+
         //TODO: notify customer of potential delay
         //TODO: confirmation pop-up with reason request
 
+        workOrderRef.updateChildren(wOMap)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    System.out.println("You have chosen not to take this job");
+                    Toast.makeText(context, "You have chosen not to take this job", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "Could not reject job", Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 }
 

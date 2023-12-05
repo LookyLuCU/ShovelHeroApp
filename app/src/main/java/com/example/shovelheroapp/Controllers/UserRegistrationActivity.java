@@ -97,34 +97,31 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
                 if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty()){
                     Toast.makeText(UserRegistrationActivity.this, "Please fill out all the fields", Toast.LENGTH_SHORT).show();
-                }
-                if(username.length() <= 3 || username.length() >= 20){
+                } else if (username.length() <= 3 || username.length() >= 20) {
                     Toast.makeText(UserRegistrationActivity.this, "Please enter valid username", Toast.LENGTH_SHORT).show();
-                }
-                if(!(password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*"))){
+                } else if (!(password.length() >= 8 && password.matches(".*\\d.*") && password.matches(".*[a-zA-Z].*"))) {
                     Toast.makeText(UserRegistrationActivity.this, "Password must contain at least 8 characters and one letter and one digit", Toast.LENGTH_SHORT).show();
-                }
-                if (!password.equals(confirmPassword)) {
+                } else if (!password.equals(confirmPassword)) {
                     Toast.makeText(UserRegistrationActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+                } else if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
                     Toast.makeText(UserRegistrationActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
-                }
-                if(!(android.util.Patterns.PHONE.matcher(phone).matches())){
+                } else if (!(android.util.Patterns.PHONE.matcher(phone).matches())) {
                     Toast.makeText(UserRegistrationActivity.this, "Please enter valid phone number", Toast.LENGTH_SHORT).show();
+                } else{
+                    createUser(view);
                 }
-
-                // If validations pass, create user
-                createUser(view);
             }
         });
+
+
         birthdateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showBirthYearPicker();
             }
         });
+
 
         //image button listener
         uploadIdImage.setOnClickListener(new View.OnClickListener() {
