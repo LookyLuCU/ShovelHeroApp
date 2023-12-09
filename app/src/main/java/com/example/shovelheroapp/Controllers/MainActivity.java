@@ -4,6 +4,7 @@ package com.example.shovelheroapp.Controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.etUsername);
         passwordEditText = findViewById(R.id.etPassword);
+
+        Button loginButton = findViewById(R.id.btnLogin);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginUser(view);
+            }
+        });
     }
 
         public void loginUser(View view) {
