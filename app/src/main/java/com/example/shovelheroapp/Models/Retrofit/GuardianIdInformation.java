@@ -1,13 +1,13 @@
 package com.example.shovelheroapp.Models.Retrofit;
 
-public class GuardianInformation {
+public class GuardianIdInformation {
     private String guardianIDUrl;
     private String userId;
 
-    public GuardianInformation() {
+    public GuardianIdInformation() {
 
     }
-    public GuardianInformation(String guardianIDUrl, String userId) {
+    public GuardianIdInformation(String guardianIDUrl, String userId) {
         this.guardianIDUrl = guardianIDUrl;
         this.userId = userId;
     }

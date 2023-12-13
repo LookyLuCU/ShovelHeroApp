@@ -5,7 +5,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.example.shovelheroapp.Models.Retrofit.CloudFunctionsService;
-import com.example.shovelheroapp.Models.Retrofit.GuardianInformation;
+import com.example.shovelheroapp.Models.Retrofit.GuardianIdInformation;
 import com.example.shovelheroapp.Models.Retrofit.RetrofitClient;
 
 import android.app.Activity;
@@ -341,7 +341,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         CloudFunctionsService service = retrofit.create(CloudFunctionsService.class);
 
         // Create instance of GuardianInformation
-        GuardianInformation data = new GuardianInformation(guardianIDUrl, userId);
+        GuardianIdInformation data = new GuardianIdInformation(guardianIDUrl, userId);
 
         // Make network request
         Call<Void> call = service.sendIdForValidation(data);

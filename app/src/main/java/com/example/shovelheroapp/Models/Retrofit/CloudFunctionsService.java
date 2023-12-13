@@ -6,5 +6,5 @@ import retrofit2.http.POST;
 
 public interface CloudFunctionsService {
     @POST("sendIdForValidation") // Set up the endpoint for email Cloud Function
-    Call<Void> sendIdForValidation(@Body GuardianInformation data);
+    Call<Void> sendIdForValidation(@Body GuardianIdInformation data);
 }
