@@ -1,5 +1,13 @@
 package com.example.shovelheroapp.Controllers;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import com.example.shovelheroapp.Models.Retrofit.CloudFunctionsService;
+import com.example.shovelheroapp.Models.Retrofit.GuardianInformation;
+import com.example.shovelheroapp.Models.Retrofit.RetrofitClient;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -37,6 +45,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Retrofit;
 
 public class UserRegistrationActivity extends AppCompatActivity {
 
@@ -230,7 +240,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         NumberPicker birthYearPicker = new NumberPicker(this);
-        birthYearPicker.setMinValue(1903);
+        birthYearPicker.setMinValue(1900);
         birthYearPicker.setMaxValue(year);
         birthYearPicker.setValue(year);
 
@@ -265,7 +275,6 @@ public class UserRegistrationActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         getImage.launch(intent);
     }
-
     ActivityResultLauncher<Intent> getImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -325,29 +334,33 @@ public class UserRegistrationActivity extends AppCompatActivity {
             Toast.makeText(UserRegistrationActivity.this, "Failed to link ID with Guardian profile", Toast.LENGTH_SHORT).show();
         });
     }
-    private void sendIdForValidation(String guardianIDUrl, String userId){
-        String guardianUrl = guardianIDUrl;
+    private void sendIdForValidation(String guardianIDUrl, String userId) {
 
-        String emailAddress = "sheshegurl.sd@gmail.com";
-        String subject = "Guardian ID Validation Request";
-        String body = "PLease validate ID for guardian userId: " + userId;
+        // Get retrofit instance from singleton class
+        Retrofit retrofit = RetrofitClient.getClient();
+        CloudFunctionsService service = retrofit.create(CloudFunctionsService.class);
 
-        //Create intent with ACTION_SEND action
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        // Create instance of GuardianInformation
+        GuardianInformation data = new GuardianInformation(guardianIDUrl, userId);
 
-        //set intent type to email
-        emailIntent.setType("message/rfc822");
-
-        //set recipient address
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-
-        //set subject
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-
-        //set body
-        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-
-        //start email client activity
-        startActivity(Intent.createChooser(emailIntent, "Send Email"));
+        // Make network request
+        Call<Void> call = service.sendIdForValidation(data);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()) {
+                    // Handle success
+                    Toast.makeText(UserRegistrationActivity.this, "ID validation request sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle Failure
+                    Toast.makeText(UserRegistrationActivity.this, "Failed to send ID validation request", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Handle error
+                Toast.makeText(UserRegistrationActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
