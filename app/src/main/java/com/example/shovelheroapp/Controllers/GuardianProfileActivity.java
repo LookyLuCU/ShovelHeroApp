@@ -1,5 +1,9 @@
 package com.example.shovelheroapp.Controllers;
 
+import com.example.shovelheroapp.Models.Retrofit.RetrofitClient;
+import com.example.shovelheroapp.Models.Retrofit.CloudFunctionsService;
+import com.example.shovelheroapp.Models.Retrofit.GuardianIdInformation;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,7 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.DragEvent;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +21,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -77,8 +86,10 @@ public class GuardianProfileActivity extends AppCompatActivity {
     //guardian ID
     private ImageButton btnAddIDPicture;
     private Uri guardianIdImageUri;
-    private ActivityResultLauncher<Intent> iDImageLauncher;
 
+    // Current User
+    private User currentUser;
+    private Bitmap currentBitmap = null;
 
 
     //buttons
@@ -89,7 +100,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
     Button btnManageProfileInfo;
     Button btnAddAddress;
     Button btnEditPassword;
-
+    Button btnSendGuardianId;
 
 
     @Override
@@ -106,31 +117,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
         phoneTV = findViewById(R.id.tvPhone);
 
         btnAddIDPicture = findViewById(R.id.btnAddIDPicture);
-        //drag and dropped id pic triggers intent sent to iDImageLauncher
-        btnAddIDPicture.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                selectGuardianIDImage();
-                return false;
-            }
-        });
 
-        iDImageLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        guardianIdImageUri = result.getData().getData();
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), guardianIdImageUri);
-                            //profileImageView.setImageBitmap(bitmap);
-                            updateUserProfile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(GuardianProfileActivity.this, "Failed to load image", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
 
         addressSpinner = findViewById(R.id.spinnerAddress);
 
@@ -146,6 +133,23 @@ public class GuardianProfileActivity extends AppCompatActivity {
         btnAddAddress = findViewById(R.id.btnAddAddress);
         btnEditPassword = findViewById(R.id.btnEditPassword);
 
+        btnSendGuardianId = findViewById(R.id.btnSendGuardianId);
+        btnSendGuardianId.setVisibility(View.GONE);
+
+        // Click listener for Guardian ID
+        btnSendGuardianId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadIdImage();
+            }
+        });
+
+        btnAddIDPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
 
         //get Username from registration page or or UserID from Login
         //GET USERID FROM LOGIN OR REGISTRATION
@@ -156,7 +160,6 @@ public class GuardianProfileActivity extends AppCompatActivity {
                 retrieveGuardianProfile(userId);
             }
         }
-
 
         //LIST OF OPEN ORDERS FOR GUARDIAN
         //initialize recyclerview
@@ -181,17 +184,16 @@ public class GuardianProfileActivity extends AppCompatActivity {
                     //System.out.println("userId = " + userId);
                     //System.out.println("shovellerId = " + workOrder.getShovellerId());
 
-                    if(workOrder.getGuardianId() != null &&
+                    if (workOrder.getGuardianId() != null &&
                             workOrder.getGuardianId().equals(userId) &&
                             (workOrder.getStatus().equals(Status.PendingGuardianApproval.toString()) ||
                                     workOrder.getStatus().equals(Status.Accepted.toString()) ||
                                     workOrder.getStatus().equals(Status.Enroute.toString()) ||
                                     workOrder.getStatus().equals(Status.InProgress.toString()) ||
-                                    workOrder.getStatus().equals(Status.Issue.toString()) )
+                                    workOrder.getStatus().equals(Status.Issue.toString()))
                     ) {
                         pendingWorkOrderList.add(workOrder);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(GuardianProfileActivity.this, "No Open Jobs", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -200,6 +202,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                 pendingWORecyclerView.setAdapter(workOrderAdapter);
                 Log.d("ListAllOpenWorkOrders", "Adapter notified of data change");
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("ListAllOpenWorkOrders", "Error fetching data: " + error.getMessage());
@@ -208,12 +211,11 @@ public class GuardianProfileActivity extends AppCompatActivity {
         });
 
 
-
         //Navigation Bar Activity
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationViewGuardian);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if(itemId == R.id.menu_workorders) {
+            if (itemId == R.id.menu_workorders) {
                 startActivity(new Intent(GuardianProfileActivity.this, ListAllOpenWorkOrdersActivity.class));
                 return true;
             } else if (itemId == R.id.menu_orderhistory) {
@@ -234,34 +236,33 @@ public class GuardianProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    User user = snapshot.getValue(User.class);
+                    currentUser = snapshot.getValue(User.class);
 
-                    if (user != null) {
+                    if (currentUser != null) {
                         //display user profile info
-                        usernameTV.setText("Username: " + user.getUsername());
-                        firstNameTV.setText("First Name: " + user.getFirstName());
-                        lastNameTV.setText(" " + user.getLastName());
-                        emailTV.setText("Email: " + user.getEmail());
-                        phoneTV.setText("Phone Number: " + user.getPhoneNo());
+                        usernameTV.setText("Username: " + currentUser.getUsername());
+                        firstNameTV.setText("First Name: " + currentUser.getFirstName());
+                        lastNameTV.setText(" " + currentUser.getLastName());
+                        emailTV.setText("Email: " + currentUser.getEmail());
+                        phoneTV.setText("Phone Number: " + currentUser.getPhoneNo());
 
 
                         // Load profile Image
-                        String profileImageUrl = user.getProfilePictureUrl();
+                        String profileImageUrl = currentUser.getProfilePictureUrl();
                         ImageView profileImageView = findViewById(R.id.imgProfilePicture);
-                        if(profileImageUrl != null && !profileImageUrl.isEmpty()){
+                        if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                             Glide.with(GuardianProfileActivity.this)
                                     .load(profileImageUrl).into(profileImageView);
                         }
 
-                        readAddressesFromFirebase(user);
+                        readAddressesFromFirebase(currentUser);
 
-                        if(user.getGuardianIdValidated() == false){
+                        if (!currentUser.getGuardianIdValidated()) {
                             System.out.println("Please add your Picture ID to get started");
                             Toast.makeText(GuardianProfileActivity.this, "Valid Photo ID is required to add a Youth Shoveller to your profile", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            readYouthProfilesFromFirebase(user);
-                            retrieveLinkedYouths(user);
+                        } else {
+                            readYouthProfilesFromFirebase(currentUser);
+                            retrieveLinkedYouths(currentUser);
 
                         }
 
@@ -271,10 +272,10 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 //if(user.getGuardianIdValidated()){
-                                System.out.println("this is the guardian being sent to link the youth: " + user.getUsername());
-                                    linkYouthProfile(user);
+                                System.out.println("this is the guardian being sent to link the youth: " + currentUser.getUsername());
+                                linkYouthProfile(currentUser);
                                 //} else {
-                                  //  Toast.makeText(GuardianProfileActivity.this, "Please ensure your ID has been uploaded and validated", Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(GuardianProfileActivity.this, "Please ensure your ID has been uploaded and validated", Toast.LENGTH_SHORT).show();
                                 //}
                             }
                         });
@@ -301,7 +302,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage user profile under construction", Toast.LENGTH_SHORT).show();
                                 Intent intentManageYouthProfile = new Intent(GuardianProfileActivity.this, EditUserProfileActivity.class);
-                                String guardianId = user.getUserId();
+                                String guardianId = currentUser.getUserId();
                                 intentManageYouthProfile.putExtra("USER_ID", guardianId);
                                 startActivity(intentManageYouthProfile);
                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
@@ -313,11 +314,11 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Toast.makeText(GuardianProfileActivity.this, "Temp msg: Manage Payment activity under construction", Toast.LENGTH_SHORT).show();
-                                 Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
-                                 String guardianId = user.getUserId();
-                                 intentManageYouthPayment.putExtra("USER_ID", guardianId);
-                                 startActivity(intentManageYouthPayment);
-                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                                Intent intentManageYouthPayment = new Intent(GuardianProfileActivity.this, ManagePaymentActivity.class);
+                                String guardianId = currentUser.getUserId();
+                                intentManageYouthPayment.putExtra("USER_ID", guardianId);
+                                startActivity(intentManageYouthPayment);
+                                overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
                             }
                         });
 
@@ -326,7 +327,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentNewAddress = new Intent(GuardianProfileActivity.this, CreateAddressActivity.class);
-                                String guardianId = user.getUserId();
+                                String guardianId = currentUser.getUserId();
                                 intentNewAddress.putExtra("USER_ID", guardianId);
                                 startActivity(intentNewAddress);
                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
@@ -338,7 +339,7 @@ public class GuardianProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 Intent intentEditPassword = new Intent(GuardianProfileActivity.this, EditPasswordActivity.class);
-                                String guardianId = user.getUserId();
+                                String guardianId = currentUser.getUserId();
                                 intentEditPassword.putExtra("USER_ID", guardianId);
                                 startActivity(intentEditPassword);
                                 overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
@@ -351,14 +352,12 @@ public class GuardianProfileActivity extends AppCompatActivity {
                     //handle user id does not exist
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 //handle error
             }
         });
     }
-
 
     private void readAddressesFromFirebase(User user) {
         System.out.println("userid received by read database: " + user);
@@ -408,71 +407,151 @@ public class GuardianProfileActivity extends AppCompatActivity {
         });
     }
 
-
-    private void selectGuardianIDImage(){
+    private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        iDImageLauncher.launch(intent);
+        getImage.launch(intent);
     }
 
-    private void updateUserProfile() {
-        // TODO: input field validation
+    ActivityResultLauncher<Intent> getImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+        if(result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            assert data != null;
+            guardianIdImageUri = data.getData();
+            setImageButtonBackground(guardianIdImageUri);
 
-        if (guardianIdImageUri != null) {
-            StorageReference fileReference = FirebaseStorage.getInstance().getReference().child("profilePictures/" + userId + ".jpg");
-            fileReference.putFile(guardianIdImageUri)
-                    .addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl()
-                            .addOnSuccessListener(uri -> {
-                                String imageUrl = uri.toString();
+            // Make send ID button visible
+            btnSendGuardianId.setVisibility(View.VISIBLE);
+        }
+    });
 
-                                updateFirebaseUserProfile(imageUrl);
-                            })
-                    )
-                    .addOnFailureListener(e -> Toast.makeText(GuardianProfileActivity.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        } else {
-            // Upload profile information if no image is selected
-            updateFirebaseUserProfile(null);
+    private void setImageButtonBackground(Uri imageUri) {
+        try {
+            Bitmap newImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+            // Recycle the old Bitmap (clean memory)
+            if (currentBitmap != null && !currentBitmap.isRecycled()) {
+                currentBitmap.recycle();
+            }
+
+            // Set the new Bitmap and keep a reference
+            btnAddIDPicture.setImageBitmap(newImage);
+            currentBitmap = newImage;
+
+            btnAddIDPicture.setVisibility(View.VISIBLE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to load ID", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void uploadIdImage() {
+        if (currentUser == null) {
+            Toast.makeText(this, "User data is not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //Validation
+        // Check if there is an existing ID URL, but the ID is not validated (ID under review)
+        boolean idUnderReview = currentUser.getGuardianIdUrl() != null && !currentUser.getGuardianIdValidated();
+
+        // Check if there is an existing ID URL and the ID is validated (User is authorized, ID not removed)
+        boolean isAlreadyValidatedWithID = currentUser.getGuardianIdUrl() != null && currentUser.getGuardianIdValidated();
+
+        // Check if there is NOT an existing URL (e.g., if we remove the ID after a specified time because of a data retention policy),
+        // but the User is validated (User is authorized)
+
+        boolean isAlreadyValidatedWithoutID = currentUser.getGuardianIdUrl() == null && currentUser.getGuardianIdValidated();
+
+
+        if(idUnderReview) {
+            Toast.makeText(this, "Your ID is currently being reviewed. You cannot upload another ID", Toast.LENGTH_SHORT).show();
+        }
+
+        // If the ID
+        else if (isAlreadyValidatedWithID) {
+            Toast.makeText(this, "You are already validated and cannot upload an ID.", Toast.LENGTH_SHORT).show();
+        }
+
+        else if (isAlreadyValidatedWithoutID) {
+            Toast.makeText(this, "You are already validated and cannot upload an ID.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if(guardianIdImageUri == null) {
+                Toast.makeText(this, "Please select an ID image to upload.", Toast.LENGTH_SHORT).show();
+            }
+            uploadIdImageToFirebaseStorage(guardianIdImageUri);
         }
     }
 
+    private void uploadIdImageToFirebaseStorage(Uri imageUri) {
 
-    private void updateFirebaseUserProfile(String iDImageURL){
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
-        Map<String, Object> updateIDImageMap = new HashMap<>();
-        if (iDImageURL != null){
-            updateIDImageMap.put("guardianIdUrl", iDImageURL);
+        if (imageUri == null) {
+            Toast.makeText(this, "No image selected. Please select an image to upload.", Toast.LENGTH_SHORT).show();
+            return;
         }
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference idReference = storageReference.child("guardianIds/" + currentUser.getUserId() + ".jpg");
 
-        userReference.updateChildren(updateIDImageMap)
-                .addOnSuccessListener(aVoid -> sendIdForValidation(iDImageURL, userId))
-                .addOnSuccessListener(aVoid -> Toast.makeText(GuardianProfileActivity.this, "ID uploaded to your profile successfully", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(GuardianProfileActivity.this, "ID Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        idReference.putFile(imageUri).addOnSuccessListener(uri -> {
+            uri.getStorage().getDownloadUrl().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    String imageUrl = task.getResult().toString();
+                    currentUser.setGuardianIdUrl(imageUrl);
+                    currentUser.setGuardianIdValidated(false);
+
+                    updateUserWithIdUrl(imageUrl);
+                } else {
+                    Toast.makeText(GuardianProfileActivity.this, "Failed to get ID download URL", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(GuardianProfileActivity.this, "Failed to upload ID", Toast.LENGTH_SHORT).show();
+        });
     }
 
+    private void updateUserWithIdUrl(String imageUrl) {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUserId());
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("guardianIdUrl", imageUrl);
 
-    private void sendIdForValidation(String guardianIDUrl, String userId){
-        String guardianUrl = guardianIDUrl;
+        userReference.updateChildren(updates).addOnSuccessListener(aVoid -> {
+            // Notify the user of successful upload
+            Toast.makeText(GuardianProfileActivity.this, "ID uploaded and pending approval", Toast.LENGTH_SHORT).show();
+            // Call method to send ID for validation
+            sendIdForValidation(imageUrl, currentUser.getUserId());
+        }).addOnFailureListener(e -> {
+            // Reset local currentUser object if Firebase update fails
+            currentUser.setGuardianIdUrl(null);
+            currentUser.setGuardianIdValidated(false);
+            Toast.makeText(GuardianProfileActivity.this, "Failed to update profile with ID URL", Toast.LENGTH_SHORT).show();
+        });
+    }
 
-        String emailAddress = "sheshegurl.sd@gmail.com";
-        String subject = "Guardian ID Validation Request";
-        String body = "PLease validate ID for guardian userId: " + userId;
+    private void sendIdForValidation(String guardianIDUrl, String userId) {
 
-        //Create intent with ACTION_SEND action
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        // Get retrofit instance from singleton Class
+        Retrofit retrofit = RetrofitClient.getClient();
+        CloudFunctionsService service = retrofit.create(CloudFunctionsService.class);
 
-        //set intent type to email
-        emailIntent.setType("message/rfc822");
+        // Create GuardianIdInformation instance
+        GuardianIdInformation data = new GuardianIdInformation(guardianIDUrl, userId);
 
-        //set recipient address
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailAddress});
-
-        //set subject
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-
-        //set body
-        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
-
-        //start email client activity
-        startActivity(Intent.createChooser(emailIntent, "Send Email"));
+        // Make network request
+        Call<Void> call = service.sendIdForValidation(data);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText(GuardianProfileActivity.this, "ID validation request sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GuardianProfileActivity.this, "Failed to send ID validation request", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(GuardianProfileActivity.this, "Error" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

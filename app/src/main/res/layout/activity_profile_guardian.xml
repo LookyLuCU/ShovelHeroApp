@@ -117,11 +117,12 @@
                     android:layout_height="wrap_content"
                     android:text="Id Validation Status: "/>
 
+
                 <ImageButton
                     android:id="@+id/btnAddIDPicture"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:contentDescription="Change Profile Picture"
+                    android:contentDescription="Upload ID Card"
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     android:background="?android:selectableItemBackground"
@@ -131,10 +132,20 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btnSendGuardianId"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Send ID"
+                android:layout_gravity="right"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
             <Spinner
                 android:id="@+id/spinnerAddress"
                 android:layout_width="250dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

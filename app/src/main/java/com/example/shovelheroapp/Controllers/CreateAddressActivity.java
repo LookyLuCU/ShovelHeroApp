@@ -86,7 +86,7 @@ public class CreateAddressActivity extends AppCompatActivity {
 
         // Initialize Places API
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyCjuP_72OOu-Bu6rgLZyxXVuNqZdIj1eG8");
+            Places.initialize(getApplicationContext(), "AIzaSyCuavjoxYxefk2HmHyJPM6yeVgGQDs0yTs");
         }
 
         //get userID

@@ -323,7 +323,7 @@ public class UserRegistrationActivity extends AppCompatActivity {
 
         // Create Map with image Url
         Map<String, Object> updates = new HashMap<>();
-        updates.put("idImageUrl", imageUrl);
+        updates.put("guardianIdUrl", imageUrl);
 
         // Update guardian's profile with ID url
         userReference.updateChildren(updates).addOnSuccessListener(aVoid -> {
